@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import app from './modules/app'
-import user from './modules/user'
+// import app from './modules/app'
+// import user from './modules/user'
 import getters from './getters'
 import * as actions from './actions'
 // import * as getters from './getters'
@@ -10,13 +10,14 @@ import * as types from './types'
 Vue.use(Vuex)
 
 // store 去中心化
-const reqModules = require.context('../views', true, /^\.(\/([\s\S])+)?\/store\.js$/)
-const modules = reqModules.keys().reduce((module, key) => {
-  // export default 语法导出不友好，特殊处理
-  const name = key // .replace('.', '').replace('/', '')
-  module[name] = reqModules(key).default
-  return module
-}, {})
+// const reqModules = require.context('../views', true, /^\.(\/([\s\S])+)?\/store\.js$/)
+
+// const modules = reqModules.keys().reduce((module, key) => {
+//   // export default 语法导出不友好，特殊处理
+//   const name = key // .replace('.', '').replace('/', '')
+//   module[name] = reqModules(key).default
+//   return module
+// }, {})
 
 const state = {}
 
@@ -29,8 +30,8 @@ export default new Vuex.Store({
   actions,
   getters,
   modules: {
-    app,
-    user,
-    ...modules,
+    // app,
+    // user,
+    // ...modules,
   },
 })

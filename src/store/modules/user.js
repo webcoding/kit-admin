@@ -1,7 +1,7 @@
 
 // user
-import { login, logout, getInfo } from '../../service/login'
-import { getToken, setToken, removeToken } from '../../utils/auth'
+import { login, logout, getInfo } from '@/service/login'
+import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
   state: {

@@ -34,7 +34,7 @@ reqModules.keys().map((key) => {
    }
  */
 const router = new Router({
-  mode: 'hash', // history
+  mode: __PROD__ ? 'history' : 'hash', // history
   base: '',
   scrollBehavior: () => ({ y: 0 }),
   routes: [

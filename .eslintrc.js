@@ -4,18 +4,21 @@ module.exports = {
   "root": true,
   "parser": "babel-eslint",
   "parserOptions": {
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+    },
   },
-  extends: 'eslint:recommended',
-  // "extends": [
-  //   "airbnb-base",
-  //   // "vue"
-  //   // "eslint-config-vue": "^2.0.2",
-  //   // "plugin:vue-libs/recommended",
-  // ],
+  // extends: 'eslint:recommended',
+  "extends": [
+    "airbnb-base",
+    // "vue"
+    // "eslint-config-vue": "^2.0.2",
+    // "plugin:vue-libs/recommended",
+  ],
   // required to lint *.vue files
   "plugins": [
-    // "vue-libs",
+    "vue-libs",
     "import",
     "html",
   ],
@@ -37,22 +40,22 @@ module.exports = {
     "__WEEX__": true
   },
   // check if imports actually resolve
-  'settings': {
-    'import/resolver': {
-      'webpack': {
-        'config': 'build/webpack.base.conf.js'
-      }
-    }
-  },
+  // 'settings': {
+  //   'import/resolver': {
+  //     'webpack': {
+  //       'config': 'build/webpack.base.conf.js'
+  //     }
+  //   }
+  // },
   // 根据需要修改 rules，详见 http://eslint.org/docs/rules/
   // 推荐的编码风格 https://github.com/airbnb/javascript
   // add your custom rules here
   "rules": {
     // don't require .vue extension when importing
-    'import/extensions': ['error', 'always', {
-      'js': 'never',
-      'vue': 'never'
-    }],
+    // 'import/extensions': ['error', 'always', {
+    //   'js': 'never',
+    //   'vue': 'never'
+    // }],
     // allow optionalDependencies
     'import/no-extraneous-dependencies': ['error', {
       'optionalDependencies': ['test/unit/index.js']
