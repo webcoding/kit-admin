@@ -6,16 +6,16 @@ module.exports = {
   "parserOptions": {
     "sourceType": "module"
   },
-  // extends: 'eslint:recommended',
-  "extends": [
-    "airbnb-base",
-    // "vue"
-    // "eslint-config-vue": "^2.0.2",
-    // "plugin:vue-libs/recommended",
-  ],
+  extends: 'eslint:recommended',
+  // "extends": [
+  //   "airbnb-base",
+  //   // "vue"
+  //   // "eslint-config-vue": "^2.0.2",
+  //   // "plugin:vue-libs/recommended",
+  // ],
   // required to lint *.vue files
   "plugins": [
-    "vue-libs",
+    // "vue-libs",
     "import",
     "html",
   ],
