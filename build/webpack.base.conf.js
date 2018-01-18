@@ -41,10 +41,10 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json', '.css', '.md'],
+    extensions: ['.js', '.vue', '.json', '.md'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@root': resolve('./'),
+      // '@root': resolve('./'),
       '@': resolve('src'),
       'assets': path.resolve(__dirname, '../src/assets'),
     },

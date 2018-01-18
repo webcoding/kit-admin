@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import app from './modules/app'
+import user from './modules/user'
+import getters from './getters'
 import * as actions from './actions'
-import * as getters from './getters'
+// import * as getters from './getters'
 import * as types from './types'
 
 Vue.use(Vuex)
@@ -26,6 +29,8 @@ export default new Vuex.Store({
   actions,
   getters,
   modules: {
+    app,
+    user,
     ...modules,
   },
 })

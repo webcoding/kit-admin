@@ -6,6 +6,7 @@ module.exports = {
   "parserOptions": {
     "sourceType": "module"
   },
+  // extends: 'eslint:recommended',
   "extends": [
     "airbnb-base",
     // "vue"
@@ -22,6 +23,7 @@ module.exports = {
     "browser": true,
     "mocha": true,
     "node": true,
+    "es6": true,
   },
   "globals": {
     "window": false,
@@ -83,6 +85,12 @@ module.exports = {
     "no-trailing-spaces": 0,
     "no-use-before-define": 0,
     "no-useless-escape": 0,
+    "no-unused-vars": ["error", {
+      "vars": "all",
+      "args": "none",
+      "caughtErrors": "none",
+      "ignoreRestSiblings": false,
+    }],
     "prefer-template": 0,
     "prefer-arrow-callback": 0,
     "require-yield": 1,

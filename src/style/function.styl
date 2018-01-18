@@ -1,9 +1,9 @@
 // mixins for clearfix
 clearfix() {
   // &::after {
-  //   display: block;
-  //   clear: both;
   //   content: "";
+  //   display: table;
+  //   clear: both;
   // }
   &::before,
   &::after {
@@ -55,6 +55,30 @@ textHide() {
   text-shadow: none;
   background-color: transparent;
   border: 0;
+}
+
+scrollBar($size = 4px) {
+  /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+  ::-webkit-scrollbar {
+    width: $size;
+    // height: $size;
+    background-color: transparent;
+  }
+
+  /*定义滚动条轨道 内阴影+圆角*/
+  // ::-webkit-scrollbar-track-piece {}
+  ::-webkit-scrollbar-track {
+    // -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    // border-radius: $size;
+    background-color: transparent;
+  }
+
+  /*定义滑块 内阴影+圆角*/
+  ::-webkit-scrollbar-thumb {
+    border-radius: $size;
+    // -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: rgba(193, 193, 193, 0.5);
+  }
 }
 
 textReset($line-height = 1.3) {
