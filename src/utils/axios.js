@@ -13,10 +13,11 @@ axios#patch(url[, data[, config]])
 
 */
 
+/* eslint-disable */
 import axios from 'axios'
 
 const instance = axios.create({
-  // baseURL: `${env.apiBaseUrl}`,
+  baseURL: `${env.apiBaseUrl}`,
   timeout: 1500,
   withCredentials: true,
   responseType: 'json',
@@ -37,14 +38,11 @@ instance.get('/longRequest', {
   timeout: 5000,
 })
 
-const ajax = {}
-function checkStatus() {}
-
 // 添加请求拦截器
 ajax.interceptors.request.use((config) => {
   // 在发送请求之前做某事
   return config
-}, (error) => {
+}, function (error) {
   // 请求错误时做些事
   return Promise.reject(error)
 })
@@ -53,12 +51,12 @@ ajax.interceptors.request.use((config) => {
 ajax.interceptors.response.use((response) => {
   // 对响应数据做些事
   return checkStatus(response)
-}, (error) => {
+}, function (error) {
   // 请求错误时做些事
   return Promise.reject(error)
 })
 
 
 // 后期可以 移除请求拦截器
-const myInterceptor = axios.interceptors.request.use(() => { /* ... */ })
+const myInterceptor = axios.interceptors.request.use(function () { /* ... */ })
 axios.interceptors.request.eject(myInterceptor)

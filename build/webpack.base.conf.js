@@ -2,38 +2,61 @@
 
 const path = require('path')
 const chalk = require('chalk')
+const webpack = require('webpack')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const WebpackNotifierPlugin = require('webpack-build-notifier')
-const utils = require('./utils')
+const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin')
+const {
+  resolve,
+  assetsPath,
+  cHappypack,
+} = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
-function resolve(dir) {
-  return path.join(__dirname, '..', dir)
-}
+// https://github.com/zouhir/jarvis
+// const Jarvis = require("webpack-jarvis");
+
+// /* the rest of your webpack configs */
+// plugins: [
+//   new Jarvis({
+//     port: 1337 // optional: set a port
+//   })
+// ];
+
+// function resolve(dir) {
+//   return path.join(__dirname, '..', dir)
+// }
 
 const isProduction = config.env['__PROD__']
-const createLintingRule = () => ({
-  test: /\.(js|vue)$/,
-  loader: 'eslint-loader',
-  enforce: 'pre',
-  // exclude: /(libs|node_modules)/,
-  include: [
-    resolve('src'),
-    resolve('test'),
-  ],
-  options: {
-    formatter: require('eslint-friendly-formatter'),
-    emitWarning: !config.dev.showEslintErrorsInOverlay,
-  },
-})
 
 module.exports = {
-  context: path.resolve(__dirname, '../'),
+  // target: 'web'
+  // mode: 'production', // 'development'
+  // context: path.resolve(__dirname, "../"),
   entry: {
-    app: './src/main.js',
+    // libs: [
+    //   'es6-promise/auto',
+    //   'whatwg-fetch',
+    //   'vue',
+    //   'vue-router',
+    //   'vuex',
+    // ],
+    // vendor: [
+    //   // vendor 中均是非 npm 模块，用 resolve.alias 修改路径，避免冗长的相对路径。
+    //   'vue-lazyload',
+
+    //   // 'assets/libs/fastclick',
+    //   // 'components/request',
+    //   // 'components/ui',
+    //   // 'components/bootstrap' // 初始化脚本
+    // ],
+    // vendor: ['vue', 'vue-router'],
+    // 如需多页面，需要处理 entry
+    app: resolve(config.path.src, '/main.js'), // './src/main.js',
   },
   output: {
+    crossOriginLoading: 'anonymous', // false anonymous use-credentials
     path: config.build.assetsRoot,
     filename: '[name].js',
     publicPath: isProduction
@@ -41,30 +64,90 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json', '.md'],
+    extensions: ['.js', '.vue', '.json', '.css', '.md'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      // '@root': resolve('./'),
-      '@': resolve('src'),
-      'assets': path.resolve(__dirname, '../src/assets'),
-    },
+      '@': resolve(config.path.src),
+      // '@lib': resolve(config.path.assets, 'js/lib.js'),
+      'assets': resolve(config.path.assets),
+    }
   },
+  plugins: [
+    // new webpack.LoaderOptionsPlugin({
+    //   debug: true
+    // }),
+
+    //进度条插件
+    new ProgressBarPlugin({
+      summary: false,
+      format: chalk.green.bold('[:bar] :percent ') + chalk.yellow('(:elapsed seconds) :msg'),
+      customSummary (buildTime) {
+        process.stdout.write(chalk.green.bold(" ---------buildTime:" + buildTime + "---------"));
+      },
+    }),
+
+    // https://github.com/RoccoC/webpack-build-notifier
+    new WebpackNotifierPlugin({
+      title: 'app',
+      logo: config.logo, // || resolve(config.path.assets, 'img/logo.png'),
+      successSound: 'Submarine',
+      failureSound: 'Glass',
+      suppressSuccess: true
+    }),
+    // 注入全局变量，用于条件判断
+    new webpack.DefinePlugin({
+      ...config.env,
+    }),
+    cHappypack('ESLint', [{
+      loader: 'eslint-loader',
+      query: {
+        formatter: require('eslint-friendly-formatter'),
+        // 不符合Eslint规则时只警告(默认运行出错)
+        emitWarning: !config.dev.showEslintErrorsInOverlay,
+      }
+    }]),
+    cHappypack('Js', ['babel-loader']),
+    // babili-webpack-plugin
+    // 全局加载引用，不必每次 import
+    // new webpack.ProvidePlugin({
+    //   $: 'jquery',
+    //   jQuery: 'jquery'
+    // })
+  ],
   module: {
     rules: [
-      ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: vueLoaderConfig
+        test: /\.(js|vue)$/,
+        // loader: 'eslint-loader',
+        use: ['happypack/loader?id=ESLint'],
+        enforce: 'pre',
+        exclude: /(libs|node_modules|vendor)/,
+        include: [
+          resolve(config.path.src),
+          resolve(config.path.test),
+        ],
+        // options: {
+        //   formatter: require('eslint-friendly-formatter')
+        // }
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
-        // exclude: /node_modules/,
+        // loader: 'babel-loader',
+        use: ['happypack/loader?id=Js'],
+        exclude: /(libs|node_modules|vendor)/,
         include: [
-          resolve('src'),
-          resolve('test'),
-	  resolve('node_modules/webpack-dev-server/client'),
+          resolve(config.path.src),
+          resolve(config.path.test),
+        ],
+      },
+      {
+        test: /\.vue$/,
+        use: {
+          loader: 'vue-loader',
+          query: vueLoaderConfig,
+        },
+        include: [
+          resolve(config.path.src),
         ],
       },
       {
@@ -88,7 +171,7 @@ module.exports = {
       {
         test: /\.svg$/i,
         loader: 'svg-sprite-loader',
-	include: [resolve('src/icons')],
+        include: [resolve('src/assets/svg')],
         // include: svgDirs,
         // include: [
         //   resolve('src/assets/svg'),
@@ -96,7 +179,7 @@ module.exports = {
         // ],
         options: {
           symbolId: 'icon-[name]',
-          runtimeCompat: true,
+          // runtimeCompat: true,
           // 不要提取成一个外部独立文件使用，这样与按需加载理念冲突
           // extract: true,
           // spriteFilename: 'svg-sprite.[hash:6].svg'
@@ -104,61 +187,76 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url-loader',
-        exclude: [resolve('src/icons')],
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
-        }
+        exclude: [resolve('src/assets/svg')],
+        // include: [
+        //   resolve(config.path.assets),
+        // ],
+        use: [
+          {
+            loader: 'url-loader',
+            query: {
+              limit: 10000,
+              name: assetsPath('img/[name].[hash:7].[ext]')
+            },
+          },
+          // {
+          //   loader: 'image-webpack-loader',
+          //   query: {
+          //     progressive: true,
+          //     pngquant: {
+          //       quality: '65-90',
+          //       speed: 4
+          //     }
+          //   },
+          // },
+        ],
       },
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('media/[name].[hash:7].[ext]')
+          name: assetsPath('media/[name].[hash:7].[ext]')
         }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+        use: {
+          loader: 'url-loader',
+          query: {
+            limit: 10000,
+            // publicPath: `../../`, // 修复引用文字字体路劲错误
+            name: assetsPath('fonts/[name].[hash:7].[ext]')
+          }
         }
-      }
+      },
     ]
   },
-  node: {
-    // prevent webpack from injecting useless setImmediate polyfill because Vue
-    // source contains it (although only uses it if it's native).
-    setImmediate: false,
-    // prevent webpack from injecting mocks to Node native modules
-    // that does not make sense for the client
-    dgram: 'empty',
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    child_process: 'empty'
-  },
-  plugins: [
-    //进度条插件
-    new ProgressBarPlugin({
-      summary: false,
-      format: chalk.green.bold('[:bar] :percent ') + chalk.yellow('(:elapsed seconds) :msg'),
-      customSummary (buildTime) {
-        process.stdout.write(chalk.green.bold(" ---------buildTime:" + buildTime + "---------"));
-      },
-    }),
-
-    // https://github.com/RoccoC/webpack-build-notifier
-    new WebpackNotifierPlugin({
-      title: 'app',
-      logo: config.logo || resolve('/static/img/logo.png'),
-      successSound: 'Submarine',
-      failureSound: 'Glass',
-      suppressSuccess: true
-    }),
-    ...config.plugins,
-  ],
+  // node: {
+  //   // prevent webpack from injecting useless setImmediate polyfill because Vue
+  //   // source contains it (although only uses it if it's native).
+  //   setImmediate: false,
+  //   // prevent webpack from injecting mocks to Node native modules
+  //   // that does not make sense for the client
+  //   dgram: 'empty',
+  //   fs: 'empty',
+  //   net: 'empty',
+  //   tls: 'empty',
+  //   child_process: 'empty'
+  // },
 }
+
+// 不是测试环境，则添加Dll依赖
+// if (process.env.BABEL_ENV !== 'test') {
+//   module.exports.plugins.push(
+//     new webpack.DllReferencePlugin({
+//       context: '/',
+//       manifest: require(resolve(config.path.distdll, `vendors.json`))
+//     }),
+//     new HtmlWebpackIncludeAssetsPlugin({
+//       assets: [`${config.path.distdll.replace(`${config.path.dist}/`, '')}/vendors.js`],
+//       append: false,
+//       hash: true
+//     })
+//   )
+// }

@@ -1,4 +1,4 @@
-import shop from '@/service/api'
+import api from '@/config/api'
 import * as types from '../types'
 
 // export const types = {
@@ -6,7 +6,7 @@ import * as types from '../types'
 
 // initial state
 // shape: [{ id, quantity }]
-const states = {
+const state = {
   added: [],
   checkoutStatus: null,
 }
@@ -21,7 +21,7 @@ const actions = {
   checkout ({ commit, state }, products) {
     const savedCartItems = [...state.added]
     commit(types.CHECKOUT_REQUEST)
-    shop.buyProducts(
+    api.buyProducts(
       products,
       () => commit(types.CHECKOUT_SUCCESS),
       () => commit(types.CHECKOUT_FAILURE, { savedCartItems })
@@ -62,7 +62,7 @@ const mutations = {
 }
 
 export default {
-  state: states,
+  state,
   getters,
   actions,
   mutations,

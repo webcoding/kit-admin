@@ -8,36 +8,31 @@ const config = require('../config')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+// const { SkeletonPlugin } = require('page-skeleton-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const portfinder = require('portfinder')
 
 // add hot-reload related code to entry chunks
-// Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-//   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
-// })
+Object.keys(baseWebpackConfig.entry).forEach(function (name) {
+  baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
+})
 
-function resolve (dir) {
-  return path.join(__dirname, '..', dir)
-}
-
-const HOST = process.env.HOST
-const PORT = process.env.PORT && Number(process.env.PORT)
-
-const devWebpackConfig = merge(baseWebpackConfig, {
+module.exports = merge(baseWebpackConfig, {
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true }),
+    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap }),
   },
   // cheap-module-eval-source-map is faster for development
   devtool: config.dev.devtool,
 
   // these devServer options should be customized in /config/index.js
   devServer: {
+    // contentBase: 'v2',
     clientLogLevel: 'warning',
     historyApiFallback: true,
     hot: true,
+    inline: true,
     compress: true,
-    host: HOST || config.dev.host,
-    port: PORT || config.dev.port,
+    host: config.dev.host,
+    port: config.dev.port,
     open: config.dev.autoOpenBrowser,
     overlay: config.dev.errorOverlay
       ? { warnings: false, errors: true }
@@ -45,10 +40,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     publicPath: config.dev.assetsPublicPath,
     proxy: config.dev.proxyTable,
     quiet: true, // necessary for FriendlyErrorsPlugin
+    // headers: { "X-Custom-Header": "yes" },
     watchOptions: {
       poll: config.dev.poll,
-    }
+    },
+    // disableHostCheck: true,
+    // public: '192.168.1.107'
   },
+
   plugins: [
     // 注入变量 base 中统一处理 webpack.DefinePlugin
     // new webpack.DefinePlugin({
@@ -64,37 +63,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       template: config.template,
       inject: true,
       favicon: config.favicon,
-      title: 'kit-admin',
+      title: 'jskit',
       serviceWorkerLoader: `<script>${fs.readFileSync(path.join(__dirname,
         './service-worker-dev.js'), 'utf-8')}</script>`
     }),
+    // new SkeletonPlugin({
+    //   // 生成名为 shell.html 文件存放地址
+    //   pathname: path.resolve(__dirname, `../src`)
+    // }),
     new FriendlyErrorsPlugin(),
   ]
 })
-
-module.exports = devWebpackConfig
-// module.exports = new Promise((resolve, reject) => {
-//   portfinder.basePort = process.env.PORT || config.dev.port
-//   portfinder.getPort((err, port) => {
-//     if (err) {
-//       reject(err)
-//     } else {
-//       // publish the new Port, necessary for e2e tests
-//       process.env.PORT = port
-//       // add port to devServer config
-//       devWebpackConfig.devServer.port = port
-
-//       // Add FriendlyErrorsPlugin
-//       devWebpackConfig.plugins.push(new FriendlyErrorsPlugin({
-//         compilationSuccessInfo: {
-//           messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
-//         },
-//         onErrors: config.dev.notifyOnErrors
-//         ? utils.createNotifierCallback()
-//         : undefined
-//       }))
-
-//       resolve(devWebpackConfig)
-//     }
-//   })
-// })

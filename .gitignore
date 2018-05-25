@@ -64,11 +64,18 @@ typings/
 *.njsproj
 *.sln
 
+.DS_Store
+.happypack
+yarn.lock
+package-lock.json
+*private*
+
+.tea
 temp/
 dist/
-docs/
-test/
 
-/test/unit/coverage
-test/e2e/reports/
+test/unit/coverage
+test/e2e/reports
 selenium-debug.log
+lib/*
+

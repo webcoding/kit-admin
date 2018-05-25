@@ -1,7 +1,9 @@
 'use strict'
 
 const path = require('path')
+const glob = require('glob')
 const config = require('../config')
+const HappyPack = require('happypack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const isProduction = config.env['__PROD__']
@@ -23,7 +25,7 @@ exports.cssLoaders = function (options) {
       sourceMap: options.sourceMap
     }
   }
-  
+
   const postcssLoader = {
     loader: 'postcss-loader',
     options: {
@@ -33,8 +35,8 @@ exports.cssLoaders = function (options) {
 
   // generate loader string to be used with extract text plugin
   function generateLoaders (loader, loaderOptions) {
-    const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
-    
+    const loaders = [cssLoader]
+
     if (loader) {
       loaders.push({
         loader: loader + '-loader',
@@ -69,6 +71,7 @@ exports.cssLoaders = function (options) {
 }
 
 // Generate loaders for standalone style files (outside of .vue)
+// 生成css-loader的装载机
 exports.styleLoaders = function (options) {
   const output = []
   const loaders = exports.cssLoaders(options)
@@ -84,20 +87,47 @@ exports.styleLoaders = function (options) {
   return output
 }
 
-exports.createNotifierCallback = () => {
-  const notifier = require('node-notifier')
-
-  return (severity, errors) => {
-    if (severity !== 'error') return
-
-    const error = errors[0]
-    const filename = error.file && error.file.split('!').pop()
-
-    notifier.notify({
-      title: packageConfig.name,
-      message: severity + ': ' + error.name,
-      subtitle: filename || '',
-      icon: path.join(__dirname, 'logo.png')
-    })
-  }
+// Happypack生成器
+exports.cHappypack = (id, loaders) => {
+  return new HappyPack({
+    id: id,
+    debug: false,
+    verbose: false,
+    threads: 4,
+    loaders: loaders
+  })
 }
+
+// 绝对路径生成器
+exports.resolve = (localPath, dir = '') => {
+  return path.join(process.cwd(), localPath, dir)
+}
+
+// 分离多页
+exports.getEntries = (globPath) => {
+  const entries = {}
+  glob.sync(globPath).forEach((entry) => {
+    // 过滤router.js
+    const basename = path.basename(entry, path.extname(entry), 'router.js')
+    entries[basename] = entry
+  })
+  return entries
+}
+
+// exports.createNotifierCallback = () => {
+//   const notifier = require('node-notifier')
+
+//   return (severity, errors) => {
+//     if (severity !== 'error') return
+
+//     const error = errors[0]
+//     const filename = error.file && error.file.split('!').pop()
+
+//     notifier.notify({
+//       title: packageConfig.name,
+//       message: severity + ': ' + error.name,
+//       subtitle: filename || '',
+//       icon: path.join(__dirname, 'logo.png')
+//     })
+//   }
+// }

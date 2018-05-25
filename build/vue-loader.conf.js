@@ -11,12 +11,13 @@ const sourceMapEnabled = isProduction
 module.exports = {
   loaders: utils.cssLoaders({
     sourceMap: sourceMapEnabled,
+    // 提取样式
     extract: isProduction
   }),
   cssSourceMap: sourceMapEnabled,
   cacheBusting: config.dev.cacheBusting,
   transformToRequire: {
-    video: ['src', 'poster'],
+    video: 'src', // ['src', 'poster'],
     source: 'src',
     img: 'src',
     image: 'xlink:href'

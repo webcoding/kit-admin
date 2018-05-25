@@ -1,11 +1,11 @@
-import shop from '@/service/api'
+import api from '@/config/api'
 import * as types from '../types'
 
 // export const types = {
 // }
 
 // initial state
-const states = {
+const state = {
   all: [],
 }
 
@@ -17,7 +17,7 @@ const getters = {
 // actions
 const actions = {
   getAllProducts ({ commit }) {
-    shop.getProducts((products) => {
+    api.getProducts((products) => {
       commit(types.RECEIVE_PRODUCTS, { products })
     })
   },
@@ -35,7 +35,7 @@ const mutations = {
 }
 
 export default {
-  state: states,
+  state,
   getters,
   actions,
   mutations,
