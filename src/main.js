@@ -18,9 +18,10 @@ import '@/config/js-report'
 // import jsReport from '@/config/js-report'
 import mini from '@/utils/mini'
 import { loadJs } from '@/utils/dLoad'
+// import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
 // 外部样式在前面引入，我们的样式在App.vue 中后引入
-// import './style/index.styl'
+// import '@/style/index.styl'
 import App from './App'
 import router from './router'
 import store from './store'
