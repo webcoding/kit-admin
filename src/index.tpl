@@ -12,7 +12,7 @@
 <!--[if IE]><link rel="shortcut icon" href="/static/img/icons/favicon.ico"><![endif]-->
 <!-- Add to home screen for Android and modern mobile browsers -->
 <!-- <link rel="manifest" href="<%= htmlWebpackPlugin.files.publicPath %>static/manifest.json"> -->
-<link rel="manifest" href="/v2/static/manifest.json">
+<link rel="manifest" href="/static/manifest.json">
 <meta name="theme-color" content="#4DBA87">
 
 <!-- Add to home screen for Safari on iOS -->
@@ -68,22 +68,22 @@
   }
 
   // baidu
-  window._hmt = window._hmt || [];
-  _hmt.push(['_setAutoPageview', false]);
-  loadJS('https://hm.baidu.com/hm.js?498ed47e9a8bacaea9f8ec61836110b7');
+  // window._hmt = window._hmt || [];
+  // _hmt.push(['_setAutoPageview', false]);
+  // loadJS('https://hm.baidu.com/hm.js?498ed47e9a8bacaea9f8ec61836110b7');
 
   // pwiki
-  window._paq = window._paq || [];
-  _paq.push(["setCookieDomain", "*.haoshiqi.net"]);
-  _paq.push(['enableLinkTracking']);
-  _paq.push(['setTrackerUrl', 'https://tongji.haoshiqi.net/piwik.php']);
-  _paq.push(['setSiteId', '1']);
-  loadJS('https://img1.haoshiqi.net/piwik.js');
+  // window._paq = window._paq || [];
+  // _paq.push(["setCookieDomain", "*.haoshiqi.net"]);
+  // _paq.push(['enableLinkTracking']);
+  // _paq.push(['setTrackerUrl', 'https://tongji.haoshiqi.net/piwik.php']);
+  // _paq.push(['setSiteId', '1']);
+  // loadJS('https://img1.haoshiqi.net/piwik.js');
 
   // cnzz
-  window._czc = window._czc || [];
-  _czc.push(["_setAutoPageview", false]);
-  loadJS('https://s13.cnzz.com/z_stat.php?id=1263211505');
+  // window._czc = window._czc || [];
+  // _czc.push(["_setAutoPageview", false]);
+  // loadJS('https://s13.cnzz.com/z_stat.php?id=1263211505');
 }();
 </script>
 </body>

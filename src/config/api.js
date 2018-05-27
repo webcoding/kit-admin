@@ -9,7 +9,9 @@ let apiBaseUrl
 apiBaseUrl = `${env.apiBaseUrl}`
 
 const regHttp = /^https?/i
-const regMock = /^mock?/i
+
+const isMock = true;
+// const regMock = /^mock?/i
 
 function compact(obj) {
   for (const key in obj) {
@@ -39,82 +41,21 @@ const modelApis = {
   test: 'https://easy-mock.com/mock/5aa79bf26701e17a67bde1d7/',
   getConfig: '/common/initconfig',
   getWxSign: '/common/getwxsign',
-  // 积分兑换
-  getPointIndex: '/point/index',
-  getPointList: '/point/skulist',
-  getPointDetail: '/point/iteminfo',
-  getPointDetaiMore: '/product/productdetail',
-  getRList: '/point/recommenditems',
-  // 专题
-  getPointTopicInfo: '/point/topicinfo',
-  getPointTopicList: '/point/topicbuskulist',
-  // 主站专题
-  getTopicInfo: '/product/topicskusinfo',
-  getTopicList: '/product/topicskulist',
-  // 个人中心
-  getProfile: '/user/usercenter',
-  // 拼团相关
-  getCoupleList: '/product/coupleskulist',
-  getCoupleDetail: '/product/coupleskudetail',
-  getMerchantList: '/merchant/coupleskulist',
-  coupleOrderInit: 'POST /order/coupleorderinit',
-  coupleOrderList: '/user/usercouplelist',
-  coupleOrderDetail: '/user/usercoupleorderdetail',
-  coupleUserList: '/market/pinactivitiesuserlist', // 分享页拼团头像列表
-  coupleShareDetail: '/user/coupleactivitiedetail', // 分享详情
 
-  // 首页
-  getIndex: '/common/index',
-  getIndexNew: '/common/index_v1',
-  getHotSearch: '/common/hotsearchsug',
-
-  // 主流程
-  orderInit: 'POST /order/orderinit',
-  orderSubmit: 'POST /order/submitorder',
-  orderPay: 'POST /order/orderpay',
-  orderPayConfirm: '/order/orderpayconfirm', // 确认支付状态
-  getUserOrders: '/order/getuserorders', // 订单列表
-  getNeedCommentOrders: '/order/waitcommentlist', // 待评论
-  getUserRefundorders: '/order/userrefundorder', // 退款
-  getUserServiceOrders: '/order/userserviceorders', // 售后
-  orderCancel: 'POST /order/cancelorder', // 取消订单
-  orderDetail: '/order/orderdetail',
-  confirmReceived: 'POST /order/userorderconfirm', // 确认收货
-  orderComplaint: 'POST /refund/complaint', // 订单申诉
-  // 积分订单相关
-  pointOrderInit: 'POST /tradecenter/pointorderpreview',
-  pointOrderSubmit: 'POST /tradecenter/pointordersubmit',
-  pointOrderCancel: 'POST /tradecenter/ordercancel',
-  pointOrderList: '/tradecenter/orderlist',
-  pointOrderDetail: '/tradecenter/orderinfo',
-  pointOrderSuccess: '/tradecenter/ordersuccess',
-
-  // 退款相关
-  refundInit: '/refund/init',
-  refundDetail: '/refund/detail',
-  refundApply: 'POST /refund/apply',
-  // 登录注销
-  login: 'POST /user/login',
-  logout: 'POST /user/logout',
-  // 地址管理
-  addressList: '/user/addresslist',
-  addAddress: 'POST /user/addaddress',
-  updateAddress: 'POST /user/updateaddress',
-  setDefaultAddress: 'POST /user/setdefaultaddress',
-  deleteAddress: 'POST /user/deleteaddress',
-  provinceList: '/nation/provincelist',
-  cityList: '/nation/citylist',
-  districtList: '/nation/districtlist',
-  // 查看物流
-  getDelivery: '/order/deliverymessage',
   // 获取七牛 token
   getQiniuToken: '/common/qiniutoken',
+
+  login: 'POST /user/login',
+  logout: 'POST /user/logout',
+  getInfo: '/user/info',
+  getTableList: '/table/list',
 }
 
 // 仅限本地调试支持
-if (__DEV__ && env.mock) {
-  apiBaseUrl = `${env.apiBaseUrl}`
-  Object.assign(modelApis, require('./mock'))
+// if (__DEV__ && env.mock) {
+if (__DEV__ && isMock) {
+  apiBaseUrl = `${env.apiMockUrl}`
+  // Object.assign(modelApis, require('../mock'))
 }
 
 // 线上代理
@@ -134,7 +75,6 @@ const commonParams = {
   udid: '', // 设备唯一标志
   device: '', // 设备
   net: '', // 网络
-  uid: '',
   token: '',
   timestamp: '', // 时间
   channel: 'h5', // 渠道
@@ -155,14 +95,14 @@ const apiList = Object.keys(modelApis).reduce((api, key) => {
   const method = methodType.toUpperCase()
   // let originUrl = regHttp.test(url) ? url : `${env.apiBaseUrl}${url}`;
   // NOTE: headers 在此处设置？
-  if (__DEV__ && regMock.test(url)) {
-    api[key] = function postRequest(params, success, fail) {
-      const res = require(`../${url}.json`)
-      mini.hideLoading()
-      res.errno === 0 ? success(res) : fail(res)
-    }
-    return api
-  }
+  // if (__DEV__ && regLocalMock.test(url)) {
+  //   api[key] = function postRequest(params, success, fail) {
+  //     const res = require(`../${url}.json`)
+  //     mini.hideLoading()
+  //     res.errno === 0 ? success(res) : fail(res)
+  //   }
+  //   return api
+  // }
   switch (method) {
     case 'POST':
       // originUrl = `${originUrl}`;
@@ -191,12 +131,14 @@ const apiList = Object.keys(modelApis).reduce((api, key) => {
   return api
 }, {})
 
-export function setCommonParams(params) {
+function setCommonParams(params) {
   return Object.assign(commonParams, params)
 }
 
-export function getCommonParams(key) {
-  return key ? commonParams[key] : { ...commonParams }
+function getCommonParams(key) {
+  return key ? commonParams[key] : {
+    // ...commonParams,
+  }
 }
 
 apiList.getCommonParams = getCommonParams

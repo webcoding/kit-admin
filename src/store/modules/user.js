@@ -1,68 +1,104 @@
 import api from '@/config/api'
-import cookie from '../cookie'
-import storage from '../storage'
+import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
   state: {
-    token: cookie.getToken(),
-    userInfo: storage.get('user_info'),
+    token: getToken(),
+    name: '',
+    avatar: '',
+    roles: [],
   },
 
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_USERINFO: (state, data) => {
-      state.userInfo = data
-    }
+    SET_NAME: (state, name) => {
+      state.name = name
+    },
+    SET_AVATAR: (state, avatar) => {
+      state.avatar = avatar
+    },
+    SET_ROLES: (state, roles) => {
+      state.roles = roles
+    },
   },
 
   actions: {
     // 登录
     Login({ commit }, userInfo) {
-      const mobile = userInfo.mobile.trim();
+      const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         api.login({
-          mobile,
+          username,
           password: userInfo.password,
-          login_type: userInfo.loginType,
-        }).then((res) => {
+        }, (res) => {
+          const { data } = res;
+          setToken(data.token);
+          commit('SET_TOKEN', data.token);
+          resolve();
+        }, (err) => {
+          reject(err);
+        })
+        // login(username, userInfo.password).then((response) => {
+        //   const { data } = response
+        //   setToken(data.token)
+        //   commit('SET_TOKEN', data.token)
+        //   resolve()
+        // }).catch((error) => {
+        //   reject(error)
+        // })
+      })
+    },
+
+    // 获取用户信息
+    GetInfo({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        api.getInfo({
+          token: state.token,
+        }, (res) => {
           const { data } = res
-          const userInfo2 = {
-            admin_type: data.admin_type,
-            id: data.id,
-            merchant_id: data.merchant_id,
-            mobile: data.mobile,
-            name: data.name,
-            role_group: data.role_group,
-            role_ids: data.role_ids,
-            status: data.status
+          // 验证返回的roles是否是一个非空数组
+          if (data.roles && data.roles.length > 0) {
+            commit('SET_ROLES', data.roles)
+          } else {
+            /* eslint prefer-promise-reject-errors: 0 */
+            reject('getInfo: roles must be a non-null array !')
           }
-          cookie.setToken(data.token)
-          // auth.setMenu(data.menu_list)
-          storage.set('menu', data.menu_list)
-          // auth.setUser(userInfo2)
-          storage.set('user_info', userInfo2)
-          commit('SET_TOKEN', data.token)
-          commit('SET_USERINFO', userInfo2)
-          resolve()
-        }).catch((error) => {
-          reject(error)
+          commit('SET_NAME', data.name)
+          commit('SET_AVATAR', data.avatar)
+          resolve(res)
+        }, (err) => {
+          reject(err)
         })
       })
     },
+
+    // 登出
+    LogOut({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        api.logout({
+          token: state.token,
+        }, (res) => {
+          commit('SET_TOKEN', '')
+          commit('SET_ROLES', [])
+          removeToken()
+          resolve()
+        }, (err) => {
+          reject(err)
+        })
+      })
+    },
+
     // 前端 登出
     FedLogOut({ commit }) {
       return new Promise((resolve) => {
         commit('SET_TOKEN', '')
-        commit('SET_USERINFO', '')
-        cookie.removeToken()
-        storage.remove('menu')
-        storage.remove('user_info')
+        removeToken()
         resolve()
       })
-    }
-  }
+    },
+  },
 }
 
 export default user

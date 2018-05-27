@@ -1,5 +1,5 @@
 
-import cookie from '@/store/cookie'
+import auth from '@/utils/auth'
 import env from '@/config/env'
 import device from '@/utils/device'
 import baidu from './baidu'
@@ -23,7 +23,7 @@ const tongji = {
     baidu.pv(page)
     piwik.pv(page)
     cnzz.pv(page)
-    const logged = cookie.getToken() ? 'logged_yes' : 'logged_no'
+    const logged = auth.getToken() ? 'logged_yes' : 'logged_no'
 
     baidu.cv(1, 'page', page, 3);
     baidu.cv(2, 'logged', logged, 2);

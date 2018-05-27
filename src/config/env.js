@@ -79,6 +79,7 @@ const baseEnv = {
   base: 'v2',
   baseUrl: 'https://m.haoshiqi.net',
   apiBaseUrl: 'https://m.api.haoshiqi.net',
+  apiMockUrl: 'https://easy-mock.com/mock/5950a2419adc231f356a6636/vue-admin',
   routerMode: 'history',
   // googleAnalyticsId: 'UA-XXXXX-X',
   // baiduAnalyticsId: 'UA-XXXXX-X',

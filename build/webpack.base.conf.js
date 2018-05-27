@@ -64,7 +64,7 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json', '.css', '.md'],
+    extensions: ['.js', '.vue', '.json', '.css', '.styl', '.md'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve(config.path.src),
@@ -171,7 +171,7 @@ module.exports = {
       {
         test: /\.svg$/i,
         loader: 'svg-sprite-loader',
-        include: [resolve('src/assets/svg')],
+        include: [resolve('src/icons')],
         // include: svgDirs,
         // include: [
         //   resolve('src/assets/svg'),
@@ -187,7 +187,7 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        exclude: [resolve('src/assets/svg')],
+        exclude: [resolve('src/icons')],
         // include: [
         //   resolve(config.path.assets),
         // ],

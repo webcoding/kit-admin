@@ -1,56 +1,42 @@
-// import device from '@/utils/device'
-import api from '@/config/api'
-import storage from '../storage'
-
-export const INIT_CONFIG = 'INIT_CONFIG'
-export const SELECT_CITY = 'SELECT_CITY'
-// export const GET_PROVINCE = 'GET_PROVINCE'
-
-const defaultCity = {
-  id: 857,
-  province: '上海',
-}
+import Cookies from 'js-cookie'
 
 const app = {
   state: {
-    config: {},
-    province: [],
-    selectCity: { ...defaultCity },
-  },
-  // 更改 Vuex 的 store 中的状态的唯一方法是提交 mutation
-  mutations: {
-    [INIT_CONFIG](state, data = {}) {
-      state.config = data
-      storage.set('config', data)
+    sidebar: {
+      opened: !+Cookies.get('sidebarStatus'),
+      withoutAnimation: false,
     },
-    // [GET_PROVINCE](state, data = []) {
-    //   state.provice = data
-    //   storage.set('provice', data)
-    // },
-    [SELECT_CITY](state, data = []) {
-      state.selectCity = data
-      storage.set('selectCity', data)
+    device: 'desktop',
+  },
+  mutations: {
+    TOGGLE_SIDEBAR: (state) => {
+      if (state.sidebar.opened) {
+        Cookies.set('sidebarStatus', 1)
+      } else {
+        Cookies.set('sidebarStatus', 0)
+      }
+      state.sidebar.opened = !state.sidebar.opened
+      state.sidebar.withoutAnimation = false
+    },
+    CLOSE_SIDEBAR: (state, withoutAnimation) => {
+      Cookies.set('sidebarStatus', 1)
+      state.sidebar.opened = false
+      state.sidebar.withoutAnimation = withoutAnimation
+    },
+    TOGGLE_DEVICE: (state, device) => {
+      state.device = device
     },
   },
   actions: {
-    [INIT_CONFIG]({ commit }) {
-      api.getConfig({}, (res) => {
-        commit(INIT_CONFIG, res.data)
-      }, (err) => {
-        // commit(INIT_CONFIG)
-      })
+    ToggleSideBar: ({ commit }) => {
+      commit('TOGGLE_SIDEBAR')
     },
-    [SELECT_CITY]({ commit, data = { } }) {
-      commit(SELECT_CITY, data)
+    CloseSideBar({ commit }, { withoutAnimation }) {
+      commit('CLOSE_SIDEBAR', withoutAnimation)
     },
-    // [GET_PROVINCE]({ commit }) {
-    //   api.provinceList({}, (res) => {
-    //     const { list = [] } = res.data
-    //     commit(GET_PROVINCE, list)
-    //   }, (err) => {
-    //     // commit(INIT_CONFIG)
-    //   })
-    // },
+    ToggleDevice({ commit }, device) {
+      commit('TOGGLE_DEVICE', device)
+    },
   },
 }
 
