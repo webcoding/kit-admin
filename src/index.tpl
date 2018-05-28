@@ -49,7 +49,7 @@
 <noscript>
   This is your fallback content in case JavaScript fails to load.
 </noscript>
-<div id="root">
+<div id="app">
   <!-- shell -->
 </div>
 <!-- Todo: only include in production -->

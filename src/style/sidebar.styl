@@ -1,4 +1,4 @@
-#root {
+#app {
   // 主体区域
   .main-container {
     min-height: 100%;
@@ -46,14 +46,18 @@
   }
   .hideSidebar {
     .sidebar-container {
-      width: 36px !important;
+      width: 64px !important;
     }
     .main-container {
-      margin-left: 36px;
+      margin-left: 64px;
     }
     .submenu-title-noDropdown {
-      padding-left: 10px !important;
+      padding-left: 20px !important;
+      text-align: center;
       position: relative;
+      .svg-icon {
+        margin-right: 0;
+      }
       .el-tooltip {
         padding: 0 10px !important;
       }
@@ -61,8 +65,9 @@
     .el-submenu {
       overflow: hidden;
       &>.el-submenu__title {
-        padding-left: 10px !important;
-        .el-submenu__icon-arrow {
+        padding-left: 20px !important;
+        text-align: center;
+        &>.el-submenu__icon-arrow {
           display: none;
         }
       }
@@ -70,6 +75,11 @@
     .el-menu--collapse {
       .el-submenu {
         &>.el-submenu__title {
+          // padding-left: 20px !important;
+          // text-align: center;
+          &>.svg-icon {
+            margin-right: 0;
+          }
           &>span {
             height: 0;
             width: 0;
