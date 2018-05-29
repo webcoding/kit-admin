@@ -68,8 +68,8 @@
 </template>
 
 <script>
-import { ajax } from '@/utils/request';
-import base64 from '@/utils/base64';
+// import { ajax } from '@/utils/request';
+// import base64 from '@/utils/base64';
 
 function stringify(params = {}) {
   if (typeof params === 'string') return params;
@@ -166,12 +166,12 @@ export default {
           if (['couple', 'point'].indexOf(dist) > -1) {
             this.tip = '模板消息，跳转到对应小程序，渠道待验证';
             params = params ? `${params}${channelParams}` :
-                    channelParams ? `?${channelParams}` : `${channelParams}`;
+              channelParams ? `?${channelParams}` : `${channelParams}`;
             return `${getPage(page)}${params}`;
           }
           break;
         case 'couple':
-        case 'point':
+        case 'point': {
           if (dist === 'life') {
             this.tip = '小程序不支持向外跳转！！！';
             return '';
@@ -195,6 +195,7 @@ export default {
           }
           result = `${getMiniSchema(page, dist)}${channel}${tempParams}`
           break;
+        }
         case 'message': {
           this.tip = '短信内限制必须使用http协议';
           // if (dist === 'life') {
@@ -231,7 +232,7 @@ export default {
         });
         return;
       }
-
+      console.log('shortUrl');
       // this.shortUrl = '请打开链接自己生成';
       // 都存在跨域问题，无法直接调用生成结果
       // http://dwz.wailian.work/

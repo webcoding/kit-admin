@@ -3,8 +3,8 @@
 
 export default {
   getIndexNew: 'mock/index1',
-  login: 'mock/login',
+  loginByUsername: 'mock/login',
   logout: 'mock/logout',
-  getInfo: 'mock/userInfo',
+  getUserInfo: 'mock/userInfo',
   getTableList: 'mock/tableList',
 }

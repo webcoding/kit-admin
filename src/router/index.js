@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+/* eslint no-underscore-dangle: 0 */
+const _import = require('./_import_' + process.env.NODE_ENV)
+
 // in development-env not use lazy-loading,
 // because lazy-loading too many pages will cause webpack hot update too slow. so only in production use lazy-loading;
 // detail: https://panjiachen.github.io/vue-element-admin-site/#/lazy-loading
@@ -10,6 +13,10 @@ Vue.use(Router)
 /* Layout */
 import Layout from '../views/layout/Layout'
 
+/** note: submenu only apppear when children.length>=1
+*   detail see  https://panjiachen.github.io/vue-element-admin-site/#/router-and-nav?id=sidebar
+* */
+
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
 * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
@@ -18,57 +25,171 @@ import Layout from '../views/layout/Layout'
 * redirect: noredirect           if `redirect:noredirect` will no redirct in the breadcrumb
 * name:'router-name'             the name is used by <keep-alive> (must set!!!)
 * meta : {
+    roles: ['admin','editor']     will control the page roles (you can set multiple roles)
     title: 'title'               the name show in submenu and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar,
+    noCache: true                if true ,the page will no be cached(default is false)
   }
 * */
 export const constantRouterMap = [
-  { path: '/login', component: () => import('@/views/login/index'), hidden: true },
-  { path: '/404', component: () => import('@/views/404'), hidden: true },
-
   {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    name: 'Dashboard',
+    path: '/login',
+    component: _import('login/index'),
     hidden: true,
+  },
+  {
+    path: '/authredirect',
+    component: _import('login/authredirect'),
+    hidden: true,
+  },
+  {
+    path: '/404',
+    component: _import('errorPage/404'),
+    hidden: true,
+  },
+  {
+    path: '/401',
+    component: _import('errorPage/401'),
+    hidden: true,
+  },
+  {
+    path: '',
+    component: Layout,
+    redirect: 'dashboard',
     children: [{
       path: 'dashboard',
-      component: () => import('@/views/dashboard/index'),
+      component: _import('dashboard/index'),
+      name: 'dashboard',
+      meta: { title: 'dashboard', icon: 'dashboard', noCache: true },
     }],
   },
 
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: '/example/table/complex-table',
+  //   name: 'example',
+  //   meta: {
+  //     title: 'example',
+  //     icon: 'example',
+  //   },
+  //   children: [
+  //     {
+  //       path: '/example/table',
+  //       component: _import('example/table/index'),
+  //       redirect: '/example/table/complex-table',
+  //       name: 'Table',
+  //       meta: {
+  //         title: 'Table',
+  //         icon: 'table',
+  //       },
+  //       children: [
+  //         {
+  //           path: 'dynamic-table',
+  //           component: _import('example/table/dynamicTable/index'),
+  //           name: 'dynamicTable',
+  //           meta: { title: 'dynamicTable' },
+  //         },
+  //         {
+  //           path: 'drag-table',
+  //           component: _import('example/table/dragTable'),
+  //           name: 'dragTable',
+  //           meta: { title: 'dragTable' },
+  //         },
+  //         {
+  //           path: 'inline-edit-table',
+  //           component: _import('example/table/inlineEditTable'),
+  //           name: 'inlineEditTable',
+  //           meta: { title: 'inlineEditTable' },
+  //         },
+  //         {
+  //           path: 'tree-table',
+  //           component: _import('example/table/treeTable/treeTable'),
+  //           name: 'treeTableDemo',
+  //           meta: { title: 'treeTable' },
+  //         },
+  //         {
+  //           path: 'custom-tree-table',
+  //           component: _import('example/table/treeTable/customTreeTable'),
+  //           name: 'customTreeTableDemo',
+  //           meta: { title: 'customTreeTable' },
+  //         },
+  //         {
+  //           path: 'complex-table',
+  //           component: _import('example/table/complexTable'),
+  //           name: 'complexTable',
+  //           meta: { title: 'complexTable' },
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       path: 'tab/index',
+  //       icon: 'tab',
+  //       component: _import('example/tab/index'),
+  //       name: 'tab',
+  //       meta: { title: 'tab' },
+  //     },
+  //   ],
+  // },
+
   {
-    path: '/example',
+    path: '/form',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    redirect: 'noredirect',
+    name: 'form',
+    meta: {
+      title: 'form',
+      icon: 'form',
+    },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' },
+        path: 'create-form',
+        component: _import('form/create'),
+        name: 'createForm',
+        meta: {
+          title: 'createForm',
+          icon: 'table',
+        },
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' },
+        path: 'edit-form',
+        component: _import('form/edit'),
+        name: 'editForm',
+        meta: {
+          title: 'editForm',
+          icon: 'table',
+        },
       },
     ],
   },
 
   {
-    path: '/form',
+    path: '/error',
     component: Layout,
+    redirect: 'noredirect',
+    name: 'errorPages',
+    meta: {
+      title: 'errorPages',
+      icon: '404',
+    },
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' },
+        path: '401',
+        component: _import('errorPage/401'),
+        name: 'page401',
+        meta: {
+          title: 'page401',
+          noCache: true,
+        },
+      },
+      {
+        path: '404',
+        component: _import('errorPage/404'),
+        name: 'page404',
+        meta: {
+          title: 'page404',
+          noCache: true,
+        },
       },
     ],
   },
@@ -77,13 +198,19 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/tools/link',
     name: 'tools',
-    meta: { title: '工具', icon: 'example' },
+    meta: {
+      title: '工具',
+      icon: 'example',
+    },
     children: [
       {
         path: 'link',
         name: 'Link',
         component: () => import('@/views/tools/link'),
-        meta: { title: '链接生成工具', icon: 'form' },
+        meta: {
+          title: '链接生成工具',
+          icon: 'form',
+        },
       },
       // {
       //   path: 'link',

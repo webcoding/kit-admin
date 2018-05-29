@@ -45,9 +45,9 @@ const modelApis = {
   // 获取七牛 token
   getQiniuToken: '/common/qiniutoken',
 
-  login: 'POST /user/login',
+  loginByUsername: 'POST /user/login',
   logout: 'POST /user/logout',
-  getInfo: '/user/info',
+  getUserInfo: '/user/info',
   getTableList: '/table/list',
 }
 
