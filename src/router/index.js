@@ -72,6 +72,27 @@ export const constantRouterMap = [
       },
     ],
   },
+  {
+    path: '/tools',
+    component: Layout,
+    redirect: '/tools/link',
+    name: 'tools',
+    meta: { title: '工具', icon: 'example' },
+    children: [
+      {
+        path: 'link',
+        name: 'Link',
+        component: () => import('@/views/tools/link'),
+        meta: { title: '链接生成工具', icon: 'form' },
+      },
+      // {
+      //   path: 'link',
+      //   name: 'Link',
+      //   component: () => import('@/views/tools/link'),
+      //   meta: { title: '链接生成工具', icon: 'form' },
+      // },
+    ],
+  },
 
   { path: '*', redirect: '/404', hidden: true },
 ]

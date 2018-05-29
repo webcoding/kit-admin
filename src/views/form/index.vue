@@ -77,7 +77,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
 .line{
   text-align: center;
 }
