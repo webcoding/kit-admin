@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch('ToggleSideBar');
+      this.$store.dispatch('toggleSideBar');
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
@@ -99,6 +99,8 @@ export default {
     vertical-align: top;
   }
   .right-menu {
+    display: flex;
+    align-items: center;
     float: right;
     height: 100%;
     &:focus{
@@ -122,7 +124,7 @@ export default {
       margin-right: 30px;
       .avatar-wrapper {
         cursor: pointer;
-        margin-top: 5px;
+        // margin-top: 5px;
         position: relative;
         .user-avatar {
           width: 40px;
@@ -132,7 +134,7 @@ export default {
         .el-icon-caret-bottom {
           position: absolute;
           right: -20px;
-          top: 25px;
+          top: 20px;
           font-size: 12px;
         }
       }

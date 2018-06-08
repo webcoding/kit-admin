@@ -1,4 +1,4 @@
-import api from '@/config/api'
+import { loginByUsername, logout, getUserInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -48,15 +48,15 @@ const user = {
     LoginByUsername({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        api.loginByUsername({
+        loginByUsername({
           username,
           password: userInfo.password,
-        }, (res) => {
+        }).then((res) => {
           const { data } = res;
           commit('SET_TOKEN', data.token);
           setToken(data.token);
           resolve();
-        }, (err) => {
+        }).catch((err) => {
           reject(err);
         })
         // login(username, userInfo.password).then((response) => {
@@ -73,9 +73,9 @@ const user = {
     // 获取用户信息
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        api.getUserInfo({
+        getUserInfo({
           token: state.token,
-        }, (res) => {
+        }).then((res) => {
           const { data } = res
           // 由于mockjs 不支持自定义状态码只能这样hack
           if (!data) {
@@ -92,7 +92,7 @@ const user = {
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)
           resolve(res)
-        }, (err) => {
+        }).catch((err) => {
           reject(err)
         })
       })
@@ -101,7 +101,7 @@ const user = {
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        api.logout({
+        logout({
           token: state.token,
         }, (res) => {
           commit('SET_TOKEN', '')
@@ -128,7 +128,7 @@ const user = {
       return new Promise((resolve) => {
         commit('SET_TOKEN', role)
         setToken(role)
-        api.getUserInfo({ role }).then((res) => {
+        getUserInfo({ role }).then((res) => {
           const { data } = res
           commit('SET_ROLES', data.roles)
           commit('SET_NAME', data.name)

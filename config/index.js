@@ -34,6 +34,10 @@ for (const key in constMaps) {
   // }
 }
 
+// cross-env NODE_ENV=development env_config=dev
+// cross-env NODE_ENV=production env_config=prod
+// const envConfig = require(`./config/${process.env.env_config}.env`)
+
 // 这里还有些好点的东西，使用下
 // https://github.com/kenberkeley/vue2-scaffold
 // https://github.com/sayll/vue-start/tree/master
@@ -141,6 +145,10 @@ module.exports = {
     notifyOnErrors: false,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
+    // Use Eslint Loader?
+    // If true, your code will be linted during bundling and
+    // linting errors and warnings will be shown in the console.
+    useEslint: true,
     // If true, eslint errors and warnings will also be shown in the error overlay
     // in the browser.
     showEslintErrorsInOverlay: false,

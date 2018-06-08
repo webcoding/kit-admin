@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     handleClickOutside() {
-      this.$store.dispatch('CloseSideBar', { withoutAnimation: false })
+      this.$store.dispatch('closeSideBar', { withoutAnimation: false })
     },
   },
 }
@@ -50,7 +50,6 @@ export default {
 @import '../../style/var';
 
 .app-wrapper {
-  clearfix();
   position: relative;
   height: 100%;
   width: 100%;

@@ -25,7 +25,8 @@ export const ENV = {
   prod: {
     stage: 'prod',
     baseUrl: 'https://m.haoshiqi.net',
-    apiBaseUrl: 'https://m.api.haoshiqi.net',
+    // apiBaseUrl: 'https://m.api.haoshiqi.net',
+    apiBaseUrl: 'https://api-prod',
   },
   dev: {
     stage: 'dev',
@@ -47,7 +48,8 @@ export const ENV = {
     stage: 'local',
     routerMode: 'hash',
     baseUrl: location.origin, // localhost
-    apiBaseUrl: 'http://m.devapi.haoshiqi.net',
+    apiBaseUrl: 'https://api-dev',
+    // apiBaseUrl: 'http://m.devapi.haoshiqi.net',
     // apiBaseUrl: 'http://m.betaapi.haoshiqi.net',
     // apiBaseUrl: 'http://m.api.haoshiqi.net',
   },

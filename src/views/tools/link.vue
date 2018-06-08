@@ -7,7 +7,7 @@
       </el-form-item>
       <el-form-item label="在哪配置">
         <el-radio-group v-model="form.source">
-          <el-radio label="life">生活号</el-radio>
+          <el-radio label="life">生活号/H5页面</el-radio>
           <el-radio label="couple">拼团小程序</el-radio>
           <el-radio label="point">积分小程序</el-radio>
           <el-radio label="message">短信</el-radio>
@@ -29,10 +29,19 @@
       </el-form-item>
       <el-form-item label="跳转到哪里">
         <el-radio-group v-model="form.dist">
+          <el-radio label="life">生活号</el-radio>
           <el-radio label="couple">拼团小程序</el-radio>
           <el-radio label="point">积分小程序</el-radio>
-          <el-radio label="life">生活号</el-radio>
+          <el-radio label="othermini">其他小程序</el-radio>
         </el-radio-group>
+        <div v-show="form.dist === 'othermini'">
+          <el-input placeholder="其他小程序链接 如 ${page}?appid=${appId}&xx=xxx" v-model="form.othermini" class="input-with-select"></el-input>
+          <div class="content-example">
+            <p v-for="(value, key) in otherMinis" :key="key">
+              {{ key }}: {{ value }}
+            </p>
+          </div>
+        </div>
       </el-form-item>
       <el-form-item label="是否需要渠道">
         <!-- <el-switch v-model="form.channel"></el-switch>
@@ -99,22 +108,37 @@ const getAliSchema = (name) => {
   const appId = minis[name];
   return `alipays://platformapi/startApp?appId=${appId}`;
 }
-const getMiniSchema = (page, appname) => {
-  return `miniapp://pages/${page}/${page}?appname=${appname}`;
+const getMiniSchema = ({ page, appid, appname }) => {
+  let params = appid ? `appid=${appid}` : `appname=${appname}`;
+  if (appname && minis[appname]) {
+    params = `appname=${appname}`;
+  }
+  return `miniapp://pages/${page}/${page}?${params}`;
+}
+const getMiniOther = (params) => {
+  return `miniapp://${params}`;
 }
 const getHttpUrl = (schemaUrl) => {
   return `https://ds.alipay.com/?from=mobilecodec&scheme=${encodeURIComponent(schemaUrl)}`;
 }
 
+/* eslint quote-props: 0 */
+const otherMinis = {
+  'in最美证件照': 'pages/index?appid=2018013102119843&chanel=Haoshiqi',
+  'in照片打印定制': 'pages/index/index?appid=2017111409929370&_s=haoshiqi',
+};
+
 export default {
   data() {
     return {
+      otherMinis,
       form: {
         createShortUrl: false,
         source: 'life',
         page: 'index',
         params: '',
         dist: 'couple',
+        othermini: otherMinis[0],
         miniapp: false,
         channel: '',
         tip: '',
@@ -164,14 +188,15 @@ export default {
             return '';
           }
           if (['couple', 'point'].indexOf(dist) > -1) {
-            this.tip = '模板消息，跳转到对应小程序，渠道待验证';
+            this.tip = '模板消息，跳转到对应小程序，支持配置渠道';
             params = params ? `${params}${channelParams}` :
               channelParams ? `?${channelParams}` : `${channelParams}`;
             return `${getPage(page)}${params}`;
           }
           break;
+        /* eslint no-case-declarations: 0 */
         case 'couple':
-        case 'point': {
+        case 'point':
           if (dist === 'life') {
             this.tip = '小程序不支持向外跳转！！！';
             return '';
@@ -189,13 +214,23 @@ export default {
             this.tip += '，跳转拼团小程序不支持渠道';
             channel = '';
           }
+          if (dist === 'othermini') {
+            this.tip += '，跳转其他小程序，请设置跳转页面以及appid，请参考示例';
+            channel = '';
+            result = getMiniOther(this.form.othermini);
+            return result;
+          }
           let tempParams = this.form.params;
           if (tempParams) {
             tempParams = `&${tempParams}`
           }
-          result = `${getMiniSchema(page, dist)}${channel}${tempParams}`
+          const miniApp = {
+            page,
+            appname: dist,
+            appid: minis[dist],
+          };
+          result = `${getMiniSchema(miniApp)}${channel}${tempParams}`;
           break;
-        }
         case 'message': {
           this.tip = '短信内限制必须使用http协议';
           // if (dist === 'life') {
@@ -232,7 +267,8 @@ export default {
         });
         return;
       }
-      console.log('shortUrl');
+
+      console.log(111)
       // this.shortUrl = '请打开链接自己生成';
       // 都存在跨域问题，无法直接调用生成结果
       // http://dwz.wailian.work/
@@ -287,6 +323,8 @@ export default {
 .input-with-select .el-input-group__prepend {
   // background-color: #fff;
 }
-
+.content-example {
+  line-height: 1.5;
+}
 </style>
 
