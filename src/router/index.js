@@ -139,37 +139,142 @@ export const asyncRouterMap = [
   //     },
   //   ],
   // },
-
   {
-    path: '/form',
+    path: '/system',
     component: Layout,
     redirect: 'noredirect',
-    name: 'form',
+    name: 'system',
     meta: {
-      title: 'form',
-      icon: 'form',
+      title: 'system',
+      icon: 'setting',
     },
     children: [
+      // {
+      //   path: 'base',
+      //   component: _import('doing/doing'),
+      //   name: 'base',
+      //   meta: {
+      //     title: 'system',
+      //     icon: 'setting',
+      //   },
+      // },
       {
-        path: 'create-form',
-        component: _import('form/create'),
-        name: 'createForm',
+        path: 'user',
+        component: _import('doing/doing'),
+        name: 'user',
         meta: {
-          title: 'createForm',
-          icon: 'table',
+          title: '用户管理',
+          icon: 'user',
         },
       },
       {
-        path: 'edit-form',
-        component: _import('form/edit'),
-        name: 'editForm',
+        path: 'menu',
+        component: _import('doing/doing'),
+        name: 'menu',
         meta: {
-          title: 'editForm',
-          icon: 'table',
+          title: '菜单管理',
+          icon: 'category',
+        },
+      },
+      {
+        path: 'auth',
+        component: _import('doing/doing'),
+        name: 'auth',
+        meta: {
+          title: '角色权限管理',
+          icon: 'group',
+        },
+      },
+      {
+        path: 'rule',
+        component: _import('doing/doing'),
+        name: 'rule',
+        meta: {
+          title: '角色类型管理',
+          icon: 'group_fill',
+        },
+      },
+      {
+        path: 'disc',
+        component: _import('doing/doing'),
+        name: 'disc',
+        meta: {
+          title: '数据字典',
+          icon: 'documentation',
+        },
+      },
+      {
+        path: 'gatelog',
+        component: _import('doing/doing'),
+        name: 'gatelog',
+        meta: {
+          title: '操作日志',
+          icon: 'log',
         },
       },
     ],
   },
+
+  {
+    path: '/org',
+    component: Layout,
+    redirect: 'noredirect',
+    name: 'org',
+    meta: {
+      title: 'org',
+      icon: 'org',
+    },
+    children: [
+      {
+        path: 'depart',
+        component: _import('doing/doing'),
+        name: 'depart',
+        meta: {
+          title: 'depart',
+          icon: 'depart',
+        },
+      },
+      // {
+      //   path: 'depart',
+      //   component: _import('doing/doing'),
+      //   name: 'depart',
+      //   meta: {
+      //     title: 'depart',
+      //     icon: 'depart',
+      //   },
+      // },
+    ],
+  },
+  // {
+  //   path: '/form',
+  //   component: Layout,
+  //   redirect: 'noredirect',
+  //   name: 'form',
+  //   meta: {
+  //     title: 'form',
+  //     icon: 'form',
+  //   },
+  //   children: [
+  //     {
+  //       path: 'create-form',
+  //       component: _import('form/create'),
+  //       name: 'createForm',
+  //       meta: {
+  //         title: 'createForm',
+  //         icon: 'table',
+  //       },
+  //     },
+  //     {
+  //       path: 'edit-form',
+  //       component: _import('form/edit'),
+  //       name: 'editForm',
+  //       meta: {
+  //         title: 'editForm',
+  //         icon: 'table',
+  //       },
+  //     },
+  //   ],
+  // },
 
   {
     path: '/error',
@@ -207,7 +312,7 @@ export const asyncRouterMap = [
     redirect: '/tools/link',
     name: 'tools',
     meta: {
-      title: '工具',
+      title: 'tools',
       icon: 'example',
     },
     children: [
@@ -216,7 +321,7 @@ export const asyncRouterMap = [
         name: 'Link',
         component: () => import('@/views/tools/link'),
         meta: {
-          title: '链接生成工具',
+          title: 'link',
           icon: 'form',
         },
       },

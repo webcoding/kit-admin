@@ -34,7 +34,7 @@ export default {
       if (first && first.name !== 'dashboard') {
         matched = [{
           path: '/dashboard',
-          meta: { title: 'Dashboard' },
+          meta: { title: 'dashboard' },
         }].concat(matched)
       }
       this.levelList = matched

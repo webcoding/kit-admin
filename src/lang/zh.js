@@ -2,7 +2,11 @@
 /* eslint max-len: 0 */
 export default {
   route: {
-    dashboard: '首页',
+    system: '系统管理',
+    org: '组织架构',
+    depart: '部门管理',
+    doing: '正在开发',
+    dashboard: '控制台',
     introduction: '简述',
     documentation: '文档',
     guide: '引导页',
@@ -54,6 +58,8 @@ export default {
     theme: '换肤',
     clipboardDemo: 'Clipboard',
     i18n: '国际化',
+    tools: '工具箱',
+    link: '链接生成工具',
   },
   navbar: {
     logOut: '退出登录',

@@ -2,6 +2,10 @@
 /* eslint max-len: 0 */
 export default {
   route: {
+    system: 'System',
+    org: 'Organization',
+    depart: 'Depart',
+    doing: 'Doing',
     dashboard: 'Dashboard',
     introduction: 'Introduction',
     documentation: 'Documentation',
@@ -54,6 +58,8 @@ export default {
     theme: 'Theme',
     clipboardDemo: 'Clipboard',
     i18n: 'I18n',
+    tools: 'Tools',
+    link: 'Link',
   },
   navbar: {
     logOut: 'Log Out',

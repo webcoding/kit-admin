@@ -69,7 +69,7 @@
       </el-form-item>
       <el-form-item label="">
         <div class="output">
-          <div class="output-item">{{ shortUrl }}</div>
+          <div class="output-item">{{ form.shortUrl }}</div>
         </div>
       </el-form-item>
     </el-form>
