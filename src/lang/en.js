@@ -123,6 +123,12 @@ export default {
     delete: 'Delete',
     cancel: 'Cancel',
     confirm: 'Confirm',
+    pageViews: 'PageView',
+    displayTime: 'DisplayTime',
+    oper: 'Oper',
+    sex: 'Sex',
+    account: 'Account',
+    channel: 'Channel',
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',

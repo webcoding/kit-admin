@@ -123,6 +123,12 @@ export default {
     delete: '删除',
     cancel: '取 消',
     confirm: '确 定',
+    pageViews: '页面浏览量',
+    displayTime: '显示时间',
+    oper: '操作',
+    sex: '性别',
+    account: '账户',
+    channel: '渠道',
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

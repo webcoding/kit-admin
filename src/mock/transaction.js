@@ -1,6 +1,7 @@
 import Mock from 'mockjs'
 
 const List = []
+const TableList = []
 const count = 20
 
 for (let i = 0; i < count; i++) {
@@ -13,11 +14,28 @@ for (let i = 0; i < count; i++) {
   }))
 }
 
+for (let i = 0; i < count; i++) {
+  TableList.push(Mock.mock({
+    order_no: '@guid()',
+    title: '@title()',
+    author: '@name()',
+    'pageviews|0-100': 100,
+    'status|1': ['success', 'pending'],
+    display_time: '@date()',
+  }))
+}
+
 export default {
   getList: () => {
     return {
       total: List.length,
       items: List,
+    }
+  },
+  getTableList: () => {
+    return {
+      total: TableList.length,
+      items: TableList,
     }
   },
 }
