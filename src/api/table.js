@@ -7,3 +7,10 @@ export function getTableList(params) {
     params,
   })
 }
+export function getUserList(params) {
+  return request({
+    url: '/user/list',
+    method: 'get',
+    params,
+  })
+}

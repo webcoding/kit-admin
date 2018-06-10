@@ -2,6 +2,7 @@ import Mock from 'mockjs'
 
 const List = []
 const TableList = []
+const UserList = []
 const count = 20
 
 for (let i = 0; i < count; i++) {
@@ -24,6 +25,21 @@ for (let i = 0; i < count; i++) {
     display_time: '@date()',
   }))
 }
+for (let i = 0; i < count; i++) {
+  UserList.push(Mock.mock({
+    id: '@guid()',
+    name: '@cname()',
+    account: '@id()',
+    'sex|0-2': 0,
+    'rule|1': [
+      'admin',
+      'manager',
+      'general',
+      'anonymous',
+    ],
+    note: '',
+  }))
+}
 
 export default {
   getList: () => {
@@ -36,6 +52,12 @@ export default {
     return {
       total: TableList.length,
       items: TableList,
+    }
+  },
+  getUserList: () => {
+    return {
+      total: UserList.length,
+      items: UserList,
     }
   },
 }

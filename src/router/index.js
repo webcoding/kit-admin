@@ -160,7 +160,7 @@ export const asyncRouterMap = [
       // },
       {
         path: 'user',
-        component: _import('doing/doing'),
+        component: _import('user/user'),
         name: 'user',
         meta: {
           title: '用户管理',
