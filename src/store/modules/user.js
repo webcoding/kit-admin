@@ -103,12 +103,12 @@ const user = {
       return new Promise((resolve, reject) => {
         logout({
           token: state.token,
-        }, (res) => {
+        }).then((res) => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           removeToken()
           resolve()
-        }, (err) => {
+        }).catch((err) => {
           reject(err)
         })
       })

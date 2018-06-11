@@ -21,8 +21,9 @@ export default {
     handleSetLanguage(lang) {
       this.$i18n.locale = lang
       this.$store.dispatch('setLanguage', lang)
+      const tip = this.$t('navbar.setLanguageTip');
       this.$message({
-        message: 'switch language success',
+        message: tip,
         type: 'success',
       })
     },

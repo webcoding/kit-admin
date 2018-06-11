@@ -163,17 +163,8 @@ export const asyncRouterMap = [
         component: _import('user/user'),
         name: 'user',
         meta: {
-          title: '用户管理',
+          title: 'user',
           icon: 'user',
-        },
-      },
-      {
-        path: 'menu',
-        component: _import('doing/doing'),
-        name: 'menu',
-        meta: {
-          title: '菜单管理',
-          icon: 'category',
         },
       },
       {
@@ -181,25 +172,35 @@ export const asyncRouterMap = [
         component: _import('doing/doing'),
         name: 'auth',
         meta: {
-          title: '角色权限管理',
+          title: 'role',
           icon: 'group',
         },
       },
       {
-        path: 'rule',
+        path: 'menu',
         component: _import('doing/doing'),
-        name: 'rule',
+        name: 'menu',
         meta: {
-          title: '角色类型管理',
-          icon: 'group_fill',
+          title: 'menu',
+          icon: 'category',
         },
       },
+
+      // {
+      //   path: 'rule',
+      //   component: _import('doing/doing'),
+      //   name: 'rule',
+      //   meta: {
+      //     title: '角色类型管理',
+      //     icon: 'group_fill',
+      //   },
+      // },
       {
         path: 'disc',
         component: _import('doing/doing'),
         name: 'disc',
         meta: {
-          title: '数据字典',
+          title: 'disc',
           icon: 'documentation',
         },
       },
@@ -208,7 +209,7 @@ export const asyncRouterMap = [
         component: _import('doing/doing'),
         name: 'gatelog',
         meta: {
-          title: '操作日志',
+          title: 'log',
           icon: 'log',
         },
       },
@@ -234,6 +235,15 @@ export const asyncRouterMap = [
           icon: 'depart',
         },
       },
+      {
+        path: 'people',
+        component: _import('doing/doing'),
+        name: 'people',
+        meta: {
+          title: 'people',
+          icon: 'group',
+        },
+      },
       // {
       //   path: 'depart',
       //   component: _import('doing/doing'),
@@ -246,27 +256,27 @@ export const asyncRouterMap = [
     ],
   },
 
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' },
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' },
-      },
-    ],
-  },
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: '/example/table',
+  //   name: 'Example',
+  //   meta: { title: 'Example', icon: 'example' },
+  //   children: [
+  //     {
+  //       path: 'table',
+  //       name: 'Table',
+  //       component: () => import('@/views/table/index'),
+  //       meta: { title: 'Table', icon: 'table' },
+  //     },
+  //     {
+  //       path: 'tree',
+  //       name: 'Tree',
+  //       component: () => import('@/views/tree/index'),
+  //       meta: { title: 'Tree', icon: 'tree' },
+  //     },
+  //   ],
+  // },
   // {
   //   path: '/form',
   //   component: Layout,
@@ -298,63 +308,63 @@ export const asyncRouterMap = [
   //   ],
   // },
 
-  {
-    path: '/error',
-    component: Layout,
-    redirect: 'noredirect',
-    name: 'errorPages',
-    meta: {
-      title: 'errorPages',
-      icon: '404',
-    },
-    children: [
-      {
-        path: '401',
-        component: _import('errorPage/401'),
-        name: 'page401',
-        meta: {
-          title: 'page401',
-          noCache: true,
-        },
-      },
-      {
-        path: '404',
-        component: _import('errorPage/404'),
-        name: 'page404',
-        meta: {
-          title: 'page404',
-          noCache: true,
-        },
-      },
-    ],
-  },
-  {
-    path: '/tools',
-    component: Layout,
-    redirect: '/tools/link',
-    name: 'tools',
-    meta: {
-      title: 'tools',
-      icon: 'example',
-    },
-    children: [
-      {
-        path: 'link',
-        name: 'Link',
-        component: () => import('@/views/tools/link'),
-        meta: {
-          title: 'link',
-          icon: 'form',
-        },
-      },
-      // {
-      //   path: 'link',
-      //   name: 'Link',
-      //   component: () => import('@/views/tools/link'),
-      //   meta: { title: '链接生成工具', icon: 'form' },
-      // },
-    ],
-  },
+  // {
+  //   path: '/error',
+  //   component: Layout,
+  //   redirect: 'noredirect',
+  //   name: 'errorPages',
+  //   meta: {
+  //     title: 'errorPages',
+  //     icon: '404',
+  //   },
+  //   children: [
+  //     {
+  //       path: '401',
+  //       component: _import('errorPage/401'),
+  //       name: 'page401',
+  //       meta: {
+  //         title: 'page401',
+  //         noCache: true,
+  //       },
+  //     },
+  //     {
+  //       path: '404',
+  //       component: _import('errorPage/404'),
+  //       name: 'page404',
+  //       meta: {
+  //         title: 'page404',
+  //         noCache: true,
+  //       },
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: '/tools',
+  //   component: Layout,
+  //   redirect: '/tools/link',
+  //   name: 'tools',
+  //   meta: {
+  //     title: 'tools',
+  //     icon: 'example',
+  //   },
+  //   children: [
+  //     {
+  //       path: 'link',
+  //       name: 'Link',
+  //       component: () => import('@/views/tools/link'),
+  //       meta: {
+  //         title: 'link',
+  //         icon: 'form',
+  //       },
+  //     },
+  //     // {
+  //     //   path: 'link',
+  //     //   name: 'Link',
+  //     //   component: () => import('@/views/tools/link'),
+  //     //   meta: { title: '链接生成工具', icon: 'form' },
+  //     // },
+  //   ],
+  // },
 
   { path: '*', redirect: '/404', hidden: true },
 ];
