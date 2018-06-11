@@ -27,7 +27,7 @@ for (let i = 0; i < count; i++) {
 }
 for (let i = 0; i < count; i++) {
   UserList.push(Mock.mock({
-    id: '@guid()',
+    // id: '@guid()',
     name: '@cname()',
     account: '@id()',
     'sex|0-2': 0,

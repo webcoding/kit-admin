@@ -25,14 +25,17 @@
       </el-table-column>
       <el-table-column label="姓名" prop="name"></el-table-column>
       <el-table-column label="账户" prop="account"></el-table-column>
-      <el-table-column label="性别" prop="sex" width="110"></el-table-column>
-      <el-table-column label="身份" prop="rule" width="110"></el-table-column>
-      <!-- <el-table-column label="备注" prop="note" width="110"></el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
+      <el-table-column label="性别" width="110">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{scope.row.status}}</el-tag>
+          <span>{{ scope.row.sex | sexFilter }}</span>
         </template>
       </el-table-column>
+      <el-table-column class-name="status-col" label="身份" width="110">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.rule | statusFilter">{{scope.row.rule}}</el-tag>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="备注" prop="note" width="110"></el-table-column>
       <el-table-column align="center" prop="created_at" label="Display_time" width="130">
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
@@ -71,13 +74,21 @@ export default {
     }
   },
   filters: {
+    sexFilter(value) {
+      const sexMap = ['未知', '男', '女'];
+      return sexMap[value];
+    },
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger',
-      }
-      return statusMap[status]
+        // published: 'success',
+        // draft: 'gray',
+        // deleted: 'danger',
+        admin: 'danger',
+        manager: 'danger',
+        general: 'primary',
+        anonymous: 'gray',
+      };
+      return statusMap[status];
     },
   },
   created() {
