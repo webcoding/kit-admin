@@ -9,6 +9,7 @@ export default {
     people: 'People',
     user: 'User',
     menu: 'Menu',
+    power: 'Power',
     disc: 'Disc',
     role: 'Role',
     log: 'Log',

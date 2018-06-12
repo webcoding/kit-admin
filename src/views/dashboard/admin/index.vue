@@ -1,8 +1,9 @@
 <template>
   <div class="dashboard-editor-container">
-    <github-corner></github-corner>
+    欢迎光临
+    <!-- <github-corner></github-corner> -->
 
-    <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group>
+    <!-- <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group> -->
 
     <!-- <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <line-chart :chart-data="lineChartData"></line-chart>
@@ -26,7 +27,7 @@
       </el-col>
     </el-row> -->
 
-    <el-row :gutter="8">
+    <!-- <el-row :gutter="8">
       <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">
         <transaction-table></transaction-table>
       </el-col>
@@ -36,21 +37,21 @@
       <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 5}" style="margin-bottom:30px;" >
         <box-card></box-card>
       </el-col>
-    </el-row>
+    </el-row> -->
 
   </div>
 </template>
 
 <script>
-import GithubCorner from '@/components/GithubCorner'
-import PanelGroup from './components/PanelGroup'
+// import GithubCorner from '@/components/GithubCorner'
+// import PanelGroup from './components/PanelGroup'
 // import LineChart from './components/LineChart'
 // import RaddarChart from './components/RaddarChart'
 // import PieChart from './components/PieChart'
 // import BarChart from './components/BarChart'
-import TransactionTable from './components/TransactionTable'
-import TodoList from './components/TodoList'
-import BoxCard from './components/BoxCard'
+// import TransactionTable from './components/TransactionTable'
+// import TodoList from './components/TodoList'
+// import BoxCard from './components/BoxCard'
 
 const lineChartData = {
   newVisitis: {
@@ -74,15 +75,15 @@ const lineChartData = {
 export default {
   name: 'dashboard-admin',
   components: {
-    GithubCorner,
-    PanelGroup,
+    // GithubCorner,
+    // PanelGroup,
     // LineChart,
     // RaddarChart,
     // PieChart,
     // BarChart,
-    TransactionTable,
-    TodoList,
-    BoxCard,
+    // TransactionTable,
+    // TodoList,
+    // BoxCard,
   },
   data() {
     return {

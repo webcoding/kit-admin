@@ -177,14 +177,23 @@ export const asyncRouterMap = [
         },
       },
       {
-        path: 'menu',
+        path: 'power',
         component: _import('doing/doing'),
-        name: 'menu',
+        name: 'power',
         meta: {
-          title: 'menu',
+          title: 'power',
           icon: 'category',
         },
       },
+      // {
+      //   path: 'menu',
+      //   component: _import('doing/doing'),
+      //   name: 'menu',
+      //   meta: {
+      //     title: 'menu',
+      //     icon: 'category',
+      //   },
+      // },
 
       // {
       //   path: 'rule',
@@ -195,24 +204,24 @@ export const asyncRouterMap = [
       //     icon: 'group_fill',
       //   },
       // },
-      {
-        path: 'disc',
-        component: _import('doing/doing'),
-        name: 'disc',
-        meta: {
-          title: 'disc',
-          icon: 'documentation',
-        },
-      },
-      {
-        path: 'gatelog',
-        component: _import('doing/doing'),
-        name: 'gatelog',
-        meta: {
-          title: 'log',
-          icon: 'log',
-        },
-      },
+      // {
+      //   path: 'disc',
+      //   component: _import('doing/doing'),
+      //   name: 'disc',
+      //   meta: {
+      //     title: 'disc',
+      //     icon: 'documentation',
+      //   },
+      // },
+      // {
+      //   path: 'gatelog',
+      //   component: _import('doing/doing'),
+      //   name: 'gatelog',
+      //   meta: {
+      //     title: 'log',
+      //     icon: 'log',
+      //   },
+      // },
     ],
   },
 
