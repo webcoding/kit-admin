@@ -42,15 +42,14 @@
           <span>{{scope.row.display_time}}</span>
         </template>
       </el-table-column> -->
-      <el-table-column fixed="right" label="操作" min-width="130">
+      <!-- <el-table-column fixed="right" label="操作" min-width="130">
         <template slot-scope="scope">
           <router-link :to="{ path: '/example' }">
             <el-button type="text" size="small" @click.prevent.stop="onUpdate(scope.row.id, scope.row.channel)">编辑</el-button>
           </router-link>
-          <!-- <el-button type="text" size="small" @click="onChangeStatus(scope.row.id, scope.row.status)">{{scope.row.status ? '下线' : '上线' }}</el-button> -->
           <el-button type="text" size="small" @click="onRemove(scope.row.id)" :disabled="!!scope.row.status">删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
   </div>
 </template>
