@@ -7,6 +7,7 @@ export default {
     depart: 'Depart',
     doing: 'Doing',
     people: 'People',
+    account: 'Account',
     user: 'User',
     menu: 'Menu',
     power: 'Power',

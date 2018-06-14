@@ -159,12 +159,12 @@ export const asyncRouterMap = [
       //   },
       // },
       {
-        path: 'user',
-        component: _import('user/user'),
-        name: 'user',
+        path: 'account',
+        component: _import('user/account'),
+        name: 'account',
         meta: {
-          title: 'user',
-          icon: 'user',
+          title: 'account',
+          icon: 'admin',
         },
       },
       {
@@ -173,7 +173,7 @@ export const asyncRouterMap = [
         name: 'auth',
         meta: {
           title: 'role',
-          icon: 'group',
+          icon: 'role',
         },
       },
       {
@@ -182,7 +182,7 @@ export const asyncRouterMap = [
         name: 'power',
         meta: {
           title: 'power',
-          icon: 'category',
+          icon: 'role2',
         },
       },
       // {
@@ -226,31 +226,31 @@ export const asyncRouterMap = [
   },
 
   {
-    path: '/org',
+    path: '/peoples',
     component: Layout,
     redirect: 'noredirect',
-    name: 'org',
+    name: 'peoples',
     meta: {
-      title: 'org',
-      icon: 'org',
+      title: 'peoples',
+      icon: 'peoples',
     },
     children: [
       {
-        path: 'depart',
-        component: _import('doing/doing'),
-        name: 'depart',
-        meta: {
-          title: 'depart',
-          icon: 'depart',
-        },
-      },
-      {
         path: 'people',
-        component: _import('doing/doing'),
+        component: _import('user/people'),
         name: 'people',
         meta: {
           title: 'people',
-          icon: 'group',
+          icon: 'user',
+        },
+      },
+      {
+        path: 'cert',
+        component: _import('doing/doing'),
+        name: 'cert',
+        meta: {
+          title: 'cert',
+          icon: 'cert',
         },
       },
       // {
@@ -262,6 +262,28 @@ export const asyncRouterMap = [
       //     icon: 'depart',
       //   },
       // },
+    ],
+  },
+
+  {
+    path: '/project',
+    component: Layout,
+    redirect: 'noredirect',
+    name: 'project',
+    meta: {
+      title: 'project',
+      icon: 'project',
+    },
+    children: [
+      {
+        path: 'gc',
+        component: _import('doing/doing'),
+        name: 'gc',
+        meta: {
+          title: 'gc',
+          icon: 'gc2',
+        },
+      },
     ],
   },
 
