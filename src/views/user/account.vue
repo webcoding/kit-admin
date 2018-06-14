@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { getAcountList } from '@/api/table'
+import { getAccountList } from '@/api/table'
 
 export default {
   data() {
@@ -97,7 +97,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getAcountList({
+      getAccountList({
         ...this.listQuery,
       }).then((res) => {
         this.list = res.data.items
@@ -106,7 +106,7 @@ export default {
     },
     paginate(num) {
       // console.log(num);
-      getAcountList(num);
+      getAccountList(num);
     },
     addUser() {
       // 添加用户
