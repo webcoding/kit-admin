@@ -36,6 +36,7 @@ function request(url, options, success, fail) {
  */
 
 // api 列表
+// http://10.0.6.48:8080/swagger-ui.html
 const modelApis = {
   // 初始化配置
   test: 'https://easy-mock.com/mock/5aa79bf26701e17a67bde1d7/',
@@ -49,6 +50,30 @@ const modelApis = {
   logout: 'POST /user/logout',
   getUserInfo: '/user/info',
   getTableList: '/table/list',
+
+  // 人员管理
+  getPersonalList: '/org/personal/list',
+  savePersonal: 'POST /org/personal/save',
+  delPersonal: '/org/personal/delete',
+  updatePersonal: 'POST /org/personal/update',
+  searchPersonal: '/org/personal/save',
+  // 人员证书管理
+  getResList: '/personal/resource/list',
+  saveRes: '/personal/resource/save',
+  delRes: '/personal/resource/delete',
+  uploadRes: '/personal/resource/upload',
+  searchRes: '/personal/resource/search',
+  // 系统管理
+  adminCheck: '/admin/check',
+  login: '/admin/login',
+  logout: '/admin/logout',
+  menu: '/admin/menu',
+  // 部门管理
+  getDeptList: '/org/dept/list',
+  saveDept: '/org/dept/save',
+  delDept: '/org/dept/delete',
+  uploadDept: '/org/dept/upload',
+  searchDept: '/org/dept/search',
 }
 
 // 仅限本地调试支持
