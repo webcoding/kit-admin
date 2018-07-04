@@ -159,6 +159,15 @@ export const asyncRouterMap = [
       //   },
       // },
       {
+        path: 'user',
+        component: _import('user/user'),
+        name: 'user',
+        meta: {
+          title: 'user',
+          icon: 'user',
+        },
+      },
+      {
         path: 'account',
         component: _import('user/account'),
         name: 'account',
