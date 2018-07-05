@@ -5289,9 +5289,9 @@ kit-doc@^1.0.6:
     vuex "^3.0.1"
     vuex-router-sync "^5.0.0"
 
-kit-qs@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/kit-qs/-/kit-qs-1.0.3.tgz#f2a6093bff847cdf41eaf234ace3605bcd78b543"
+kit-qs@1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/kit-qs/-/kit-qs-1.0.5.tgz#77043eb5bf9b7d0d8bd3ecc063d6278d8aeb4bb8"
 
 kit-request@1.0.2:
   version "1.0.2"

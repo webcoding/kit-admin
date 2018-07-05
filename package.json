@@ -133,7 +133,7 @@
     "karma-webpack": "^2.0.6",
     "kit-debug": "^1.0.9",
     "kit-doc": "^1.0.6",
-    "kit-qs": "^1.0.3",
+    "kit-qs": "1.0.5",
     "kit-request": "1.0.2",
     "lru-cache": "^4.1.3",
     "markdown-it-container": "^2.0.0",

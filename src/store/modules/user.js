@@ -8,20 +8,23 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
   state: {
-    user: '',
-    status: '',
-    code: '',
     token: getToken(),
+    userInfo: {},
+    roles: [],
     name: '',
     avatar: '',
+    status: '',
+    code: '',
     introduction: '',
-    roles: [],
     setting: {
       articlePlatform: [],
     },
   },
 
   mutations: {
+    SET_USERINFO: (state, status) => {
+      state.userInfo = status
+    },
     SET_CODE: (state, code) => {
       state.code = code
     },
@@ -50,14 +53,19 @@ const user = {
 
   actions: {
     // 用户名登录
-    LoginByUsername({ commit }, userInfo) {
+    LoginByUsername({ commit }, loginForm) {
       return new Promise((resolve, reject) => {
         api.login({
-          ...userInfo,
+          ...loginForm,
         }, (res) => {
-          const { data } = res;
-          commit('SET_TOKEN', data.token);
-          setToken(data.token);
+          // const { data } = res;
+          const {
+            authInfo: { accessToken, expiredTime },
+            userInfo,
+          } = res.data;
+          setToken(accessToken, expiredTime);
+          commit('SET_TOKEN', accessToken);
+          commit('SET_USERINFO', userInfo);
           resolve();
         }, (err) => {
           reject(err);
@@ -87,28 +95,34 @@ const user = {
     // 获取用户信息
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getUserInfo({
-          token: state.token,
-        }).then((res) => {
-          const { data } = res
-          // 由于mockjs 不支持自定义状态码只能这样hack
-          if (!data) {
-            reject('error');
-          }
-          // 验证返回的roles是否是一个非空数组
-          if (data.roles && data.roles.length > 0) {
-            commit('SET_ROLES', data.roles)
-          } else {
-            /* eslint prefer-promise-reject-errors: 0 */
-            reject('getInfo: roles must be a non-null array !')
-          }
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
-          resolve(res)
-        }).catch((err) => {
-          reject(err)
-        })
+        const { userInfo = {} } = state;
+        if (userInfo.token && userInfo.id) {
+          resolve(userInfo);
+        } else {
+          api.getUserInfo({
+            id: userInfo.id,
+            token: state.token,
+          }, (res) => {
+            const { data } = res
+            // 由于 mockjs 不支持自定义状态码只能这样hack
+            if (!data) {
+              reject('error');
+            }
+            // 验证返回的roles是否是一个非空数组
+            if (data.roles && data.roles.length > 0) {
+              commit('SET_ROLES', data.roles)
+            } else {
+              /* eslint prefer-promise-reject-errors: 0 */
+              reject('getInfo: roles must be a non-null array !')
+            }
+            commit('SET_NAME', data.name)
+            commit('SET_AVATAR', data.avatar)
+            commit('SET_INTRODUCTION', data.introduction)
+            resolve(res)
+          }, (err) => {
+            reject(err)
+          })
+        }
       })
     },
 

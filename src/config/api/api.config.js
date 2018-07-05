@@ -1,3 +1,5 @@
+import { copy } from 'kit-qs';
+
 /**
  * API 命名规则
  * - 使用 camelCase 命名格式（小驼峰命名）
@@ -9,7 +11,7 @@ let params = {};
 
 const commonParams = {
   init(data) {
-    params = {};
+    params = copy(data);
   },
   setParams(obj) {
     Object.assign(params, obj);
@@ -36,13 +38,14 @@ const modelApis = {
 
   loginByUsername: 'POST /user/login',
   logout: 'POST /user/logout',
-  getUserInfo: '/user/info',
   getTableList: '/table/list',
 
   // 系统管理
   login: 'POST /admin/login',
+  // getUserInfo: '/user/info',
   // login: 'POST /login/login',
   logout: 'POST /admin/logout',
+  getUserInfo: '/user/findById',
   adminCheck: '/admin/check',
   menu: '/admin/menu',
 

@@ -7,6 +7,8 @@ import {
   commonParams,
   headers,
 } from './api.config'
+import { getToken } from '@/utils/auth'
+
 // import { version } from '../package.json'
 
 const type = 'xhr';
@@ -18,6 +20,7 @@ apiBaseUrl = `${env.apiBaseUrl}`
 const regHttp = /^https?/i
 
 const isMock = false;
+// 如果方便的切换使用Mock数据
 // const regMock = /^mock?/i
 
 function compact(obj) {
@@ -54,20 +57,20 @@ const {
 
 // 公共参数
 commonParams.init({
-  uuid: '', // 用户唯一标志
-  udid: '', // 设备唯一标志
-  device: '', // 设备
-  net: '', // 网络
-  token: '',
-  timestamp: '', // 时间
-  channel: 'h5', // 渠道
-  spm: 'h5',
-  v: env.version, // 系统版本
-  terminal: env.terminal, // 终端
-  swidth: width, // 屏幕宽度 分辨率
-  sheight: height, // 屏幕高度
-  location: '', // 地理位置
-  zoneId: 857, // 必须
+  // uuid: '', // 用户唯一标志
+  // udid: '', // 设备唯一标志
+  // device: '', // 设备
+  // net: '', // 网络
+  token: getToken(),
+  // timestamp: '', // 时间
+  // channel: 'h5', // 渠道
+  // spm: 'h5',
+  // v: env.version, // 系统版本
+  // terminal: env.terminal, // 终端
+  // swidth: width, // 屏幕宽度 分辨率
+  // sheight: height, // 屏幕高度
+  // location: '', // 地理位置
+  // zoneId: 857, // 必须
 });
 
 const apiList = Object.keys(modelApis).reduce((api, key) => {

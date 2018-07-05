@@ -92,6 +92,7 @@ export default function request(url, options = {}, success = noop, fail = noop) 
   if (method === 'GET') {
     newOptions.headers = {
       // 我们的get请求 不需要这个
+      'Content-Type': 'application/json; charset=utf-8',
       // 'Content-Type': 'application/json; charset=utf-8',
     }
     // newOptions.data = JSON.stringify(newOptions.data)
@@ -149,7 +150,7 @@ export default function request(url, options = {}, success = noop, fail = noop) 
       // const { data = {} } = res
       // if (status >= 200 && status < 300) {
       //   res.ok = true
-      if (res.code === 20000) {
+      if (res.statusCode === 200) {
         resolve(res)
       } else {
         // console.log('err:', res)
