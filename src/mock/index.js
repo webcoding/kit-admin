@@ -8,9 +8,12 @@ import transactionAPI from './transaction'
 //   timeout: '350-600'
 // })
 
+// https://github.com/nuysoft/Mock/wiki/Mock.mock()
+// 从 1.0 开始，Mock.js 通过覆盖和模拟原生 XMLHttpRequest 的行为来拦截 Ajax 请求，不再依赖于第三方 Ajax 工具库（例如 jQuery、Zepto 等）。
+
 // 登录相关
-Mock.mock(/\/login\/login/, 'post', loginAPI.loginByUsername)
-Mock.mock(/\/login\/logout/, 'post', loginAPI.logout)
+Mock.mock(/\/admin\/login/, 'post', loginAPI.loginByUsername)
+Mock.mock(/\/admin\/logout/, 'post', loginAPI.logout)
 Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getUserInfo)
 
 // 文章相关

@@ -4,7 +4,7 @@
 // require('es6-promise').polyfill()
 // import Promise from 'bluebird'
 import fetch from 'kit-request/fetch'
-import { stringify } from 'qs'
+// import { stringify } from 'qs'
 import mini from '@/utils/mini'
 // Toast
 
@@ -99,11 +99,12 @@ export default function request(url, options = {}, success = noop, fail = noop) 
     newOptions.headers = {
       // Accept: 'application/json',
       // 我们的 post 请求，使用的这个，不是 application/json
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json; charset=utf-8',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
       ...newOptions.headers,
     }
     Object.defineProperty(newOptions, 'body', {
-      value: `${stringify(newOptions.data)}`,
+      value: `${JSON.stringify(newOptions.data)}`,
     })
     // newOptions.body = `${stringify(newOptions.data)}`
     // newOptions.data = `${stringify(newOptions.data)}`

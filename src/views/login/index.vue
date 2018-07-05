@@ -3,20 +3,20 @@
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
       <div class="title-container">
         <h3 class="title">{{$t('login.title')}}</h3>
-        <lang-select class="set-language"></lang-select>
+        <!-- <lang-select class="set-language"></lang-select> -->
       </div>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
+        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="用户名" />
       </el-form-item>
 
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password" />
+        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="密码" />
         <span class="show-pwd" @click="showPwd">
           <svg-icon icon-class="eye" />
         </span>
@@ -49,11 +49,14 @@
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
-import LangSelect from '@/components/LangSelect'
-import SocialSign from './socialsignin'
+// import LangSelect from '@/components/LangSelect'
+// import SocialSign from './socialsignin'
 
 export default {
-  components: { LangSelect, SocialSign },
+  components: {
+    // LangSelect,
+    // SocialSign,
+  },
   name: 'login',
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -72,7 +75,7 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
+        username: 'test@admin.com',
         password: '123456',
       },
       loginRules: {
@@ -104,12 +107,18 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-            this.loading = false
-            this.$router.push({ path: '/' })
-          }).catch(() => {
-            this.loading = false
-          })
+          const { username = '', password } = this.loginForm;
+          const userInfo = {
+            email: username.trim(),
+            password,
+          };
+          this.$store.dispatch('LoginByUsername', userInfo)
+            .then(() => {
+              this.loading = false
+              this.$router.push({ path: '/' })
+            }).catch(() => {
+              this.loading = false
+            })
         } else {
           console.log('error submit!!')
           return false
