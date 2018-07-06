@@ -65,14 +65,14 @@ const user = {
           ...loginForm,
         }, (res) => {
           const { data } = res;
-          data.roles = ['admin'];
+          // data.roles = ['admin'];
 
           commit('SET_TOKEN', data.token);
           commit('SET_USERID', data.id);
-          commit('SET_ROLES', data.roles)
+          // commit('SET_ROLES', data.roles)
           commit('SET_NAME', data.username)
           commit('SET_AVATAR', data.avatar)
-          storage.set('userInfo', state);
+          storage.set('userInfo', { ...state, roles: [] });
           resolve(res);
         }, (err) => {
           reject(err);
@@ -171,6 +171,7 @@ const user = {
         // setToken(role)
         getUserInfo({ role }).then((res) => {
           const { data } = res
+          data.roles = ['admin']
           commit('SET_ROLES', data.roles)
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
