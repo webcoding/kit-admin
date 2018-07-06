@@ -72,7 +72,7 @@ const user = {
           // commit('SET_ROLES', data.roles)
           commit('SET_NAME', data.username)
           commit('SET_AVATAR', data.avatar)
-          storage.set('userInfo', { ...state, roles: [] });
+          storage.set('userInfo', { ...state });
           resolve(res);
         }, (err) => {
           reject(err);

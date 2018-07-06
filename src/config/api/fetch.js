@@ -8,6 +8,7 @@ import {
   headers,
 } from '@/config/api/api.config'
 import { getToken } from '@/utils/auth'
+import storage from '@/utils/storage';
 
 // import { version } from '../package.json'
 
@@ -55,9 +56,11 @@ const {
   height,
 } = window.screen
 
+const userInfo = storage.get('userInfo') || {};
+
 // 公共参数
 commonParams.init({
-  id: '', // 用户唯一标志
+  id: userInfo.userId || '', // 用户唯一标志
   // udid: '', // 设备唯一标志
   // device: '', // 设备
   // net: '', // 网络
