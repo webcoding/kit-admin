@@ -6,7 +6,7 @@ import {
   modelApis,
   commonParams,
   headers,
-} from './api.config'
+} from '@/config/api/api.config'
 import { getToken } from '@/utils/auth'
 
 // import { version } from '../package.json'
@@ -57,7 +57,7 @@ const {
 
 // 公共参数
 commonParams.init({
-  // uuid: '', // 用户唯一标志
+  id: '', // 用户唯一标志
   // udid: '', // 设备唯一标志
   // device: '', // 设备
   // net: '', // 网络
@@ -98,20 +98,14 @@ const apiList = Object.keys(modelApis).reduce((api, key) => {
             // 'Content-Type': 'application/x-www-form-urlencoded',
           },
           method,
-          data: compact({
-            ...commonParams.getParams(),
-            ...params,
-          }),
+          data: compact(Object.assign({}, commonParams.getParams(), params)),
         }, success, fail)
       }
       break
     case 'GET':
     default:
       api[key] = function getRequest(params, success, fail) {
-        params = compact({
-          ...commonParams.getParams(),
-          ...params,
-        });
+        params = compact(Object.assign({}, commonParams.getParams(), params));
         let query = stringify(params)
         if (query) query = `?${query}`
         return request(`${url}${query}`, {}, success, fail)

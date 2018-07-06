@@ -2,7 +2,8 @@
 // 使用 cookie 还是 token，目前主流做法是token
 
 // import auth from './cookie';
-import auth from './storage';
+import auth from '@/utils/storage';
+import { commonParams } from '@/config/api/api.config';
 
 // export default cookie;
 // export default storage;
@@ -14,6 +15,10 @@ function getToken() {
 }
 
 function setToken(token, time) {
+  commonParams.setParams({ token })
+  if (!token) {
+    return removeToken();
+  }
   return auth.set(TokenKey, token, time);
 }
 

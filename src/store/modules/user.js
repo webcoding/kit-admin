@@ -5,11 +5,12 @@ import {
 } from '@/api/login'
 import api from '@/config/api'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import storage from '@/utils/storage';
 
 const user = {
   state: {
     token: getToken(),
-    userInfo: {},
+    userId: api.getCommonParams('id'),
     roles: [],
     name: '',
     avatar: '',
@@ -19,16 +20,21 @@ const user = {
     setting: {
       articlePlatform: [],
     },
+    ...storage.get('userInfo'),
   },
 
   mutations: {
-    SET_USERINFO: (state, status) => {
-      state.userInfo = status
+    SET_USERID: (state, userId) => {
+      api.setCommonParams({
+        id: userId,
+      })
+      state.userId = userId
     },
     SET_CODE: (state, code) => {
       state.code = code
     },
     SET_TOKEN: (state, token) => {
+      setToken(token);
       state.token = token
     },
     SET_INTRODUCTION: (state, introduction) => {
@@ -53,20 +59,21 @@ const user = {
 
   actions: {
     // 用户名登录
-    LoginByUsername({ commit }, loginForm) {
+    LoginByUsername({ commit, state }, loginForm) {
       return new Promise((resolve, reject) => {
         api.login({
           ...loginForm,
         }, (res) => {
-          // const { data } = res;
-          const {
-            authInfo: { accessToken, expiredTime },
-            userInfo,
-          } = res.data;
-          setToken(accessToken, expiredTime);
-          commit('SET_TOKEN', accessToken);
-          commit('SET_USERINFO', userInfo);
-          resolve();
+          const { data } = res;
+          data.roles = ['admin'];
+
+          commit('SET_TOKEN', data.token);
+          commit('SET_USERID', data.id);
+          commit('SET_ROLES', data.roles)
+          commit('SET_NAME', data.username)
+          commit('SET_AVATAR', data.avatar)
+          storage.set('userInfo', state);
+          resolve(res);
         }, (err) => {
           reject(err);
         })
@@ -95,34 +102,39 @@ const user = {
     // 获取用户信息
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        const { userInfo = {} } = state;
-        if (userInfo.token && userInfo.id) {
-          resolve(userInfo);
-        } else {
-          api.getUserInfo({
-            id: userInfo.id,
-            token: state.token,
-          }, (res) => {
-            const { data } = res
-            // 由于 mockjs 不支持自定义状态码只能这样hack
-            if (!data) {
-              reject('error');
-            }
-            // 验证返回的roles是否是一个非空数组
-            if (data.roles && data.roles.length > 0) {
-              commit('SET_ROLES', data.roles)
-            } else {
-              /* eslint prefer-promise-reject-errors: 0 */
-              reject('getInfo: roles must be a non-null array !')
-            }
-            commit('SET_NAME', data.name)
-            commit('SET_AVATAR', data.avatar)
-            commit('SET_INTRODUCTION', data.introduction)
-            resolve(res)
-          }, (err) => {
-            reject(err)
-          })
-        }
+        // const { token, userId } = state;
+        // debugger
+        // if (token && userId) {
+        //   resolve({
+        //     token,
+        //     id: userId,
+        //   });
+        // } else {
+        api.getUserInfo({
+          // token,
+          // id: userId,
+        }, (res) => {
+          const { data } = res
+          // 由于 mockjs 不支持自定义状态码只能这样hack
+          if (!data) {
+            reject('error');
+          }
+          data.roles = ['admin'];
+          // 验证返回的roles是否是一个非空数组
+          if (data.roles && data.roles.length > 0) {
+            commit('SET_ROLES', data.roles)
+          } else {
+            /* eslint prefer-promise-reject-errors: 0 */
+            reject('getInfo: roles must be a non-null array !')
+          }
+          commit('SET_NAME', data.name)
+          commit('SET_AVATAR', data.avatar)
+          commit('SET_INTRODUCTION', data.introduction)
+          resolve(res)
+        }, (err) => {
+          reject(err)
+        })
+        // }
       })
     },
 
@@ -133,6 +145,7 @@ const user = {
           token: state.token,
         }).then((res) => {
           commit('SET_TOKEN', '')
+          commit('SET_USERID', '')
           commit('SET_ROLES', [])
           removeToken()
           resolve()
@@ -155,7 +168,7 @@ const user = {
     ChangeRoles({ commit }, role) {
       return new Promise((resolve) => {
         commit('SET_TOKEN', role)
-        setToken(role)
+        // setToken(role)
         getUserInfo({ role }).then((res) => {
           const { data } = res
           commit('SET_ROLES', data.roles)

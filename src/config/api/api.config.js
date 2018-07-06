@@ -45,12 +45,13 @@ const modelApis = {
   // getUserInfo: '/user/info',
   // login: 'POST /login/login',
   logout: 'POST /admin/logout',
-  getUserInfo: '/user/findById',
   adminCheck: '/admin/check',
   menu: '/admin/menu',
 
   // 用户管理
   userList: '/sys/user/list',
+  getUserInfo: '/sys/user/info',
+  // getUserInfo: '/sys/user/findById',
   userRoleList: '/sys/user/role/list',
   saveUser: 'POST /sys/user/save',
   updateUser: 'POST /sys/user/update',
