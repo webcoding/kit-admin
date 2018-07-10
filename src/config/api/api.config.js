@@ -49,7 +49,7 @@ const modelApis = {
   menu: '/admin/menu',
 
   // 用户管理
-  userList: '/sys/user/list',
+  getUserList: '/sys/user/list',
   getUserInfo: '/sys/user/info',
   // getUserInfo: '/sys/user/findById',
   userRoleList: '/sys/user/role/list',

@@ -91,7 +91,7 @@
       <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('table.type')" prop="type">
           <el-select class="filter-item" v-model="temp.type" placeholder="Please select">
-            <el-option v-for="item in  calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key">
+            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key">
             </el-option>
           </el-select>
         </el-form-item>
@@ -136,7 +136,9 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+import api from '@/config/api';
+
+// import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 
@@ -237,11 +239,21 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.queryForm).then((res) => {
-        this.list = res.data.items
-        this.total = res.data.total
+      api.getUserList({
+        page: 1,
+        size: 20,
+      }, (res) => {
         this.listLoading = false
+        // this.list = res.data.list
+        // this.total = res.data.total
+      }, (err) => {
+
       })
+      // fetchList(this.queryForm).then((res) => {
+      //   this.list = res.data.items
+      //   this.total = res.data.total
+      //   this.listLoading = false
+      // })
     },
     handleFilter() {
       this.queryForm.page = 1
@@ -287,16 +299,16 @@ export default {
         if (valid) {
           this.temp.id = parseInt(Math.random() * 100, 10) + 1024 // mock a id
           this.temp.author = 'vue-element-admin'
-          createArticle(this.temp).then(() => {
-            this.list.unshift(this.temp)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000,
-            })
-          })
+          // createArticle(this.temp).then(() => {
+          //   this.list.unshift(this.temp)
+          //   this.dialogFormVisible = false
+          //   this.$notify({
+          //     title: '成功',
+          //     message: '创建成功',
+          //     type: 'success',
+          //     duration: 2000,
+          //   })
+          // })
         }
       })
     },
@@ -315,22 +327,22 @@ export default {
           const tempData = Object.assign({}, this.temp)
           // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           tempData.timestamp = +new Date(tempData.timestamp)
-          updateArticle(tempData).then(() => {
-            for (const v of this.list) {
-              if (v.id === this.temp.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.temp)
-                break
-              }
-            }
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000,
-            })
-          })
+          // updateArticle(tempData).then(() => {
+          //   for (const v of this.list) {
+          //     if (v.id === this.temp.id) {
+          //       const index = this.list.indexOf(v)
+          //       this.list.splice(index, 1, this.temp)
+          //       break
+          //     }
+          //   }
+          //   this.dialogFormVisible = false
+          //   this.$notify({
+          //     title: '成功',
+          //     message: '更新成功',
+          //     type: 'success',
+          //     duration: 2000,
+          //   })
+          // })
         }
       })
     },
@@ -345,24 +357,24 @@ export default {
       this.list.splice(index, 1)
     },
     handleFetchPv(pv) {
-      fetchPv(pv).then((res) => {
-        this.pvData = res.data.pvData
-        this.dialogPvVisible = true
-      })
+      // fetchPv(pv).then((res) => {
+      //   this.pvData = res.data.pvData
+      //   this.dialogPvVisible = true
+      // })
     },
     handleDownload() {
       this.downloadLoading = true
-      import('@/vendor/Export2Excel').then((excel) => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-        const data = this.formatJson(filterVal, this.list)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: 'table-list',
-        })
-        this.downloadLoading = false
-      })
+      // import('@/vendor/Export2Excel').then((excel) => {
+      //   const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
+      //   const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+      //   const data = this.formatJson(filterVal, this.list)
+      //   excel.export_json_to_excel({
+      //     header: tHeader,
+      //     data,
+      //     filename: 'table-list',
+      //   })
+      //   this.downloadLoading = false
+      // })
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map((j) => {
