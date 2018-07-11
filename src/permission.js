@@ -37,9 +37,9 @@ router.beforeEach((to, from, next) => {
           // set the replace: true so the navigation will not leave a history record
           next({ ...to, replace: true })
         })
-      }).catch((err) => {
+      }).catch((err = {}) => {
         store.dispatch('FedLogOut').then(() => {
-          Message.error(err || 'Verification failed, please login again')
+          Message.error(err.errmsg || 'Verification failed, please login again')
           next({ path: '/' })
         })
       })

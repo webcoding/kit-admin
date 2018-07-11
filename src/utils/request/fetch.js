@@ -88,12 +88,14 @@ function checkStatus(res = {}) {
 export default function request(url, options = {}, success = noop, fail = noop) {
   const newOptions = Object.assign({ }, defaultOptions, options)
   const method = (newOptions.method || 'GET').toUpperCase()
+  const { headers } = newOptions;
   newOptions.method = method
   if (method === 'GET') {
     newOptions.headers = {
       // 我们的get请求 不需要这个
       'Content-Type': 'application/json; charset=utf-8',
       // 'Content-Type': 'application/json; charset=utf-8',
+      ...headers,
     }
     // newOptions.data = JSON.stringify(newOptions.data)
   } else if (method === 'POST') {
@@ -102,7 +104,7 @@ export default function request(url, options = {}, success = noop, fail = noop) 
       // 我们的 post 请求，使用的这个，不是 application/json
       'Content-Type': 'application/json; charset=utf-8',
       // 'Content-Type': 'application/x-www-form-urlencoded',
-      ...newOptions.headers,
+      ...headers,
     }
     Object.defineProperty(newOptions, 'body', {
       value: `${JSON.stringify(newOptions.data)}`,
@@ -126,8 +128,8 @@ export default function request(url, options = {}, success = noop, fail = noop) 
       errmsg = '网络异常，请稍后重试',
       errno = 'err',
     } = err
-    if (errno === 510010) {
-      // mini.goPage('login')
+    if (errno === 400) {
+      mini.goPage('login', { replace: true })
     } else {
       const message = `${errno}: ${errmsg}`
       console.log('errmsg:', message)
@@ -154,7 +156,10 @@ export default function request(url, options = {}, success = noop, fail = noop) 
         resolve(res)
       } else {
         // console.log('err:', res)
-        reject(res)
+        reject({
+          errno: res.statusCode,
+          errmsg: res.message,
+        })
       }
       // } else {
       //   // 小程序未处理过的错误
@@ -172,8 +177,8 @@ export default function request(url, options = {}, success = noop, fail = noop) 
       //   title: 'err: ' + JSON.stringify(err),
       // });
       reject({
-        errno: err.error,
-        errmsg: err.errorMessage,
+        errno: err.statusCode,
+        errmsg: err.message,
       })
     })
 

@@ -8,21 +8,32 @@ import { copy } from 'kit-qs';
  * - 便捷易用大于规则，程序是给人看的
  */
 let params = {};
+let reqHeaders = {};
 
 const commonParams = {
   init(data) {
     params = copy(data);
   },
-  setParams(obj) {
+  set(obj) {
     Object.assign(params, obj);
   },
-  getParams(key) {
+  get(key) {
     return key ? params[key] : {...params};
   },
 };
 
-const headers = {
 
+
+const headers = {
+  init(data) {
+    reqHeaders = copy(data);
+  },
+  set(obj) {
+    Object.assign(reqHeaders, obj);
+  },
+  get(key) {
+    return key ? reqHeaders[key] : {...reqHeaders};
+  },
 };
 
 // api 列表
@@ -51,6 +62,7 @@ const modelApis = {
   // 用户管理
   getUserList: '/sys/user/list',
   getUserInfo: '/sys/user/info',
+  searchUser: '/sys/user/search',
   // getUserInfo: '/sys/user/findById',
   userRoleList: '/sys/user/role/list',
   saveUser: 'POST /sys/user/save',

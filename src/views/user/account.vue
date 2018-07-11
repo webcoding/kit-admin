@@ -4,14 +4,14 @@
       <el-form
       :inline="true"
       :model="queryForm">
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="账户" v-model="queryForm.title">
+        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="账户" v-model="queryForm.keywords">
         </el-input>
         <!-- <el-select clearable style="width: 90px" class="filter-item" v-model="queryForm.importance" :placeholder="$t('table.importance')">
           <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item">
           </el-option>
         </el-select> -->
-        <!-- <el-select clearable class="filter-item" style="width: 130px" v-model="queryForm.type" :placeholder="$t('table.type')">
-          <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key">
+        <!-- <el-select clearable class="filter-item" style="width: 130px" v-model="queryForm.role" placeholder="角色">
+          <el-option v-for="item in roles" :key="item.id" :label="item.value+'('+item.id+')'" :value="item.id">
           </el-option>
         </el-select> -->
         <!-- <el-select @change='handleFilter' style="width: 140px" class="filter-item" v-model="queryForm.sort">
@@ -43,9 +43,9 @@
           <span>{{scope.row.email}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="用户名">
+      <el-table-column align="center" label="最近访问">
         <template slot-scope="scope">
-          <span>{{scope.row.username}}</span>
+          <span>{{scope.row.lastVisit | formatDate('Y-M-D H:F')}}</span>
         </template>
       </el-table-column>
       <!-- <el-table-column width="150px" align="center" :label="$t('table.date')">
@@ -88,22 +88,22 @@
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
           <!-- <el-button v-if="scope.row.status!='published'" size="mini" type="success" @click="handleModifyStatus(scope.row,'published')">{{$t('table.publish')}}
           </el-button> -->
           <!-- <el-button v-if="scope.row.status!='draft'" size="mini" @click="handleModifyStatus(scope.row,'draft')">{{$t('table.draft')}}
           </el-button> -->
-          <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row, 'delete')">删除
-          </el-button>
+          <!-- <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row, 'delete')">删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>
 
     <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryForm.page" :page-sizes="[10, 20,30, 50]" :page-size="queryForm.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryForm.page" :page-sizes="[10, 20,30, 50]" :page-size="queryForm.size" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='min-width:200px; max-width: 400px; margin-left:50px;'>
         <!-- <el-form-item :label="$t('table.type')" prop="type">
           <el-select class="filter-item" v-model="temp.type" placeholder="Please select">
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key">
@@ -120,19 +120,16 @@
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="temp.email"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" prop="mobile">
-          <el-input v-model="temp.mobile"></el-input>
-        </el-form-item>
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="temp.username"></el-input>
-        </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input v-model="temp.password"></el-input>
         </el-form-item>
-        <el-form-item label="部门" prop="department">
-          <el-input v-model="temp.department"></el-input>
+        <el-form-item label="角色" prop="role">
+          <el-select class="filter-item" v-model="temp.role" placeholder="请选择">
+            <el-option v-for="item in roles" :key="item.id" :label="item.value" :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="描述" prop="description">
+        <el-form-item label="备注" prop="description">
           <el-input v-model="temp.description"></el-input>
         </el-form-item>
         <!-- <el-form-item :label="$t('table.status')">
@@ -156,7 +153,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="Reading statistics" :visible.sync="dialogPvVisible">
+    <!-- <el-dialog title="Reading statistics" :visible.sync="dialogPvVisible">
       <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
         <el-table-column prop="key" label="Channel"> </el-table-column>
         <el-table-column prop="pv" label="Pv"> </el-table-column>
@@ -164,7 +161,7 @@
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogPvVisible = false">{{$t('table.confirm')}}</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -173,29 +170,29 @@ import api from '@/config/api';
 import { copy } from 'kit-qs'
 // import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
-import { parseTime } from '@/utils'
+// import { parseTime } from '@/utils'
 
-// const calendarTypeOptions = [
-//   { key: 'CN', display_name: 'China' },
-//   { key: 'US', display_name: 'USA' },
-//   { key: 'JP', display_name: 'Japan' },
-//   { key: 'EU', display_name: 'Eurozone' },
-// ]
+const roles = [
+  { id: 1, value: 'admin' },
+  { id: 2, value: 'manager' },
+  // { id: 3, value: 'editor' },
+  // { id: 4, value: 'guest' },
+]
 
 // arr to obj ,such as { CN : "China", US : "USA" }
-// const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
-//   acc[cur.key] = cur.display_name
-//   return acc
-// }, {})
+const roleIds = roles.reduce((obj, item) => {
+  obj[item.id] = item.value
+  return obj
+}, {})
 
 const defaultInfo = {
   id: undefined,
-  // avatar: '',
   email: '',
+  password: '',
+  roleIds: [],
+  // avatar: '',
   username: '',
   mobile: '',
-  password: '',
-  department: '',
   description: '',
 };
 
@@ -212,20 +209,22 @@ export default {
       listLoading: true,
       queryForm: {
         page: 1,
-        limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
-        sort: '+id',
+        size: 20,
+        keywords: '',
+        // role: undefined,
+        // importance: undefined,
+        // title: undefined,
+        // type: undefined,
+        // sort: '+id',
       },
-      importanceOptions: [1, 2, 3],
-      // calendarTypeOptions,
+      // importanceOptions: [1, 2, 3],
+      roles,
       // sortOptions: [
       //   { label: 'ID Ascending', key: '+id' },
       //   { label: 'ID Descending', key: '-id' },
       // ],
       // statusOptions: ['published', 'draft', 'deleted'],
-      showReviewer: false,
+      // showReviewer: false,
       temp: {
         ...defaultInfo,
       },
@@ -235,8 +234,8 @@ export default {
         update: '编辑',
         create: '新增',
       },
-      dialogPvVisible: false,
-      pvData: [],
+      // dialogPvVisible: false,
+      // pvData: [],
       rules: {
         // type: [{
         //   required: true,
@@ -249,11 +248,11 @@ export default {
         //   message: 'timestamp is required',
         //   trigger: 'change',
         // }],
-        username: [{
-          required: true,
-          message: '用户名必须填写',
-          trigger: 'blur',
-        }],
+        // username: [{
+        //   required: true,
+        //   message: '用户名必须填写',
+        //   trigger: 'blur',
+        // }],
         password: [{
           required: true,
           message: '密码必须填写',
@@ -264,10 +263,10 @@ export default {
           message: '邮箱必须填写',
           trigger: 'blur',
         }],
-        mobile: [{
-          // required: true,
-          // message: '手机必须填写',
-          // trigger: 'blur',
+        role: [{
+          required: true,
+          message: '角色必须选择',
+          trigger: 'blur',
         }],
       },
       downloadLoading: false,
@@ -286,9 +285,9 @@ export default {
       }
       return statusMap[status]
     },
-    // typeFilter(type) {
-    //   return calendarTypeKeyValue[type]
-    // },
+    typeFilter(type) {
+      return roleIds[type]
+    },
   },
   created() {
     this.getList()
@@ -297,8 +296,7 @@ export default {
     getList() {
       this.listLoading = true
       api.getUserList({
-        page: 1,
-        size: 20,
+        ...this.queryForm,
       }, (res) => {
         this.listLoading = false
         this.list = res.data.list
@@ -317,7 +315,7 @@ export default {
       this.getList()
     },
     handleSizeChange(val) {
-      this.queryForm.limit = val
+      this.queryForm.size = val
       this.getList()
     },
     handleCurrentChange(val) {
@@ -358,8 +356,9 @@ export default {
           api.saveUser({
             ...this.temp,
           }, (res) => {
-            this.list.unshift(this.temp)
             this.dialogFormVisible = false
+            Object.assign(this.temp, res.data);
+            this.list.unshift(this.temp)
             this.$notify({
               title: '成功',
               message: '创建成功',
@@ -385,24 +384,26 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = copy(this.temp)
-          // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          tempData.timestamp = +new Date(tempData.timestamp)
-          // updateArticle(tempData).then(() => {
-          //   for (const v of this.list) {
-          //     if (v.id === this.temp.id) {
-          //       const index = this.list.indexOf(v)
-          //       this.list.splice(index, 1, this.temp)
-          //       break
-          //     }
-          //   }
-          //   this.dialogFormVisible = false
-          //   this.$notify({
-          //     title: '成功',
-          //     message: '更新成功',
-          //     type: 'success',
-          //     duration: 2000,
-          //   })
-          // })
+          api.updateUser({
+            ...tempData,
+          }, (res) => {
+            for (const v of this.list) {
+              if (v.id === this.temp.id) {
+                const index = this.list.indexOf(v)
+                this.list.splice(index, 1, this.temp)
+                break
+              }
+            }
+            this.dialogFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '更新成功',
+              type: 'success',
+              duration: 2000,
+            })
+          }, (err) => {
+
+          });
         }
       })
     },
@@ -446,15 +447,15 @@ export default {
       //   this.downloadLoading = false
       // })
     },
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map((j) => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
-          return v[j]
-        }
-      }))
-    },
+    // formatJson(filterVal, jsonData) {
+    //   return jsonData.map(v => filterVal.map((j) => {
+    //     if (j === 'timestamp') {
+    //       return parseTime(v[j])
+    //     } else {
+    //       return v[j]
+    //     }
+    //   }))
+    // },
   },
 }
 </script>

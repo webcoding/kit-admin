@@ -59,12 +59,15 @@ const {
 const userInfo = storage.get('userInfo') || {};
 
 // 公共参数
+headers.init({
+  token: getToken(),
+  userId: userInfo.userId || '', // 用户唯一标志
+});
 commonParams.init({
-  id: userInfo.userId || '', // 用户唯一标志
+  // userId: userInfo.userId || '', // 用户唯一标志
   // udid: '', // 设备唯一标志
   // device: '', // 设备
   // net: '', // 网络
-  token: getToken(),
   // timestamp: '', // 时间
   // channel: 'h5', // 渠道
   // spm: 'h5',
@@ -96,29 +99,36 @@ const apiList = Object.keys(modelApis).reduce((api, key) => {
       api[key] = function postRequest(params, success, fail) {
         return request(url, {
           headers: {
+            ...headers.get(),
             // Accept: 'application/json',
             // 我们的 post 请求，使用的这个，不是 application/json
             // 'Content-Type': 'application/x-www-form-urlencoded',
           },
           method,
-          data: compact(Object.assign({}, commonParams.getParams(), params)),
+          data: compact(Object.assign({}, commonParams.get(), params)),
         }, success, fail)
       }
       break
     case 'GET':
     default:
       api[key] = function getRequest(params, success, fail) {
-        params = compact(Object.assign({}, commonParams.getParams(), params));
+        params = compact(Object.assign({}, commonParams.get(), params));
         let query = stringify(params)
         if (query) query = `?${query}`
-        return request(`${url}${query}`, {}, success, fail)
+        return request(`${url}${query}`, {
+          headers: {
+            ...headers.get(),
+          },
+        }, success, fail)
       }
       break
   }
   return api
 }, {})
 
-apiList.setCommonParams = commonParams.setParams;
-apiList.getCommonParams = commonParams.getParams;
+apiList.setCommonParams = commonParams.set;
+apiList.getCommonParams = commonParams.get;
+apiList.setHeader = headers.set;
+apiList.getHeader = headers.get;
 
 export default apiList;

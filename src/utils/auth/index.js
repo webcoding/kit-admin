@@ -3,7 +3,10 @@
 
 // import auth from './cookie';
 import auth from '@/utils/storage';
-import { commonParams } from '@/config/api/api.config';
+import {
+  // commonParams,
+  headers,
+} from '@/config/api/api.config';
 
 // export default cookie;
 // export default storage;
@@ -15,7 +18,7 @@ function getToken() {
 }
 
 function setToken(token, time) {
-  commonParams.setParams({ token })
+  headers.set({ token })
   if (!token) {
     return removeToken();
   }

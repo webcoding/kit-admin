@@ -3,11 +3,12 @@ import {
   Indicator,
   MessageBox,
 } from 'mint-ui'
+import tongji from '@/utils/tongji'
+
 // import qs from 'qs'
-// import router from '../router'
+import router from '../router'
 // import urlMap, { getUrlType, getParams } from './urlMap'
 // import env from '@/config/env'
-import tongji from '@/utils/tongji'
 // import { urlfix } from '@/utils/stringUtil'
 // import device from '@/utils/device'
 
@@ -152,6 +153,19 @@ const mini = {
   },
   setPageName(name) {
     currentPageName = name
+  },
+  goPage(path, query = {}) {
+    const { replace } = query;
+    delete query.replace;
+    const type = !replace ? 'push' : 'replace';
+    router[type]({
+      path,
+      query,
+    }, (res) => {
+      console.log(res)
+    }, (err) => {
+      console.log(err)
+    })
   },
   // goLink(e) {
   //   e.preventDefault()

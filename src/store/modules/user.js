@@ -25,8 +25,8 @@ const user = {
 
   mutations: {
     SET_USERID: (state, userId) => {
-      api.setCommonParams({
-        id: userId,
+      api.setHeader({
+        userId,
       })
       state.userId = userId
     },
@@ -133,6 +133,8 @@ const user = {
           resolve(res)
         }, (err) => {
           reject(err)
+          // 这里统一鉴权提示报错
+          return true;
         })
         // }
       })
