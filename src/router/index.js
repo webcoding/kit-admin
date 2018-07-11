@@ -169,28 +169,28 @@ export const asyncRouterMap = [
       // },
       {
         path: 'account',
-        component: _import('user/account'),
+        component: _import('sys/account'),
         name: 'account',
         meta: {
-          title: 'account',
+          title: '账户',
           icon: 'admin',
         },
       },
       {
-        path: 'auth',
-        component: _import('doing/doing'),
-        name: 'auth',
+        path: 'role',
+        component: _import('sys/role'),
+        name: 'role',
         meta: {
-          title: 'role',
+          title: '角色',
           icon: 'role',
         },
       },
       {
-        path: 'power',
-        component: _import('doing/doing'),
-        name: 'power',
+        path: 'auth',
+        component: _import('sys/auth'),
+        name: 'auth',
         meta: {
-          title: 'power',
+          title: '权限',
           icon: 'role2',
         },
       },

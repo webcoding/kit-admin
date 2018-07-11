@@ -75,12 +75,13 @@ const modelApis = {
   savePower: 'POST /sys/permission/save',
   delPower: 'POST /sys/permission/delete',
   updatePower: 'POST /sys/permission/update',
-
+  // 角色权限列表
+  getRoleAuthList: '/sys/role/permission/list',
   // 角色管理
-  getRoleList: '/sys/role/permission/list',
-  saveRole: '/sys/role/save',
-  delRole: '/sys/role/delete',
-  updateRole: '/sys/role/update',
+  getRoleList: '/sys/role/list',
+  saveRole: 'POST /sys/role/save',
+  delRole: 'POST /sys/role/delete',
+  updateRole: 'POST /sys/role/update',
   updateRolePower: '/sys/role/permission/update',
 
   // 人员管理

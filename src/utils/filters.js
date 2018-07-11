@@ -30,7 +30,7 @@ export function timeAgo (time) {
   }
 }
 
-// http://jsben.ch/ZAaku
+// http://jsben.ch/SNFWT
 export function formatNum(n) {
   if (n < 10) return '0' + n
   return n

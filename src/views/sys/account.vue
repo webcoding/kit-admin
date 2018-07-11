@@ -4,7 +4,7 @@
       <el-form
       :inline="true"
       :model="queryForm">
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="账户" v-model="queryForm.keywords">
+        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="搜索关键字" v-model="queryForm.keywords">
         </el-input>
         <!-- <el-select clearable style="width: 90px" class="filter-item" v-model="queryForm.importance" :placeholder="$t('table.importance')">
           <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item">
@@ -197,7 +197,7 @@ const defaultInfo = {
 };
 
 export default {
-  name: 'complexTable',
+  name: 'sys/account',
   directives: {
     waves,
   },

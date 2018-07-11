@@ -26,7 +26,7 @@ export const ENV = {
     stage: 'prod',
     baseUrl: 'https://m.haoshiqi.net',
     // apiBaseUrl: 'https://m.api.haoshiqi.net',
-    apiBaseUrl: 'https://api-prod',
+    apiBaseUrl: 'https://dapi.cloudai.net',
   },
   dev: {
     stage: 'dev',
@@ -104,9 +104,9 @@ const baseEnv = {
   },
 }
 
-const regDev = /^(m\.dev\.haoshiqi\.net)/i
-const regBeta = /^(m\.beta\.haoshiqi\.net)/i
-const regProd = /^(m\.haoshiqi\.net)/i
+const regDev = /^(d14\.cloudai\.net)/i
+const regBeta = /^(d14\.cloudai\.net)/i
+const regProd = /^(d14\.cloudai\.net)/i
 const regLocal = /^(localhost|127\.)/i
 const regLocalIp = /^(10\.|192\.)/i
 // const { protocol, host = ENV.prod.host, origin = ENV.prod.baseUrl } = location
