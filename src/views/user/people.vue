@@ -175,11 +175,11 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      api.getUserList({
+      api.getPersonalList({
         ...this.queryForm,
       }, (res) => {
         this.listLoading = false
-        this.list = res.data.list
+        this.list = res.data.list || []
         this.total = res.data.total
       }, (err) => {
 
