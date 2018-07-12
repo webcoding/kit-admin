@@ -4,8 +4,15 @@
       <el-form
       :inline="true"
       :model="queryForm">
-        <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="搜索关键字" v-model="queryForm.keywords">
-        </el-input>
+        <el-form-item label="">
+          <el-input
+            placeholder="搜索关键字"
+            style="width: 200px;"
+            class="filter-item"
+            @keyup.enter.native="handleFilter"
+            v-model="queryForm.keywords"
+          ></el-input>
+        </el-form-item>
         <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
         <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">添加</el-button>
       </el-form>
@@ -19,11 +26,6 @@
       border
       highlight-current-row
       >
-      <!-- <el-table-column align="center" label="ID" width="300">
-        <template slot-scope="scope">
-          <span>{{scope.row.id}}</span>
-        </template>
-      </el-table-column> -->
       <el-table-column align="center" label="账号">
         <template slot-scope="scope">
           <span>{{scope.row.email}}</span>
@@ -42,7 +44,7 @@
       </el-table-column>
     </el-table>
 
-    <div class="pagination-container">
+    <div class="pagination-container" style="margin-top: 16px;">
       <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryForm.page" :page-sizes="[10, 20,30, 50]" :page-size="queryForm.size" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
@@ -63,19 +65,6 @@
         <el-form-item label="备注" prop="description">
           <el-input v-model="temp.description"></el-input>
         </el-form-item>
-        <!-- <el-form-item :label="$t('table.status')">
-          <el-select class="filter-item" v-model="temp.status" placeholder="Please select">
-            <el-option v-for="item in  statusOptions" :key="item" :label="item" :value="item">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate style="margin-top:8px;" v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max='3'></el-rate>
-        </el-form-item>
-        <el-form-item :label="$t('table.remark')">
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="Please input" v-model="temp.remark">
-          </el-input>
-        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -253,7 +242,6 @@ export default {
     },
     handleUpdate(row) {
       this.temp = copy(row) // copy obj
-      // this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -307,39 +295,11 @@ export default {
         })
       })
     },
-    handleDownload() {
-      this.downloadLoading = true
-      // import('@/vendor/Export2Excel').then((excel) => {
-      //   const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-      //   const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-      //   const data = this.formatJson(filterVal, this.list)
-      //   excel.export_json_to_excel({
-      //     header: tHeader,
-      //     data,
-      //     filename: 'table-list',
-      //   })
-      //   this.downloadLoading = false
-      // })
-    },
-    // formatJson(filterVal, jsonData) {
-    //   return jsonData.map(v => filterVal.map((j) => {
-    //     if (j === 'timestamp') {
-    //       return parseTime(v[j])
-    //     } else {
-    //       return v[j]
-    //     }
-    //   }))
-    // },
   },
 }
 </script>
 
 <style lang="stylus" scoped>
-.filter-container {
-  margin-bottom: 16px;
-}
-.pagination-container {
-  margin-top: 16px;
-}
+
 </style>
 

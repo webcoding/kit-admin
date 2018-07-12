@@ -74,9 +74,9 @@ location /v2 {
 */
 const baseEnv = {
   ...debug,
-  version,  // 应用版本
-  channel, // 渠道信息
-  terminal, // 终端
+  version,    // 应用版本
+  channel,    // 渠道信息
+  terminal,   // 终端
   stage: 'prod', // 发行版本
   spm: '', // spm
   port: 8001,
@@ -99,7 +99,7 @@ const baseEnv = {
   envDebug(...rest) {
     console.warn('仅限临时使用')
     if (!rest) return false
-    // 传入期望的环境，返回true，默认prod为false
+    // 传入期望的环境，返回true，默认 prod 为false
     return rest.indexOf('dev') > -1
   },
 }

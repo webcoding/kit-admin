@@ -185,15 +185,15 @@ export const asyncRouterMap = [
           icon: 'role',
         },
       },
-      {
-        path: 'auth',
-        component: _import('sys/auth'),
-        name: 'auth',
-        meta: {
-          title: '权限',
-          icon: 'role2',
-        },
-      },
+      // {
+      //   path: 'auth',
+      //   component: _import('sys/auth'),
+      //   name: 'auth',
+      //   meta: {
+      //     title: '权限',
+      //     icon: 'role2',
+      //   },
+      // },
       // {
       //   path: 'menu',
       //   component: _import('doing/doing'),
