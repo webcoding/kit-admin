@@ -22,8 +22,6 @@ const commonParams = {
   },
 };
 
-
-
 const headers = {
   init(data) {
     reqHeaders = copy(data);
