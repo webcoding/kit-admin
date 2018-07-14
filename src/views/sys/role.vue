@@ -90,6 +90,13 @@ import api from '@/config/api';
 import { copy } from 'kit-qs'
 import waves from '@/directive/waves' // 水波纹指令
 
+const model = {
+  add: api.saveRole,
+  del: api.delRole,
+  edit: api.updateRole,
+  search: api.getRoleList,
+};
+
 const roles = [
   { id: 1, value: 'admin' },
   { id: 2, value: 'manager' },
@@ -111,7 +118,7 @@ const defaultInfo = {
 };
 
 export default {
-  name: 'sys/role',
+  name: 'sys_role',
   directives: {
     waves,
   },
@@ -179,7 +186,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      api.getRoleList({
+      model.search({
         ...this.queryForm,
       }, (res) => {
         this.listLoading = false
@@ -218,7 +225,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          api.saveUser({
+          model.add({
             ...this.temp,
           }, (res) => {
             this.dialogFormVisible = false
@@ -249,7 +256,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = copy(this.temp)
-          api.updateUser({
+          model.edit({
             ...tempData,
           }, (res) => {
             for (const v of this.list) {
@@ -274,7 +281,7 @@ export default {
     },
     // 不能删除自己，不能删除最后一个用户，不能删除超管
     handleDelete(row) {
-      api.delUser({
+      model.del({
         ids: row.id,
       }, (res) => {
         this.$notify({

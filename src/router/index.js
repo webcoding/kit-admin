@@ -172,7 +172,7 @@ export const asyncRouterMap = [
         component: _import('sys/account'),
         name: 'account',
         meta: {
-          title: '账户',
+          title: 'account',
           icon: 'admin',
         },
       },
@@ -181,7 +181,7 @@ export const asyncRouterMap = [
         component: _import('sys/role'),
         name: 'role',
         meta: {
-          title: '角色',
+          title: 'role',
           icon: 'role',
         },
       },

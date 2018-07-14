@@ -70,9 +70,9 @@ const modelApis = {
   delUser: 'POST /sys/user/delete',
 
   // 权限管理
-  savePower: 'POST /sys/permission/save',
-  delPower: 'POST /sys/permission/delete',
-  updatePower: 'POST /sys/permission/update',
+  saveAuth: 'POST /sys/permission/save',
+  delAuth: 'POST /sys/permission/delete',
+  updateAuth: 'POST /sys/permission/update',
   // 角色权限列表
   getRoleAuthList: '/sys/role/permission/list',
   // 角色管理
