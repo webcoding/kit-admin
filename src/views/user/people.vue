@@ -95,15 +95,13 @@
         <el-form-item label="姓名" prop="username">
           <el-input v-model="temp.username"></el-input>
         </el-form-item>
-        <!-- <el-table-column>
-          <template label="性别" prop="gender">
-            <el-radio-group v-model="temp.gender">
-              <el-radio :label="0">未知</el-radio>
-              <el-radio :label="1">男</el-radio>
-              <el-radio :label="2">女</el-radio>
-            </el-radio-group>
-          </template>
-        </el-table-column> -->
+        <el-form-item label="性别" prop="gender">
+          <el-radio-group v-model="temp.gender">
+            <el-radio :label="0">未知</el-radio>
+            <el-radio :label="1">男</el-radio>
+            <el-radio :label="2">女</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="手机号" prop="mobile">
           <el-input v-model="temp.mobile"></el-input>
         </el-form-item>
