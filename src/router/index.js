@@ -246,7 +246,7 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'people',
-        component: _import('user/people'),
+        component: _import('table/people'),
         name: 'people',
         meta: {
           title: 'people',
@@ -255,22 +255,22 @@ export const asyncRouterMap = [
       },
       {
         path: 'cert',
-        component: _import('doing/doing'),
+        component: _import('table/cert'),
         name: 'cert',
         meta: {
           title: 'cert',
           icon: 'cert',
         },
       },
-      // {
-      //   path: 'depart',
-      //   component: _import('doing/doing'),
-      //   name: 'depart',
-      //   meta: {
-      //     title: 'depart',
-      //     icon: 'depart',
-      //   },
-      // },
+      {
+        path: 'depart',
+        component: _import('table/depart'),
+        name: 'depart',
+        meta: {
+          title: 'depart',
+          icon: 'depart',
+        },
+      },
     ],
   },
 

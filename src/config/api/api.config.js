@@ -85,22 +85,22 @@ const modelApis = {
   // 人员管理
   getPersonalList: '/org/personal/list',
   savePersonal: 'POST /org/personal/save',
-  delPersonal: '/org/personal/delete',
+  delPersonal: 'POST /org/personal/delete',
   updatePersonal: 'POST /org/personal/update',
   searchPersonal: '/org/personal/save',
 
   // 人员证书管理
   getResList: '/personal/resource/list',
-  saveRes: '/personal/resource/save',
-  delRes: '/personal/resource/delete',
-  uploadRes: '/personal/resource/upload',
+  saveRes: 'POST /personal/resource/save',
+  delRes: 'POST /personal/resource/delete',
+  uploadRes: 'POST /personal/resource/upload',
   searchRes: '/personal/resource/search',
 
-  // 部门管理
+  // 组织架构
   getDeptList: '/org/dept/list',
-  saveDept: '/org/dept/save',
-  delDept: '/org/dept/delete',
-  uploadDept: '/org/dept/upload',
+  saveDept: 'POST /org/dept/save',
+  delDept: 'POST /org/dept/delete',
+  uploadDept: 'POST /org/dept/upload',
   searchDept: '/org/dept/search',
 }
 

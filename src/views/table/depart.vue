@@ -28,16 +28,49 @@
       border
       highlight-current-row
       >
-      <el-table-column align="center" label="账号">
+      <el-table-column label="姓名" prop="username"></el-table-column>
+      <el-table-column label="性别">
         <template slot-scope="scope">
-          <span>{{scope.row.email}}</span>
+          <span>{{ scope.row.gender | sexFilter }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="最近访问">
+      <el-table-column label="手机号" prop="mobile"></el-table-column>
+      <el-table-column label="邮箱" prop="email"></el-table-column>
+      <el-table-column label="学历">
+        <template slot-scope="scope">
+          <span>{{ scope.row.education }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="职称">
+        <template slot-scope="scope">
+          <span>{{ scope.row.jobTitle }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="部门">
+        <template slot-scope="scope">
+          <span>{{ scope.row.deptId }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="职位">
+        <template slot-scope="scope">
+          <span>{{ scope.row.scope }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="是否领导">
+        <template slot-scope="scope">
+          <span>{{ scope.row.isLeader }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="养老金是否参保">
+        <template slot-scope="scope">
+          <span>{{ scope.row.isPension }}</span>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column align="center" label="最近访问">
         <template slot-scope="scope">
           <span>{{scope.row.lastVisit | formatDate('Y-M-D H:F')}}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
@@ -50,23 +83,52 @@
       <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryForm.page" :page-sizes="[10, 20,30, 50]" :page-size="queryForm.size" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
+
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='min-width:200px; max-width: 400px; margin-left:50px;'>
+      <el-form
+      :rules="rules"
+      ref="dataForm"
+      :model="temp"
+      label-position="left"
+      label-width="70px"
+      style='min-width: 300px; max-width: 400px; margin-left:50px;'>
+        <el-form-item label="姓名" prop="username">
+          <el-input v-model="temp.username"></el-input>
+        </el-form-item>
+        <el-form-item label="性别" prop="gender">
+          <el-radio-group v-model="temp.gender">
+            <el-radio :label="0">未知</el-radio>
+            <el-radio :label="1">男</el-radio>
+            <el-radio :label="2">女</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="手机号" prop="mobile">
+          <el-input v-model="temp.mobile"></el-input>
+        </el-form-item>
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="temp.email"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="temp.password"></el-input>
-        </el-form-item>
-        <el-form-item label="角色" prop="role">
-          <el-select class="filter-item" v-model="temp.role" placeholder="请选择">
-            <el-option v-for="item in roles" :key="item.id" :label="item.value" :value="item.id">
+        <el-form-item label="学历" prop="education">
+          <el-select class="filter-item" v-model="temp.education" placeholder="请选择">
+            <el-option v-for="item in educations" :key="item.id" :label="item.value" :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="备注" prop="description">
-          <el-input v-model="temp.description"></el-input>
+        <el-form-item label="部门" prop="deptId">
+          <el-select class="filter-item" v-model="temp.deptId" placeholder="请选择">
+            <el-option v-for="item in deptIds" :key="item.id" :label="item.value" :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
+        <el-form-item label="职称" prop="jobTitle">
+          <el-select class="filter-item" v-model="temp.jobTitle" placeholder="请选择">
+            <el-option v-for="item in jobTitles" :key="item.id" :label="item.value" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <!-- <el-form-item label="备注" prop="description">
+          <el-input v-model="temp.description"></el-input>
+        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -82,32 +144,59 @@ import api from '@/config/api';
 import { copy } from 'kit-qs';
 import waves from '@/directive/waves'; // 水波纹指令
 
-const roles = [
-  { id: 1, value: 'admin' },
-  { id: 2, value: 'manager' },
-  // { id: 3, value: 'editor' },
-  // { id: 4, value: 'guest' },
-]
+const model = {
+  add: api.savePersonal,
+  del: api.delPersonal,
+  edit: api.updatePersonal,
+  search: api.getPersonalList,
+};
+
+// const roles = [
+//   { id: 1, value: 'admin' },
+//   { id: 2, value: 'manager' },
+//   // { id: 3, value: 'editor' },
+//   // { id: 4, value: 'guest' },
+// ];
+const educations = [
+  { id: 1, value: '高中' },
+  { id: 2, value: '职专' },
+  { id: 3, value: '本科' },
+  { id: 4, value: '硕士' },
+  { id: 5, value: '博士' },
+];
+const deptIds = [
+  { id: 1, value: '总部' },
+  { id: 2, value: '分部' },
+];
+const jobTitles = [
+  { id: 1, value: '高级' },
+  { id: 2, value: '中级' },
+];
 
 // arr to obj ,such as { CN : "China", US : "USA" }
-const roleIds = roles.reduce((obj, item) => {
-  obj[item.id] = item.value
-  return obj
-}, {})
+// const roleIds = roles.reduce((obj, item) => {
+//   obj[item.id] = item.value
+//   return obj
+// }, {})
 
 const defaultInfo = {
   id: undefined,
-  email: '',
-  password: '',
-  roleIds: [],
-  // avatar: '',
   username: '',
   mobile: '',
-  description: '',
+  email: '',
+  gender: 0,
+  remark: '',
+  education: '',
+  jobTitle: '',
+  deptId: '',
+  scope: '',
+  isLeader: '',
+  isPension: '',
+  state: '',
 };
 
 export default {
-  name: 'complexTable',
+  name: 'user_people',
   directives: {
     waves,
   },
@@ -121,9 +210,10 @@ export default {
         page: 1,
         size: 20,
         keywords: '',
-        // sort: '+id',
       },
-      roles,
+      educations,
+      deptIds,
+      jobTitles,
       temp: {
         ...defaultInfo,
       },
@@ -134,23 +224,22 @@ export default {
         create: '新增',
       },
       rules: {
-        password: [{
-          required: true,
-          message: '密码必须填写',
-          trigger: 'blur',
-        }],
+        // password: [{
+        //   required: true,
+        //   message: '密码必须填写',
+        //   trigger: 'blur',
+        // }],
         email: [{
           required: true,
           message: '邮箱必须填写',
           trigger: 'blur',
         }],
-        role: [{
-          required: true,
-          message: '角色必须选择',
-          trigger: 'blur',
-        }],
+        // role: [{
+        //   required: true,
+        //   message: '角色必须选择',
+        //   trigger: 'blur',
+        // }],
       },
-      downloadLoading: false,
     }
   },
   filters: {
@@ -166,9 +255,9 @@ export default {
       }
       return statusMap[status]
     },
-    typeFilter(type) {
-      return roleIds[type]
-    },
+    // typeFilter(type) {
+    //   return roleIds[type]
+    // },
   },
   created() {
     this.getList()
@@ -176,12 +265,13 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      api.getUserList({
+      model.search({
         ...this.queryForm,
       }, (res) => {
         this.listLoading = false
-        this.list = res.data.list
-        this.total = res.data.total
+        const data = res.result || {}
+        this.list = data.list || []
+        this.total = data.total
       }, (err) => {
 
       });
@@ -229,11 +319,11 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          api.saveUser({
+          model.add({
             ...this.temp,
           }, (res) => {
             this.dialogFormVisible = false
-            Object.assign(this.temp, res.data);
+            Object.assign(this.temp, res.result);
             this.list.unshift(this.temp)
             this.$notify({
               title: '成功',
@@ -259,7 +349,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = copy(this.temp)
-          api.updateUser({
+          model.edit({
             ...tempData,
           }, (res) => {
             for (const v of this.list) {
@@ -284,7 +374,7 @@ export default {
     },
     // 不能删除自己，不能删除最后一个用户，不能删除超管
     handleDelete(row) {
-      api.delUser({
+      model.del({
         ids: row.id,
       }, (res) => {
         this.$notify({
@@ -307,8 +397,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.pagination-container {
-  margin-top: 16px;
-}
+
 </style>
 
