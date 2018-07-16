@@ -91,7 +91,7 @@
       :model="temp"
       label-position="left"
       label-width="70px"
-      style='min-width:200px; max-width: 400px; margin-left:50px;'>
+      style='min-width: 300px; max-width: 400px; margin-left:50px;'>
         <el-form-item label="姓名" prop="username">
           <el-input v-model="temp.username"></el-input>
         </el-form-item>
