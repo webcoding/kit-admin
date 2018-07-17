@@ -169,7 +169,7 @@ export const asyncRouterMap = [
       // },
       {
         path: 'account',
-        component: _import('sys/account'),
+        component: _import('system/account'),
         name: 'account',
         meta: {
           title: 'account',
@@ -178,7 +178,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'role',
-        component: _import('sys/role'),
+        component: _import('system/role'),
         name: 'role',
         meta: {
           title: 'role',
@@ -186,8 +186,17 @@ export const asyncRouterMap = [
         },
       },
       // {
+      //   path: 'org',
+      //   component: _import('system/org'),
+      //   name: 'org',
+      //   meta: {
+      //     title: 'org',
+      //     icon: 'depart',
+      //   },
+      // },
+      // {
       //   path: 'auth',
-      //   component: _import('sys/auth'),
+      //   component: _import('system/auth'),
       //   name: 'auth',
       //   meta: {
       //     title: '权限',
