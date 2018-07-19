@@ -99,7 +99,7 @@ const baseEnv = {
   envDebug(...rest) {
     console.warn('仅限临时使用')
     if (!rest) return false
-    // 传入期望的环境，返回true，默认 prod 为false
+    // 传入期望的环境，返回true，默认prod为false
     return rest.indexOf('dev') > -1
   },
 }

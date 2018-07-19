@@ -13,6 +13,7 @@ import router from './router'
 import store from './store'
 
 import i18n from './lang' // Internationalization
+import { isAuth } from '@/utils'
 import './icons' // icon
 import './errorLog'// error log
 import './permission' // permission control
@@ -31,6 +32,9 @@ Object.keys(filters).forEach((key) => {
 })
 
 Vue.config.productionTip = false
+
+// 挂载全局
+Vue.prototype.isAuth = isAuth
 
 /* eslint no-new: 0 */
 new Vue({

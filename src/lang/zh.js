@@ -2,18 +2,26 @@
 /* eslint max-len: 0 */
 export default {
   route: {
-    system: '系统管理',
-    org: '组织架构',
-    depart: '部门管理',
     doing: '正在开发',
-    account: '账号管理',
-    people: '人员管理',
-    user: '用户管理',
-    power: '权限管理',
-    menu: '菜单管理',
-    disc: '数据字典',
+
+    // sys
+    system: '系统管理',
+    account: '管理员列表',
     role: '角色管理',
+    org: '组织架构',
+    menu: '菜单管理',
+    sql: 'SQL监控',
+    dict: '数据字典',
+    upload: '文件上传',
+    // oss
     log: '系统日志',
+    // job
+    task: '定时任务',
+
+    user: '用户管理',
+    depart: '部门管理',
+    people: '人员管理',
+    power: '权限管理',
     peoples: '人员证书管理',
     cert: '证书管理',
     gc: '工程业绩管理',

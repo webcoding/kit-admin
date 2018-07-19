@@ -140,13 +140,13 @@ export const asyncRouterMap = [
   //   ],
   // },
   {
-    path: '/system',
+    path: '/sys',
     component: Layout,
     redirect: 'noredirect',
     name: 'system',
     meta: {
       title: 'system',
-      icon: 'setting',
+      icon: 'system',
     },
     children: [
       // {
@@ -169,7 +169,7 @@ export const asyncRouterMap = [
       // },
       {
         path: 'account',
-        component: _import('system/account'),
+        component: _import('modules/sys/account'),
         name: 'account',
         meta: {
           title: 'account',
@@ -178,16 +178,70 @@ export const asyncRouterMap = [
       },
       {
         path: 'role',
-        component: _import('system/role'),
+        component: _import('modules/sys/role'),
         name: 'role',
         meta: {
           title: 'role',
           icon: 'role',
         },
       },
+      {
+        path: 'menu',
+        component: _import('modules/sys/menu'),
+        name: 'menu',
+        meta: {
+          title: 'menu',
+          icon: 'menu',
+        },
+      },
+      {
+        path: 'sql',
+        component: _import('modules/sys/sql'),
+        name: 'sql',
+        meta: {
+          title: 'sql',
+          icon: 'sql',
+        },
+      },
+      {
+        path: 'task',
+        component: _import('modules/job/task'),
+        name: 'task',
+        meta: {
+          title: 'task',
+          icon: 'task',
+        },
+      },
+      {
+        path: 'dict',
+        component: _import('modules/sys/dict'),
+        name: 'dict',
+        meta: {
+          title: 'dict',
+          icon: 'dict',
+        },
+      },
+      {
+        path: 'upload',
+        component: _import('modules/oss/upload'),
+        name: 'upload',
+        meta: {
+          title: 'upload',
+          icon: 'upload',
+        },
+      },
+      {
+        path: 'log',
+        component: _import('modules/sys/log'),
+        name: 'log',
+        meta: {
+          title: 'log',
+          icon: 'log',
+        },
+      },
       // {
       //   path: 'org',
-      //   component: _import('system/org'),
+      //   component: _import('modules/sys/org'),
       //   name: 'org',
       //   meta: {
       //     title: 'org',
@@ -196,7 +250,7 @@ export const asyncRouterMap = [
       // },
       // {
       //   path: 'auth',
-      //   component: _import('system/auth'),
+      //   component: _import('modules/sys/auth'),
       //   name: 'auth',
       //   meta: {
       //     title: '权限',
@@ -205,7 +259,7 @@ export const asyncRouterMap = [
       // },
       // {
       //   path: 'menu',
-      //   component: _import('doing/doing'),
+      //   component: _import('modules/sys/doing'),
       //   name: 'menu',
       //   meta: {
       //     title: 'menu',
@@ -215,7 +269,7 @@ export const asyncRouterMap = [
 
       // {
       //   path: 'rule',
-      //   component: _import('doing/doing'),
+      //   component: _import('modules/sys/doing'),
       //   name: 'rule',
       //   meta: {
       //     title: '角色类型管理',
