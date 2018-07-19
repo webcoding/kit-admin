@@ -91,7 +91,10 @@ export default {
     line-height: 58px;
     height: 50px;
     float: left;
-    padding: 0 10px;
+    padding: 0 16px;
+    &:hover {
+      background: #e6f7ff;
+    }
   }
   .breadcrumb-container{
     float: left;

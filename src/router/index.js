@@ -146,7 +146,7 @@ export const asyncRouterMap = [
     name: 'system',
     meta: {
       title: 'system',
-      icon: 'system',
+      icon: 'icon-system',
     },
     children: [
       // {
@@ -304,7 +304,7 @@ export const asyncRouterMap = [
     name: 'peoples',
     meta: {
       title: 'peoples',
-      icon: 'peoples',
+      icon: 'people1',
     },
     children: [
       {
@@ -359,27 +359,30 @@ export const asyncRouterMap = [
     ],
   },
 
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/table',
-  //   name: 'Example',
-  //   meta: { title: 'Example', icon: 'example' },
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: 'Table',
-  //       component: () => import('@/views/table/index'),
-  //       meta: { title: 'Table', icon: 'table' },
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: 'Tree',
-  //       component: () => import('@/views/tree/index'),
-  //       meta: { title: 'Tree', icon: 'tree' },
-  //     },
-  //   ],
-  // },
+  {
+    path: '/example',
+    component: Layout,
+    redirect: '/example/table',
+    name: 'Example',
+    meta: {
+      title: 'Example',
+      icon: 'example',
+    },
+    children: [
+      {
+        path: 'table',
+        name: 'Table',
+        component: () => import('@/views/table/index'),
+        meta: { title: 'Table', icon: 'table' },
+      },
+      {
+        path: 'tree',
+        name: 'Tree',
+        component: () => import('@/views/example/tree'),
+        meta: { title: 'Tree', icon: 'tree' },
+      },
+    ],
+  },
   // {
   //   path: '/form',
   //   component: Layout,
