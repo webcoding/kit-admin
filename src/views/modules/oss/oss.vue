@@ -14,7 +14,8 @@
           ></el-input>
         </el-form-item>
         <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
-        <el-button class="filter-item" style="margin-left: 10px;" @click="handleAddOrUpdate" type="success" icon="el-icon-edit">添加</el-button>
+        <el-button class="filter-item" style="margin-left: 10px;" @click="handleConfig" type="primary" icon="el-icon-edit">云存储配置</el-button>
+        <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="success" icon="el-icon-edit">上传文件</el-button>
       </el-form>
     </div>
 
@@ -26,6 +27,12 @@
       border
       highlight-current-row
       >
+      <el-table-column
+        type="selection"
+        header-align="center"
+        align="center"
+        width="50">
+      </el-table-column>
       <!-- <el-table-column
         prop="id"
         header-align="center"
@@ -33,59 +40,18 @@
         width="80"
         label="ID">
       </el-table-column> -->
-      <table-tree-column
-        prop="name"
+      <el-table-column
+        prop="url"
         header-align="center"
-        treeKey="id"
+        align="center"
+        label="URL地址">
+      </el-table-column>
+      <el-table-column
+        prop="createDate"
+        header-align="center"
+        align="center"
         width="180"
-        label="名称">
-      </table-tree-column>
-      <!-- <el-table-column
-        prop="parentName"
-        header-align="center"
-        align="center"
-        width="120"
-        label="上级菜单">
-      </el-table-column> -->
-      <el-table-column
-        header-align="center"
-        align="center"
-        label="图标">
-        <template slot-scope="scope">
-          <!-- <icon-svg :name="scope.row.icon || 'menu'"></icon-svg> -->
-        </template>
-      </el-table-column>
-      <el-table-column
-        header-align="center"
-        align="center"
-        label="类型">
-        <template slot-scope="scope">
-          <el-tag v-if="!scope.row.link && scope.row.type === 'menu'" size="small">目录</el-tag>
-          <el-tag v-else-if="scope.row.type === 'menu'" size="small" type="success">菜单</el-tag>
-          <el-tag v-else-if="scope.row.type === 'btn'" size="small" type="info">按钮</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="position"
-        header-align="center"
-        align="center"
-        label="排序号">
-      </el-table-column>
-      <el-table-column
-        prop="link"
-        header-align="center"
-        align="center"
-        width="150"
-        :show-overflow-tooltip="true"
-        label="菜单URL">
-      </el-table-column>
-      <el-table-column
-        prop="permCode"
-        header-align="center"
-        align="center"
-        width="150"
-        :show-overflow-tooltip="true"
-        label="授权标识">
+        label="创建时间">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -94,44 +60,21 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+          <!-- <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button> -->
           <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <!-- <div class="pagination-container" style="margin-top: 16px;">
+    <div class="pagination-container" style="margin-top: 16px;">
       <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryForm.page" :page-sizes="[10, 20,30, 50]" :page-size="queryForm.size" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
-    </div> -->
+    </div>
 
-    <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
-
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='min-width:200px; max-width: 400px; margin-left:50px;'>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="temp.email"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="temp.password"></el-input>
-        </el-form-item>
-        <el-form-item label="角色" prop="role">
-          <el-select class="filter-item" v-model="temp.role" placeholder="请选择">
-            <el-option v-for="item in roles" :key="item.id" :label="item.value" :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="备注" prop="description">
-          <el-input v-model="temp.description"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
-        <el-button v-else type="primary" @click="updateData">确定</el-button>
-      </div>
-    </el-dialog>
+    <!-- 弹窗, 云存储配置 -->
+    <!-- <config v-if="configVisible" ref="config"></config> -->
+    <!-- 弹窗, 上传文件 -->
+    <!-- <upload v-if="uploadVisible" ref="upload" @refreshDataList="getDataList"></upload> -->
   </div>
 </template>
 
@@ -139,15 +82,14 @@
 import api from '@/config/api';
 import { copy } from 'kit-qs';
 import waves from '@/directive/waves'; // 水波纹指令
-import { treeDataTranslate } from '@/utils'
-import TableTreeColumn from '@/components/TableTreeColumn'
-import AddOrUpdate from './menu-add-or-update'
+// import config from './oss-config'
+// import upload from './oss-upload'
 
 const model = {
-  add: api.saveAuth,
-  del: api.delAuth,
-  edit: api.updateAuth,
-  search: api.getAuth,
+  add: api.saveUser,
+  del: api.delUser,
+  edit: api.updateUser,
+  search: api.getUserList,
 };
 
 const roles = [
@@ -175,17 +117,16 @@ const defaultInfo = {
 };
 
 export default {
-  name: 'sys_menu',
+  name: 'sys_account',
   components: {
-    [TableTreeColumn.name]: TableTreeColumn,
-    AddOrUpdate,
+    // [config.name]: config,
+    // [upload.name]: upload,
   },
   directives: {
     waves,
   },
   data() {
     return {
-      addOrUpdateVisible: false,
       tableKey: 0,
       list: null,
       total: null,
@@ -207,21 +148,21 @@ export default {
         create: '新增',
       },
       rules: {
-        // password: [{
-        //   required: true,
-        //   message: '密码必须填写',
-        //   trigger: 'blur',
-        // }],
-        // email: [{
-        //   required: true,
-        //   message: '邮箱必须填写',
-        //   trigger: 'blur',
-        // }],
-        // role: [{
-        //   required: true,
-        //   message: '角色必须选择',
-        //   trigger: 'blur',
-        // }],
+        password: [{
+          required: true,
+          message: '密码必须填写',
+          trigger: 'blur',
+        }],
+        email: [{
+          required: true,
+          message: '邮箱必须填写',
+          trigger: 'blur',
+        }],
+        role: [{
+          required: true,
+          message: '角色必须选择',
+          trigger: 'blur',
+        }],
       },
       downloadLoading: false,
     }
@@ -244,16 +185,16 @@ export default {
     },
   },
   created() {
-    this.getDataList()
+    this.getList()
   },
   methods: {
-    getDataList() {
+    getList() {
       this.listLoading = true
       model.search({
         ...this.queryForm,
       }, (res) => {
         this.listLoading = false
-        this.list = treeDataTranslate(res.data.children)
+        this.list = res.data.list
         this.total = res.data.total
       }, (err) => {
 
@@ -261,15 +202,15 @@ export default {
     },
     handleFilter() {
       this.queryForm.page = 1
-      this.getDataList()
+      this.getList()
     },
     handleSizeChange(val) {
       this.queryForm.size = val
-      this.getDataList()
+      this.getList()
     },
     handleCurrentChange(val) {
       this.queryForm.page = val
-      this.getDataList()
+      this.getList()
     },
     handleModifyStatus(row, status) {
       switch (status) {
@@ -289,13 +230,6 @@ export default {
       this.temp = {
         ...defaultInfo,
       }
-    },
-    // 新增 / 修改
-    handleAddOrUpdate(id) {
-      this.addOrUpdateVisible = true
-      this.$nextTick(() => {
-        this.$refs.addOrUpdate.init(id)
-      })
     },
     /* eslint dot-notation: 0 */
     handleCreate() {

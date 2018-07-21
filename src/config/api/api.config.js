@@ -55,7 +55,14 @@ const modelApis = {
   // login: 'POST /login/login',
   logout: 'POST /admin/logout',
   adminCheck: '/admin/check',
-  menu: '/admin/menu',
+  getMenu: '/admin/menu',
+  // 权限管理
+  getAuth: '/sys/permission/list',
+  saveAuth: 'POST /sys/permission/save',
+  delAuth: 'POST /sys/permission/delete',
+  updateAuth: 'POST /sys/permission/update',
+  // 角色权限列表
+  getRoleAuthList: '/sys/role/permission/list',
 
   // 用户管理
   getUserList: '/sys/user/list',
@@ -68,13 +75,6 @@ const modelApis = {
   updateUserPwd: 'POST /sys/user/updatePwd',
   updateUserRole: 'POST /sys/user/role/update',
   delUser: 'POST /sys/user/delete',
-
-  // 权限管理
-  saveAuth: 'POST /sys/permission/save',
-  delAuth: 'POST /sys/permission/delete',
-  updateAuth: 'POST /sys/permission/update',
-  // 角色权限列表
-  getRoleAuthList: '/sys/role/permission/list',
   // 角色管理
   getRoleList: '/sys/role/list',
   saveRole: 'POST /sys/role/save',

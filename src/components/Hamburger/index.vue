@@ -34,7 +34,7 @@ export default {
   display: inline-block;
   width: 20px;
   height: 20px;
-  transform: rotate(180deg);
+  transform: scaleX(-1);
   transition: .38s;
   transform-origin: 50% 50%;
   /* opacity: 0.5; */
@@ -43,6 +43,6 @@ export default {
   opacity: 1;
 } */
 .hamburger.is-active {
-  transform: rotate(0);
+  transform: scaleX(1);
 }
 </style>

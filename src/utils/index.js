@@ -1,39 +1,64 @@
 
 // 获取uuid
-export function getUUID () {
+export function getUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     return (c === 'x' ? (Math.random() * 16 | 0) : ('r&0x3' | '0x8')).toString(16)
   })
 }
 
 // 是否有权限
-export function isAuth (key) {
+export function isAuth(key) {
   return JSON.parse(sessionStorage.getItem('permissions') || '[]').indexOf(key) !== -1 || false
 }
 
 // 树形数据转换
-export function treeDataTranslate (data, id = 'id', pid = 'parentId') {
-  const res = []
+export function treeDataTranslate(data, id = 'id', pid = 'parentId') {
+  // const res = []
   const temp = {}
-  for (let i = 0; i < data.length; i++) {
-    temp[data[i][id]] = data[i]
-  }
-  for (let k = 0; k < data.length; k++) {
-    if (temp[data[k][pid]] && data[k][id] !== data[k][pid]) {
-      if (!temp[data[k][pid]].children) {
-        temp[data[k][pid]].children = []
+  // 遍历目录
+  // for (let i = 0; i < data.length; i++) {
+  //   // const item = data[i];
+  //   // const menuId = item[id];
+  //   // temp[menuId] = item;
+  //   temp[data[i][id]] = data[i];
+  // }
+
+  /* eslint no-underscore-dangle: 0 */
+  function mapMenu(list = [], level = 1) {
+    list.forEach((item) => {
+      item._level = level;
+      temp[item[id]] = item;
+      if (item.children) {
+        mapMenu(item.children, level + 1);
       }
-      /* eslint no-underscore-dangle: 0 */
-      if (!temp[data[k][pid]]._level) {
-        temp[data[k][pid]]._level = 1
-      }
-      data[k]._level = temp[data[k][pid]]._level + 1
-      temp[data[k][pid]].children.push(data[k])
-    } else {
-      res.push(data[k])
-    }
+    })
   }
-  return res
+
+  mapMenu(data);
+
+  // for (let k = 0; k < data.length; k++) {
+  //   const item = data[k];
+  //   // if (item[pid] === '0000000064b82c660164b82d524b0000') {
+  //   //   delete item[pid];
+  //   // }
+  //   const parentId = item[pid]; // data[k][pid]
+  //   const parentItem = temp[parentId]; // temp[data[k][pid]]
+  //   if (parentItem && item[id] !== parentId) {
+  //     if (!parentItem.children) {
+  //       parentItem.children = []
+  //     }
+  //     /* eslint no-underscore-dangle: 0 */
+  //     if (!parentItem._level) {
+  //       parentItem._level = 1
+  //     }
+  //     item._level = parentItem._level + 1
+  //     parentItem.children.push(item)
+  //   } else {
+  //     res.push(item)
+  //   }
+  // }
+  // debugger
+  return data;
 }
 
 export function parseTime(time, cFormat) {

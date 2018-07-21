@@ -223,7 +223,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'upload',
-        component: _import('modules/oss/upload'),
+        component: _import('modules/oss/oss'),
         name: 'upload',
         meta: {
           title: 'upload',

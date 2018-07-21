@@ -5,7 +5,7 @@
       </a>
     </p>
     <div class="icons-wrapper">
-      <div v-for="item of iconsMap" :key="item" @click="handleClipboard(generateIconCode(item),$event)">
+      <div v-for="item of iconsMap" :key="item" @click="handleClipboard(generateIconCode(item), $event)">
         <el-tooltip placement="top">
           <div slot="content">
             {{generateIconCode(item)}}
