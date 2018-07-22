@@ -76,10 +76,8 @@
 </template>
 
 <script>
-import { treeDataTranslate } from '@/utils'
-// import Icon from '@/icons'
-
-console.log(treeDataTranslate)
+// import { treeDataTranslate } from '@/utils'
+import Icon from '@/icons'
 
 export default {
   data() {
@@ -124,11 +122,11 @@ export default {
     }
   },
   created () {
-    // this.iconList = Icon.getNameList()
+    this.iconList = Icon.getNameList()
   },
   methods: {
-    init (id) {
-      // this.dataForm.id = id || 0
+    init(id) {
+      this.dataForm.id = id || 0
       // this.$http({
       //   url: this.$http.adornUrl('/sys/menu/select'),
       //   method: 'get',

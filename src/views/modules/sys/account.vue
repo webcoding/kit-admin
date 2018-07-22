@@ -3,42 +3,104 @@
     <div class="filter-container">
       <el-form
       :inline="true"
-      :model="queryForm">
+      :model="dataForm"
+      >
         <el-form-item label="">
           <el-input
-            placeholder="搜索关键字"
+            placeholder="用户名"
             style="width: 200px;"
             class="filter-item"
             @keyup.enter.native="handleFilter"
-            v-model="queryForm.keywords"
+            v-model="dataForm.keywords"
+            clearable
           ></el-input>
         </el-form-item>
         <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
-        <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">添加</el-button>
-        <!-- <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">{{$t('table.export')}}</el-button> -->
-        <!-- <el-checkbox class="filter-item" style='margin-left:15px;' @change='tableKey=tableKey+1' v-model="showReviewer">{{$t('table.reviewer')}}</el-checkbox> -->
+        <el-button class="filter-item" style="margin-left: 10px;" @click="handleAddOrUpdate" type="primary" icon="el-icon-edit">添加</el-button>
+        <el-button type="danger" @click="handleDelete()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form>
     </div>
 
     <el-table
       :key="tableKey"
-      :data="list"
-      v-loading="listLoading"
+      :data="dataList"
+      v-loading="dataListLoading"
       element-loading-text="给我一点时间"
       border
       highlight-current-row
+      @selection-change="handleSelectionChange"
       >
-      <el-table-column align="center" label="账号">
+      <el-table-column
+        type="selection"
+        header-align="center"
+        align="center"
+        width="50">
+      </el-table-column>
+      <!-- <el-table-column
+        prop="userId"
+        header-align="center"
+        align="center"
+        width="80"
+        label="ID">
+      </el-table-column> -->
+      <el-table-column
+        prop="username"
+        header-align="center"
+        align="center"
+        label="用户名">
+      </el-table-column>
+      <el-table-column
+        prop="email"
+        header-align="center"
+        align="center"
+        width="200"
+        label="邮箱">
+      </el-table-column>
+      <!-- <el-table-column
+        prop="mobile"
+        header-align="center"
+        align="center"
+        label="手机号">
+      </el-table-column> -->
+      <el-table-column
+        prop="status"
+        header-align="center"
+        align="center"
+        label="状态">
         <template slot-scope="scope">
-          <span>{{scope.row.email}}</span>
+          <el-tag v-if="scope.row.status === 0" size="small" type="danger">禁用</el-tag>
+          <el-tag v-else size="small">正常</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="最近访问">
+      <!-- <el-table-column
+        prop="createTime"
+        header-align="center"
+        align="center"
+        width="180"
+        label="创建时间">
+      </el-table-column> -->
+      <el-table-column
+        prop="loginCount"
+        header-align="center"
+        align="center"
+        label="登录次数">
+      </el-table-column>
+      <el-table-column
+        header-align="center"
+        align="center"
+        width="180"
+        label="最近访问">
         <template slot-scope="scope">
-          <span>{{scope.row.lastVisit | formatDate('Y-M-D H:F')}}</span>
+          <span>{{scope.row.lastVisit | formatDate('Y-M-D H:F:S')}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
+      <el-table-column
+        class-name="small-padding fixed-width"
+        fixed="right"
+        header-align="center"
+        align="center"
+        width="150"
+        label="操作">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
@@ -47,9 +109,20 @@
     </el-table>
 
     <div class="pagination-container" style="margin-top: 16px;">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryForm.page" :page-sizes="[10, 20,30, 50]" :page-size="queryForm.size" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pageIndex"
+        :page-size="pageLimit"
+        :total="totalSize"
+        :page-sizes="[10, 20, 50, 100]"
+        layout="total, sizes, prev, pager, next, jumper">
       </el-pagination>
     </div>
+
+    <!-- 弹窗, 新增 / 修改 -->
+    <!-- <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update> -->
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='min-width:200px; max-width: 400px; margin-left:50px;'>
@@ -121,16 +194,18 @@ export default {
   },
   data() {
     return {
-      tableKey: 0,
-      list: null,
-      total: null,
-      listLoading: true,
-      queryForm: {
-        page: 1,
-        size: 20,
+      dataForm: {
         keywords: '',
         // sort: '+id',
       },
+      tableKey: 0,
+      pageIndex: 1,
+      pageLimit: 10,
+      totalSize: 0,
+      dataList: [],
+      dataListLoading: true,
+      dataListSelections: [],
+      addOrUpdateVisible: false,
       roles,
       temp: {
         ...defaultInfo,
@@ -179,32 +254,38 @@ export default {
     },
   },
   created() {
-    this.getList()
+    this.getDataList()
   },
   methods: {
-    getList() {
-      this.listLoading = true
+    getDataList() {
+      this.dataListLoading = true
       model.search({
-        ...this.queryForm,
+        ...this.dataForm,
+        page: this.pageIndex,
+        size: this.pageLimit,
       }, (res) => {
-        this.listLoading = false
-        this.list = res.data.list
-        this.total = res.data.total
+        this.dataListLoading = false
+        this.dataList = res.data.list
+        this.totalSize = res.data.total
       }, (err) => {
 
       });
     },
     handleFilter() {
-      this.queryForm.page = 1
-      this.getList()
+      this.pageIndex = 1
+      this.getDataList()
     },
     handleSizeChange(val) {
-      this.queryForm.size = val
-      this.getList()
+      this.pageLimit = val
+      this.getDataList()
     },
     handleCurrentChange(val) {
-      this.queryForm.page = val
-      this.getList()
+      this.pageIndex = val
+      this.getDataList()
+    },
+    // 多选
+    handleSelectionChange(val) {
+      this.dataListSelections = val
     },
     handleModifyStatus(row, status) {
       switch (status) {
@@ -226,7 +307,7 @@ export default {
       }
     },
     /* eslint dot-notation: 0 */
-    handleCreate() {
+    handleAddOrUpdate() {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
@@ -242,7 +323,7 @@ export default {
           }, (res) => {
             this.dialogFormVisible = false
             Object.assign(this.temp, res.data);
-            this.list.unshift(this.temp)
+            this.dataList.unshift(this.temp)
             this.$notify({
               title: '成功',
               message: '创建成功',
@@ -270,10 +351,10 @@ export default {
           model.edit({
             ...tempData,
           }, (res) => {
-            for (const v of this.list) {
+            for (const v of this.dataList) {
               if (v.id === this.temp.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.temp)
+                const index = this.dataList.indexOf(v)
+                this.dataList.splice(index, 1, this.temp)
                 break
               }
             }
@@ -292,6 +373,7 @@ export default {
     },
     // 不能删除自己，不能删除最后一个用户，不能删除超管
     handleDelete(row) {
+      // 删除是危险动作，至少要气泡提示
       model.del({
         ids: row.id,
       }, (res) => {
@@ -301,8 +383,8 @@ export default {
           type: 'success',
           duration: 2000,
         })
-        const index = this.list.indexOf(row)
-        this.list.splice(index, 1)
+        const index = this.dataList.indexOf(row)
+        this.dataList.splice(index, 1)
       }, (err) => {
         this.$message({
           message: '删除失败',

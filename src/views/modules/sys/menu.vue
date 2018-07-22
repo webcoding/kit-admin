@@ -108,7 +108,7 @@
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <!-- <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='min-width:200px; max-width: 400px; margin-left:50px;'>
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="temp.email"></el-input>
@@ -131,7 +131,7 @@
         <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
         <el-button v-else type="primary" @click="updateData">确定</el-button>
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -253,7 +253,7 @@ export default {
         ...this.queryForm,
       }, (res) => {
         this.listLoading = false
-        this.list = treeDataTranslate(res.data.children)
+        this.list = treeDataTranslate(res.data)
         this.total = res.data.total
       }, (err) => {
 
