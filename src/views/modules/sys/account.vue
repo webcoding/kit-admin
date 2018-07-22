@@ -103,7 +103,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleAddOrUpdate(scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -361,19 +361,26 @@ export default {
     //   })
     // },
     // 不能删除自己，不能删除最后一个用户，不能删除超管
-    handleDelete(row) {
+    handleDelete(id) {
       // 删除是危险动作，至少要气泡提示
+      const ids = id || this.dataListSelections.map((item) => {
+        return item.id
+      })
       modelApi.del({
-        ids: row.id,
+        ids,
       }, (res) => {
         this.$notify({
           title: '成功',
           message: '删除成功',
           type: 'success',
           duration: 2000,
-        })
-        const index = this.dataList.indexOf(row)
-        this.dataList.splice(index, 1)
+        });
+
+        this.getDataList();
+        // const index = this.dataList.indexOf({
+
+        // })
+        // this.dataList.splice(index, 1)
       }, (err) => {
         this.$message({
           message: '删除失败',

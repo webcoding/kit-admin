@@ -206,6 +206,7 @@ export default {
               type: 'success',
               duration: 2000,
             })
+            this.$emit('refreshDataList');
           }, (err) => {
 
           });
