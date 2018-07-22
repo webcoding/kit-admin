@@ -48,12 +48,11 @@
         <el-row>
           <el-col :span="22">
             <el-popover
-              style="width: 50%;"
               ref="iconListPopover"
               placement="bottom-start"
               trigger="click"
-              popper-class="mod-menu__icon-popover">
-              <div class="mod-menu__icon-list">
+              popper-class="menu__icon-popover">
+              <div class="menu__icon-list">
                 <el-button
                   v-for="(item, index) in iconList"
                   :key="index"
@@ -192,38 +191,40 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-.mod-menu {
-  .menu-list__input,
-  .icon-list__input {
-      > .el-input__inner {
-      cursor: pointer;
-    }
-  }
-  &__icon-popover {
-    max-width: 370px;
-  }
-  &__icon-list {
-    max-height: 180px;
-    padding: 0;
-    margin: -8px 0 0 -8px;
-    > .el-button {
-      padding: 8px;
-      margin: 8px 0 0 8px;
-      > span {
-        display: inline-block;
-        vertical-align: middle;
-        width: 18px;
-        height: 18px;
-        font-size: 18px;
-      }
-    }
-  }
-  .icon-list__tips {
-    font-size: 18px;
-    text-align: center;
-    color: #e6a23c;
+<style lang="stylus">
+.menu__icon-popover {
+  width: 50%;
+}
+
+.menu-list__input,
+.icon-list__input {
+  > .el-input__inner {
     cursor: pointer;
   }
+}
+&__icon-popover {
+  max-width: 370px;
+}
+&__icon-list {
+  max-height: 180px;
+  padding: 0;
+  margin: -8px 0 0 -8px;
+  > .el-button {
+    padding: 8px;
+    margin: 8px 0 0 8px;
+    > span {
+      display: inline-block;
+      vertical-align: middle;
+      width: 18px;
+      height: 18px;
+      font-size: 18px;
+    }
+  }
+}
+.icon-list__tips {
+  font-size: 18px;
+  text-align: center;
+  color: #e6a23c;
+  cursor: pointer;
 }
 </style>
