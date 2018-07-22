@@ -363,7 +363,7 @@ export default {
     // 不能删除自己，不能删除最后一个用户，不能删除超管
     handleDelete(id) {
       // 删除是危险动作，至少要气泡提示
-      const ids = id || this.dataListSelections.map((item) => {
+      const ids = id ? [id] : this.dataListSelections.map((item) => {
         return item.id
       })
       modelApi.del({
