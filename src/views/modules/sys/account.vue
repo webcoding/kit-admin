@@ -2,9 +2,8 @@
   <div class="app-container calendar-list-container">
     <div class="filter-container">
       <el-form
-      :inline="true"
       :model="dataForm"
-      >
+      :inline="true">
         <el-form-item label="">
           <el-input
             placeholder="用户名"
@@ -367,7 +366,7 @@ export default {
         return item.id
       })
       modelApi.del({
-        ids,
+        ids: ids.join(','),
       }, (res) => {
         this.$notify({
           title: '成功',
