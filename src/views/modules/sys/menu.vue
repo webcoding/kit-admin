@@ -2,30 +2,39 @@
   <div class="app-container calendar-list-container">
     <div class="filter-container">
       <el-form
-      :inline="true"
-      :model="queryForm">
+      :model="dataForm"
+      :inline="true">
         <el-form-item label="">
           <el-input
             placeholder="搜索关键字"
             style="width: 200px;"
             class="filter-item"
             @keyup.enter.native="handleFilter"
-            v-model="queryForm.keywords"
+            v-model="dataForm.keywords"
+            clearable
           ></el-input>
         </el-form-item>
         <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
-        <el-button class="filter-item" style="margin-left: 10px;" @click="handleAddOrUpdate" type="success" icon="el-icon-edit">添加</el-button>
+        <el-button class="filter-item" style="margin-left: 10px;" @click="handleAddOrUpdate()" type="success" icon="el-icon-edit">新增</el-button>
+        <!-- <el-button type="danger" @click="handleDelete()" :disabled="dataListSelections.length <= 0">批量删除</el-button> -->
       </el-form>
     </div>
 
     <el-table
       :key="tableKey"
-      :data="list"
-      v-loading="listLoading"
+      :data="dataList"
+      v-loading="dataListLoading"
       element-loading-text="给我一点时间"
       border
       highlight-current-row
+      @selection-change="handleSelectionChange"
       >
+      <el-table-column
+        type="selection"
+        header-align="center"
+        align="center"
+        width="50">
+      </el-table-column>
       <!-- <el-table-column
         prop="id"
         header-align="center"
@@ -94,143 +103,79 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button type="primary" size="mini" @click="handleAddOrUpdate(scope.row)">编辑</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <!-- <div class="pagination-container" style="margin-top: 16px;">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryForm.page" :page-sizes="[10, 20,30, 50]" :page-size="queryForm.size" layout="total, sizes, prev, pager, next, jumper" :total="total">
+    <div class="pagination-container" style="margin-top: 16px;">
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pageIndex"
+        :page-size="pageLimit"
+        :total="totalCount"
+        :page-sizes="[10, 20, 50, 100]"
+        layout="total, sizes, prev, pager, next, jumper">
       </el-pagination>
-    </div> -->
+    </div>
 
     <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
-
-    <!-- <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='min-width:200px; max-width: 400px; margin-left:50px;'>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="temp.email"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="temp.password"></el-input>
-        </el-form-item>
-        <el-form-item label="角色" prop="role">
-          <el-select class="filter-item" v-model="temp.role" placeholder="请选择">
-            <el-option v-for="item in roles" :key="item.id" :label="item.value" :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="备注" prop="description">
-          <el-input v-model="temp.description"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
-        <el-button v-else type="primary" @click="updateData">确定</el-button>
-      </div>
-    </el-dialog> -->
+    <!-- <add-or-update
+      v-if="addOrUpdateVisible"
+      ref="addOrUpdate"
+      @refreshDataList="getDataList">
+    </add-or-update> -->
   </div>
 </template>
 
 <script>
 import api from '@/config/api';
-import { copy } from 'kit-qs';
+// import { copy } from 'kit-qs';
 import waves from '@/directive/waves'; // 水波纹指令
 import { treeDataTranslate } from '@/utils'
 import TableTreeColumn from '@/components/TableTreeColumn'
-import AddOrUpdate from './menu-add-or-update'
+// import AddOrUpdate from './menu-add-or-update'
 
-const model = {
+const modelApi = {
   add: api.saveAuth,
   del: api.delAuth,
   edit: api.updateAuth,
   search: api.getAuth,
 };
 
-const roles = [
-  { id: 1, value: 'admin' },
-  { id: 2, value: 'manager' },
-  // { id: 3, value: 'editor' },
-  // { id: 4, value: 'guest' },
-]
-
-// arr to obj ,such as { CN : "China", US : "USA" }
-const roleIds = roles.reduce((obj, item) => {
-  obj[item.id] = item.value
-  return obj
-}, {})
-
-const defaultInfo = {
-  id: undefined,
-  email: '',
-  password: '',
-  roleIds: [],
-  // avatar: '',
-  username: '',
-  mobile: '',
-  description: '',
-};
-
 export default {
   name: 'sys_menu',
   components: {
     [TableTreeColumn.name]: TableTreeColumn,
-    AddOrUpdate,
+    // AddOrUpdate,
   },
   directives: {
     waves,
   },
   data() {
     return {
-      addOrUpdateVisible: false,
-      tableKey: 0,
-      list: null,
-      total: null,
-      listLoading: true,
-      queryForm: {
-        page: 1,
-        size: 20,
+      dataForm: {
         keywords: '',
         // sort: '+id',
       },
-      roles,
-      temp: {
-        ...defaultInfo,
-      },
-      dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        update: '编辑',
-        create: '新增',
-      },
-      rules: {
-        // password: [{
-        //   required: true,
-        //   message: '密码必须填写',
-        //   trigger: 'blur',
-        // }],
-        // email: [{
-        //   required: true,
-        //   message: '邮箱必须填写',
-        //   trigger: 'blur',
-        // }],
-        // role: [{
-        //   required: true,
-        //   message: '角色必须选择',
-        //   trigger: 'blur',
-        // }],
-      },
-      downloadLoading: false,
+      tableKey: 0,
+      pageIndex: 1,
+      pageLimit: 10,
+      totalCount: 0,
+      dataList: [],
+      dataListLoading: true,
+      dataListSelections: [],
+      addOrUpdateVisible: false,
     }
   },
   filters: {
-    sexFilter(value) {
-      const sexMap = ['未知', '男', '女'];
-      return sexMap[value];
-    },
+    // sexFilter(value) {
+    //   const sexMap = ['未知', '男', '女'];
+    //   return sexMap[value];
+    // },
     statusFilter(status) {
       const statusMap = {
         published: 'success',
@@ -239,142 +184,77 @@ export default {
       }
       return statusMap[status]
     },
-    typeFilter(type) {
-      return roleIds[type]
-    },
+    // typeFilter(type) {
+    //   return roleIds[type]
+    // },
   },
   created() {
     this.getDataList()
   },
   methods: {
     getDataList() {
-      this.listLoading = true
-      model.search({
-        ...this.queryForm,
+      this.dataListLoading = true
+      modelApi.search({
+        ...this.dataForm,
+        page: this.pageIndex,
+        size: this.pageLimit,
       }, (res) => {
-        this.listLoading = false
-        this.list = treeDataTranslate(res.data)
-        this.total = res.data.total
+        this.dataListLoading = false
+        this.dataList = treeDataTranslate(res.data)
+        this.totalCount = res.data.total
       }, (err) => {
 
       });
     },
     handleFilter() {
-      this.queryForm.page = 1
+      this.pageIndex = 1
       this.getDataList()
     },
     handleSizeChange(val) {
-      this.queryForm.size = val
+      this.pageLimit = val
       this.getDataList()
     },
     handleCurrentChange(val) {
-      this.queryForm.page = val
+      this.pageIndex = val
       this.getDataList()
     },
-    handleModifyStatus(row, status) {
-      switch (status) {
-        case 'delete':
-          this.handleDelete(row);
-          break;
-        default:
-          // do nothing...
-      }
-      this.$message({
-        message: '操作成功',
-        type: 'success',
-      })
-      row.status = status
+    // 多选
+    handleSelectionChange(val) {
+      this.dataListSelections = val
     },
-    resetTemp() {
-      this.temp = {
-        ...defaultInfo,
-      }
-    },
-    // 新增 / 修改
+    /* eslint dot-notation: 0 */
     handleAddOrUpdate(id) {
+      // this.resetTemp()
+      // this.dialogStatus = 'create'
+      // this.dialogFormVisible = true
+      // this.$nextTick(() => {
+      //   this.$refs['dataForm'].clearValidate()
+      // })
       this.addOrUpdateVisible = true
       this.$nextTick(() => {
         this.$refs.addOrUpdate.init(id)
       })
     },
-    /* eslint dot-notation: 0 */
-    handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+    handleDelete(id) {
+      // 删除是危险动作，至少要气泡提示
+      const ids = id ? [id] : this.dataListSelections.map((item) => {
+        return item.id
       })
-    },
-    createData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          model.add({
-            ...this.temp,
-          }, (res) => {
-            this.dialogFormVisible = false
-            Object.assign(this.temp, res.data);
-            this.list.unshift(this.temp)
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000,
-            })
-          }, (err) => {
-
-          });
-        }
-      })
-    },
-    handleUpdate(row) {
-      this.temp = copy(row) // copy obj
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          const tempData = copy(this.temp)
-          model.edit({
-            ...tempData,
-          }, (res) => {
-            for (const v of this.list) {
-              if (v.id === this.temp.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.temp)
-                break
-              }
-            }
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000,
-            })
-          }, (err) => {
-
-          });
-        }
-      })
-    },
-    // 不能删除自己，不能删除最后一个用户，不能删除超管
-    handleDelete(row) {
-      model.del({
-        ids: row.id,
+      modelApi.del({
+        ids: ids.join(','),
       }, (res) => {
         this.$notify({
           title: '成功',
           message: '删除成功',
           type: 'success',
           duration: 2000,
-        })
-        const index = this.list.indexOf(row)
-        this.list.splice(index, 1)
+        });
+
+        this.getDataList();
+        // const index = this.dataList.indexOf({
+
+        // })
+        // this.dataList.splice(index, 1)
       }, (err) => {
         this.$message({
           message: '删除失败',

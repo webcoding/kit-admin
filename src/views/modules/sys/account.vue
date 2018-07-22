@@ -15,7 +15,7 @@
           ></el-input>
         </el-form-item>
         <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
-        <el-button class="filter-item" style="margin-left: 10px;" @click="handleAddOrUpdate()" type="primary" icon="el-icon-edit">添加</el-button>
+        <el-button class="filter-item" style="margin-left: 10px;" @click="handleAddOrUpdate()" type="success" icon="el-icon-edit">新增</el-button>
         <el-button type="danger" @click="handleDelete()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form>
     </div>
@@ -94,7 +94,6 @@
         </template>
       </el-table-column>
       <el-table-column
-        class-name="small-padding fixed-width"
         fixed="right"
         header-align="center"
         align="center"
@@ -177,34 +176,6 @@ export default {
       dataListLoading: true,
       dataListSelections: [],
       addOrUpdateVisible: false,
-      // roles,
-      // temp: {
-      //   ...defaultInfo,
-      // },
-      // dialogFormVisible: false,
-      // dialogStatus: '',
-      // textMap: {
-      //   update: '编辑',
-      //   create: '新增',
-      // },
-      // rules: {
-      //   password: [{
-      //     required: true,
-      //     message: '密码必须填写',
-      //     trigger: 'blur',
-      //   }],
-      //   email: [{
-      //     required: true,
-      //     message: '邮箱必须填写',
-      //     trigger: 'blur',
-      //   }],
-      //   role: [{
-      //     required: true,
-      //     message: '角色必须选择',
-      //     trigger: 'blur',
-      //   }],
-      // },
-      // downloadLoading: false,
     }
   },
   filters: {
