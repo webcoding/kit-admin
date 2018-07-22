@@ -10,7 +10,8 @@
       @keyup.enter.native="dataFormSubmit()"
       ref="dataForm">
       <el-form-item label="用户名" prop="username">
-        <el-input v-model="dataForm.username" placeholder="登录帐号"></el-input>=p;/.0o      </el-form-item>
+        <el-input v-model="dataForm.username" placeholder="登录帐号"></el-input>
+      </el-form-item>
       <el-form-item label="密码" prop="password" :class="{ 'is-required': !dataForm.id }">
         <el-input v-model="dataForm.password" type="password" placeholder="密码"></el-input>
       </el-form-item>
