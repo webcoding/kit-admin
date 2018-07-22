@@ -83,7 +83,6 @@
       <el-table-column
         prop="link"
         header-align="center"
-        align="center"
         width="150"
         :show-overflow-tooltip="true"
         label="菜单URL">
@@ -91,7 +90,6 @@
       <el-table-column
         prop="permCode"
         header-align="center"
-        align="center"
         width="150"
         :show-overflow-tooltip="true"
         label="授权标识">
@@ -123,11 +121,11 @@
     </div>
 
     <!-- 弹窗, 新增 / 修改 -->
-    <!-- <add-or-update
+    <add-or-update
       v-if="addOrUpdateVisible"
       ref="addOrUpdate"
       @refreshDataList="getDataList">
-    </add-or-update> -->
+    </add-or-update>
   </div>
 </template>
 
@@ -137,7 +135,7 @@ import api from '@/config/api';
 import waves from '@/directive/waves'; // 水波纹指令
 import { treeDataTranslate } from '@/utils'
 import TableTreeColumn from '@/components/TableTreeColumn'
-// import AddOrUpdate from './menu-add-or-update'
+import AddOrUpdate from './menu-add-or-update'
 
 const modelApi = {
   add: api.saveAuth,
@@ -150,7 +148,7 @@ export default {
   name: 'sys_menu',
   components: {
     [TableTreeColumn.name]: TableTreeColumn,
-    // AddOrUpdate,
+    AddOrUpdate,
   },
   directives: {
     waves,

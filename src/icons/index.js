@@ -12,21 +12,21 @@
  */
 
 import Vue from 'vue'
-import SvgIcon from '@/components/SvgIcon'// svg组件
+import IconSvg from '@/components/IconSvg'// svg组件
 // just for @/views/icons , you can delete it
 import generateIconsView from '@/views/svg-icons/generateIconsView.js'
 import './iconfont.js'
 
 // register globally
-Vue.component('svg-icon', SvgIcon)
+Vue.component('icon-svg', IconSvg)
 
-const svgFiles = require.context('./svg', true, /\.svg$/)
+const svgFiles = require.context('./svg', false, /\.svg$/)
 const iconList = svgFiles.keys().map(item => svgFiles(item))
 
 export default {
   // 获取图标icon-(*).svg名称列表, 例如[shouye, xitong, zhedie, ...]
   getNameList () {
-    return iconList.map(item => item.default.id)
+    return iconList.map(item => item.default.id.split('-')[1])
   },
 }
 

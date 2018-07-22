@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'svg-icon',
+  name: 'icon-svg',
   props: {
     iconClass: {
       type: String,
@@ -32,7 +32,7 @@ export default {
     },
     svgClass() {
       return [
-        'svg-icon',
+        'icon-svg',
         // `icon-svg__${this.name}`,
         this.className, // && /\S/.test(this.className) ? `${this.className}` : '',
       ];
@@ -42,7 +42,7 @@ export default {
 </script>
 
 <style scoped>
-.svg-icon {
+.icon-svg {
   width: 1em;
   height: 1em;
   vertical-align: -0.15em;

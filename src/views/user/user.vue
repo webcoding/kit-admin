@@ -55,7 +55,7 @@
       </el-table-column>
       <el-table-column width="80px" :label="$t('table.importance')">
         <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.importance" icon-class="star" class="meta-item__icon" :key="n"></svg-icon>
+          <icon-svg v-for="n in +scope.row.importance" icon-class="star" class="meta-item__icon" :key="n"></icon-svg>
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('table.readings')" width="95">

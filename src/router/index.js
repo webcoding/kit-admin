@@ -146,7 +146,7 @@ export const asyncRouterMap = [
     name: 'system',
     meta: {
       title: 'system',
-      icon: 'icon-system',
+      icon: 'system1',
     },
     children: [
       // {

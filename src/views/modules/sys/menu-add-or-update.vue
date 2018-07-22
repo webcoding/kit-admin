@@ -17,7 +17,7 @@
       <el-form-item :label="dataForm.typeList[dataForm.type] + '名称'" prop="name">
         <el-input v-model="dataForm.name" :placeholder="dataForm.typeList[dataForm.type] + '名称'"></el-input>
       </el-form-item>
-      <el-form-item label="上级菜单" prop="parentName">
+      <!-- <el-form-item label="上级菜单" prop="parentName">
         <el-popover
           ref="menuListPopover"
           placement="bottom-start"
@@ -34,9 +34,9 @@
           </el-tree>
         </el-popover>
         <el-input v-model="dataForm.parentName" v-popover:menuListPopover :readonly="true" placeholder="点击选择上级菜单" class="menu-list__input"></el-input>
-      </el-form-item>
-      <el-form-item v-if="dataForm.type === 1" label="菜单路由" prop="url">
-        <el-input v-model="dataForm.url" placeholder="菜单路由"></el-input>
+      </el-form-item> -->
+      <el-form-item v-if="dataForm.type === 1" label="菜单路由" prop="link">
+        <el-input v-model="dataForm.link" placeholder="菜单路由"></el-input>
       </el-form-item>
       <el-form-item v-if="dataForm.type !== 0" label="授权标识" prop="perms">
         <el-input v-model="dataForm.perms" placeholder="多个用逗号分隔, 如: user:list,user:create"></el-input>
@@ -48,6 +48,7 @@
         <el-row>
           <el-col :span="22">
             <el-popover
+              style="width: 50%;"
               ref="iconListPopover"
               placement="bottom-start"
               trigger="click"
@@ -56,9 +57,9 @@
                 <el-button
                   v-for="(item, index) in iconList"
                   :key="index"
-                  @click="iconActiveHandle(item)"
+                  @click="handleIconActive(item)"
                   :class="{ 'is-active': item === dataForm.icon }">
-                  <icon-svg :name="item"></icon-svg>
+                  <icon-svg :icon-class="item"></icon-svg>
                 </el-button>
               </div>
             </el-popover>
@@ -90,47 +91,29 @@ const modelApi = {
   edit: api.updateRole,
 };
 
-
 const defaultInfo = {
   id: undefined,
-  code: '',
+  type: 1,
+  typeList: ['目录', '菜单', '按钮'],
   name: '',
-  description: '',
-  type: '',
+  parentId: 0,
+  parentName: '',
+  url: '',
+  perms: '',
+  orderNum: 0,
+  icon: '',
+  iconList: [],
 };
 
 export default {
   data() {
-    // const validatePassword = (rule, value, callback) => {
-    //   if (!this.dataForm.id && !/\S/.test(value)) {
-    //     callback(new Error('密码不能为空'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
-    // const validateComfirmPassword = (rule, value, callback) => {
-    //   if (!this.dataForm.id && !/\S/.test(value)) {
-    //     callback(new Error('确认密码不能为空'))
-    //   } else if (this.dataForm.password !== value) {
-    //     callback(new Error('确认密码与密码输入不一致'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
-    // const validateEmail = (rule, value, callback) => {
-    //   if (!isEmail(value)) {
-    //     callback(new Error('邮箱格式错误'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
-    // const validateMobile = (rule, value, callback) => {
-    //   if (!isMobile(value)) {
-    //     callback(new Error('手机号格式错误'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
+    const validateUrl = (rule, value, callback) => {
+      if (this.dataForm.type === 1 && !/\S/.test(value)) {
+        callback(new Error('菜单URL不能为空'))
+      } else {
+        callback()
+      }
+    }
     return {
       visible: false,
       roleList: [],
@@ -138,34 +121,34 @@ export default {
         ...defaultInfo,
       },
       dataRule: {
-        // username: [
-        //   { required: true, message: '用户名不能为空', trigger: 'blur' },
-        // ],
-        // password: [
-        //   { validator: validatePassword, trigger: 'blur' },
-        // ],
-        // comfirmPassword: [
-        //   { validator: validateComfirmPassword, trigger: 'blur' },
-        // ],
-        // email: [
-        //   { required: true, message: '邮箱不能为空', trigger: 'blur' },
-        //   { validator: validateEmail, trigger: 'blur' },
-        // ],
-        // mobile: [
-        //   { required: true, message: '手机号不能为空', trigger: 'blur' },
-        //   { validator: validateMobile, trigger: 'blur' },
-        // ],
+        name: [
+          { required: true, message: '菜单名称不能为空', trigger: 'blur' },
+        ],
+        parentName: [
+          { required: true, message: '上级菜单不能为空', trigger: 'change' },
+        ],
+        url: [
+          { validator: validateUrl, trigger: 'blur' },
+        ],
+      },
+      menuList: [],
+      menuListTreeProps: {
+        label: 'name',
+        children: 'children',
       },
     }
   },
+  created() {
+    this.iconList = Icon.getNameList()
+  },
   methods: {
-    resetDataForm() {
-      this.dataForm = {
-        ...defaultInfo,
-      }
-    },
+    // resetDataForm() {
+    //   this.dataForm = {
+    //     ...defaultInfo,
+    //   }
+    // },
     init(row) {
-      this.resetDataForm();
+      // this.resetDataForm();
       if (row && row.password) row.password = '';
       Object.assign(this.dataForm, row);
       // this.dataForm.id = row.id;
@@ -174,6 +157,9 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].resetFields()
       })
+    },
+    handleIconActive(iconName) {
+      this.dataForm.icon = iconName
     },
     // 表单提交
     dataFormSubmit() {
