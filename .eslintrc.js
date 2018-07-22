@@ -76,6 +76,7 @@ module.exports = {
       functions: 'ignore',
     }],
     "consistent-return": [0],
+    "dot-notation": [0],
     "generator-star-spacing": [0],
     "global-require": [0],
     "import/extensions": [0],
