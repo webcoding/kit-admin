@@ -75,11 +75,6 @@ const defaultInfo = {
 };
 
 export default {
-  props: {
-    // modelApi: Object,
-    // dataForm: Object,
-    // dataList: Array,
-  },
   data() {
     const validatePassword = (rule, value, callback) => {
       if (!this.dataForm.id && !/\S/.test(value)) {

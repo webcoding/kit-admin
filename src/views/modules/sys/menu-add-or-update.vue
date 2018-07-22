@@ -82,139 +82,125 @@
 
 <script>
 // import { treeDataTranslate } from '@/utils'
+import api from '@/config/api'
 import Icon from '@/icons'
+
+const modelApi = {
+  add: api.saveRole,
+  edit: api.updateRole,
+};
+
+
+const defaultInfo = {
+  id: undefined,
+  code: '',
+  name: '',
+  description: '',
+  type: '',
+};
 
 export default {
   data() {
-    const validateUrl = (rule, value, callback) => {
-      if (this.dataForm.type === 1 && !/\S/.test(value)) {
-        callback(new Error('菜单URL不能为空'))
-      } else {
-        callback()
-      }
-    }
+    // const validatePassword = (rule, value, callback) => {
+    //   if (!this.dataForm.id && !/\S/.test(value)) {
+    //     callback(new Error('密码不能为空'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
+    // const validateComfirmPassword = (rule, value, callback) => {
+    //   if (!this.dataForm.id && !/\S/.test(value)) {
+    //     callback(new Error('确认密码不能为空'))
+    //   } else if (this.dataForm.password !== value) {
+    //     callback(new Error('确认密码与密码输入不一致'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
+    // const validateEmail = (rule, value, callback) => {
+    //   if (!isEmail(value)) {
+    //     callback(new Error('邮箱格式错误'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
+    // const validateMobile = (rule, value, callback) => {
+    //   if (!isMobile(value)) {
+    //     callback(new Error('手机号格式错误'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       visible: false,
+      roleList: [],
       dataForm: {
-        id: 0,
-        type: 1,
-        typeList: ['目录', '菜单', '按钮'],
-        name: '',
-        parentId: 0,
-        parentName: '',
-        url: '',
-        perms: '',
-        orderNum: 0,
-        icon: '',
-        iconList: [],
+        ...defaultInfo,
       },
       dataRule: {
-        name: [
-          { required: true, message: '菜单名称不能为空', trigger: 'blur' },
-        ],
-        parentName: [
-          { required: true, message: '上级菜单不能为空', trigger: 'change' },
-        ],
-        url: [
-          { validator: validateUrl, trigger: 'blur' },
-        ],
-      },
-      menuList: [],
-      menuListTreeProps: {
-        label: 'name',
-        children: 'children',
+        // username: [
+        //   { required: true, message: '用户名不能为空', trigger: 'blur' },
+        // ],
+        // password: [
+        //   { validator: validatePassword, trigger: 'blur' },
+        // ],
+        // comfirmPassword: [
+        //   { validator: validateComfirmPassword, trigger: 'blur' },
+        // ],
+        // email: [
+        //   { required: true, message: '邮箱不能为空', trigger: 'blur' },
+        //   { validator: validateEmail, trigger: 'blur' },
+        // ],
+        // mobile: [
+        //   { required: true, message: '手机号不能为空', trigger: 'blur' },
+        //   { validator: validateMobile, trigger: 'blur' },
+        // ],
       },
     }
   },
-  created () {
-    this.iconList = Icon.getNameList()
-  },
   methods: {
-    init(id) {
-      this.dataForm.id = id || 0
-      // this.$http({
-      //   url: this.$http.adornUrl('/sys/menu/select'),
-      //   method: 'get',
-      //   params: this.$http.adornParams()
-      // }).then(({data}) => {
-      //   this.menuList = treeDataTranslate(data.menuList, 'menuId')
-      // }).then(() => {
-      //   this.visible = true
-      //   this.$nextTick(() => {
-      //     this.$refs['dataForm'].resetFields()
-      //   })
-      // }).then(() => {
-      //   if (!this.dataForm.id) {
-      //     // 新增
-      //     this.menuListTreeSetCurrentNode()
-      //   } else {
-      //     // 修改
-      //     this.$http({
-      //       url: this.$http.adornUrl(`/sys/menu/info/${this.dataForm.id}`),
-      //       method: 'get',
-      //       params: this.$http.adornParams()
-      //     }).then(({data}) => {
-      //       this.dataForm.id = data.menu.menuId
-      //       this.dataForm.type = data.menu.type
-      //       this.dataForm.name = data.menu.name
-      //       this.dataForm.parentId = data.menu.parentId
-      //       this.dataForm.url = data.menu.url
-      //       this.dataForm.perms = data.menu.perms
-      //       this.dataForm.orderNum = data.menu.orderNum
-      //       this.dataForm.icon = data.menu.icon
-      //       this.menuListTreeSetCurrentNode()
-      //     })
-      //   }
-      // })
+    resetDataForm() {
+      this.dataForm = {
+        ...defaultInfo,
+      }
     },
-    // 菜单树选中
-    menuListTreeCurrentChangeHandle (data, node) {
-      this.dataForm.parentId = data.menuId
-      this.dataForm.parentName = data.name
-    },
-    // 菜单树设置当前选中节点
-    menuListTreeSetCurrentNode () {
-      // this.$refs.menuListTree.setCurrentKey(this.dataForm.parentId)
-      // this.dataForm.parentName = (this.$refs.menuListTree.getCurrentNode() || {})['name']
-    },
-    // 图标选中
-    iconActiveHandle (iconName) {
-      this.dataForm.icon = iconName
+    init(row) {
+      this.resetDataForm();
+      if (row && row.password) row.password = '';
+      Object.assign(this.dataForm, row);
+      // this.dataForm.id = row.id;
+
+      this.visible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].resetFields()
+      })
     },
     // 表单提交
-    dataFormSubmit () {
-      // this.$refs['dataForm'].validate((valid) => {
-      //   if (valid) {
-      //     this.$http({
-      //       url: this.$http.adornUrl(`/sys/menu/${!this.dataForm.id ? 'save' : 'update'}`),
-      //       method: 'post',
-      //       data: this.$http.adornData({
-      //         'menuId': this.dataForm.id || undefined,
-      //         'type': this.dataForm.type,
-      //         'name': this.dataForm.name,
-      //         'parentId': this.dataForm.parentId,
-      //         'url': this.dataForm.url,
-      //         'perms': this.dataForm.perms,
-      //         'orderNum': this.dataForm.orderNum,
-      //         'icon': this.dataForm.icon
-      //       })
-      //     }).then(({data}) => {
-      //       if (data && data.code === 0) {
-      //         this.$message({
-      //           message: '操作成功',
-      //           type: 'success',
-      //           duration: 1500,
-      //           onClose: () => {
-      //             this.visible = false
-      //             this.$emit('refreshDataList')
-      //           }
-      //         })
-      //       } else {
-      //         this.$message.error(data.msg)
-      //       }
-      //     })
-      //   }
-      // })
+    dataFormSubmit() {
+      console.log(this.dataForm)
+      const isAdd = !this.dataForm.id;
+      this.$refs['dataForm'].validate((valid) => {
+        console.log(this.dataForm)
+        if (valid) {
+          const type = isAdd ? 'add' : 'edit'
+          modelApi[type]({
+            ...this.dataForm,
+          }, (res) => {
+            this.visible = false
+            // Object.assign(this.dataForm, res.data);
+            // this.dataList.unshift(this.dataForm)
+            this.$notify({
+              title: '成功',
+              message: isAdd ? '创建成功' : '编辑成功',
+              type: 'success',
+              duration: 2000,
+            })
+            this.$emit('refreshDataList');
+          }, (err) => {
+
+          });
+        }
+      })
     },
   },
 }
