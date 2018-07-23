@@ -138,7 +138,7 @@ const modelApi = {
   add: api.saveUser,
   del: api.delUser,
   edit: api.updateUser,
-  search: api.getUserList,
+  list: api.getUserList,
 };
 
 // const roles = [
@@ -201,7 +201,7 @@ export default {
   methods: {
     getDataList() {
       this.dataListLoading = true
-      modelApi.search({
+      modelApi.list({
         ...this.dataForm,
         page: this.pageIndex,
         size: this.pageLimit,

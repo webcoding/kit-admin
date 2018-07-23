@@ -42,24 +42,24 @@
         label="ID">
       </el-table-column> -->
       <el-table-column
-        prop="code"
-        header-align="center"
-        align="center"
-        width="200"
-        label="角色标识">
-      </el-table-column>
-      <el-table-column
         prop="name"
         header-align="center"
         align="center"
         width="200"
         label="角色名称">
       </el-table-column>
+      <!-- <el-table-column
+        prop="code"
+        header-align="center"
+        align="center"
+        width="200"
+        label="角色标识">
+      </el-table-column> -->
       <el-table-column
         prop="description"
         header-align="center"
         align="center"
-        label="角色描述">
+        label="备注">
       </el-table-column>
       <!-- <el-table-column
         prop="status"
@@ -116,7 +116,7 @@ const modelApi = {
   add: api.saveRole,
   del: api.delRole,
   edit: api.updateRole,
-  search: api.getRoleList,
+  list: api.getRoleList,
 };
 
 // const roles = [
@@ -207,7 +207,7 @@ export default {
   methods: {
     getDataList() {
       this.dataListLoading = true
-      modelApi.search({
+      modelApi.list({
         ...this.dataForm,
         page: this.pageIndex,
         size: this.pageLimit,

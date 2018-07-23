@@ -148,7 +148,7 @@ const model = {
   add: api.savePersonal,
   del: api.delPersonal,
   edit: api.updatePersonal,
-  search: api.getPersonalList,
+  list: api.getPersonalList,
 };
 
 // const roles = [
@@ -265,7 +265,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      model.search({
+      model.list({
         ...this.queryForm,
       }, (res) => {
         this.listLoading = false

@@ -84,7 +84,7 @@ const model = {
   add: api.saveAuth,
   del: api.delAuth,
   edit: api.updateAuth,
-  search: api.getRoleAuthList,
+  list: api.getRoleAuthList,
 };
 
 const roles = [
@@ -176,7 +176,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      model.search({
+      model.list({
         ...this.queryForm,
       }, (res) => {
         this.listLoading = false

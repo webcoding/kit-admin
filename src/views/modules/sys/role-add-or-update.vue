@@ -9,14 +9,24 @@
       :rules="dataRule"
       @keyup.enter.native="dataFormSubmit()"
       ref="dataForm">
-      <el-form-item label="角色标识" prop="code">
-        <el-input v-model="dataForm.code"></el-input>
-      </el-form-item>
       <el-form-item label="角色名称" prop="name">
-        <el-input v-model="dataForm.name"></el-input>
+        <el-input v-model="dataForm.name" placeholder="角色名称"></el-input>
       </el-form-item>
-      <el-form-item label="角色描述" prop="description">
-        <el-input v-model="dataForm.description"></el-input>
+      <!-- <el-form-item label="角色标识" prop="code">
+        <el-input v-model="dataForm.code" placeholder="备注"></el-input>
+      </el-form-item> -->
+      <el-form-item label="备注" prop="description">
+        <el-input v-model="dataForm.description" placeholder="备注"></el-input>
+      </el-form-item>
+      <el-form-item size="mini" label="授权">
+        <el-tree
+          :data="menuList"
+          :props="menuListTreeProps"
+          node-key="id"
+          ref="menuListTree"
+          :default-expand-all="false"
+          show-checkbox>
+        </el-tree>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -29,77 +39,37 @@
 <script>
 // import { isEmail, isMobile } from '@/utils/validate'
 import api from '@/config/api'
+import { treeDataTranslate } from '@/utils'
 
 const modelApi = {
   add: api.saveRole,
   edit: api.updateRole,
+  list: api.getAuth,
 };
 
-
 const defaultInfo = {
-  id: undefined,
-  code: '',
   name: '',
+  code: '',
   description: '',
-  type: '',
+  permIds: [],
 };
 
 export default {
   data() {
-    // const validatePassword = (rule, value, callback) => {
-    //   if (!this.dataForm.id && !/\S/.test(value)) {
-    //     callback(new Error('密码不能为空'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
-    // const validateComfirmPassword = (rule, value, callback) => {
-    //   if (!this.dataForm.id && !/\S/.test(value)) {
-    //     callback(new Error('确认密码不能为空'))
-    //   } else if (this.dataForm.password !== value) {
-    //     callback(new Error('确认密码与密码输入不一致'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
-    // const validateEmail = (rule, value, callback) => {
-    //   if (!isEmail(value)) {
-    //     callback(new Error('邮箱格式错误'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
-    // const validateMobile = (rule, value, callback) => {
-    //   if (!isMobile(value)) {
-    //     callback(new Error('手机号格式错误'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
     return {
       visible: false,
-      roleList: [],
+      menuList: [],
+      menuListTreeProps: {
+        label: 'name',
+        children: 'children',
+      },
       dataForm: {
         ...defaultInfo,
       },
       dataRule: {
-        // username: [
-        //   { required: true, message: '用户名不能为空', trigger: 'blur' },
-        // ],
-        // password: [
-        //   { validator: validatePassword, trigger: 'blur' },
-        // ],
-        // comfirmPassword: [
-        //   { validator: validateComfirmPassword, trigger: 'blur' },
-        // ],
-        // email: [
-        //   { required: true, message: '邮箱不能为空', trigger: 'blur' },
-        //   { validator: validateEmail, trigger: 'blur' },
-        // ],
-        // mobile: [
-        //   { required: true, message: '手机号不能为空', trigger: 'blur' },
-        //   { validator: validateMobile, trigger: 'blur' },
-        // ],
+        name: [
+          { required: true, message: '角色名称不能为空', trigger: 'blur' },
+        ],
       },
     }
   },
@@ -115,15 +85,29 @@ export default {
       Object.assign(this.dataForm, row);
       // this.dataForm.id = row.id;
 
-      this.visible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].resetFields()
-      })
+      modelApi.list({
+        ...this.dataForm,
+        // page: this.pageIndex,
+        // size: this.pageLimit,
+      }, (res) => {
+        this.menuList = treeDataTranslate(res.data)
+        // this.totalCount = res.data.total
+        this.visible = true
+        this.$nextTick(() => {
+          this.$refs['dataForm'].resetFields()
+          this.$refs.menuListTree.setCheckedKeys([])
+        })
+      }, (err) => {
+
+      });
     },
     // 表单提交
     dataFormSubmit() {
       console.log(this.dataForm)
       const isAdd = !this.dataForm.id;
+      this.dataForm.permIds = this.$refs.menuListTree.getCheckedKeys();
+      // console.log(this.$refs.menuListTree.getCheckedKeys())
+      // debugger
       this.$refs['dataForm'].validate((valid) => {
         console.log(this.dataForm)
         if (valid) {

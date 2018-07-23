@@ -107,7 +107,7 @@
       </el-table-column>
     </el-table>
 
-    <div class="pagination-container" style="margin-top: 16px;">
+    <!-- <div class="pagination-container" style="margin-top: 16px;">
       <el-pagination
         background
         @size-change="handleSizeChange"
@@ -118,7 +118,7 @@
         :page-sizes="[10, 20, 50, 100]"
         layout="total, sizes, prev, pager, next, jumper">
       </el-pagination>
-    </div>
+    </div> -->
 
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update
@@ -141,7 +141,7 @@ const modelApi = {
   add: api.saveAuth,
   del: api.delAuth,
   edit: api.updateAuth,
-  search: api.getAuth,
+  list: api.getAuth,
 };
 
 export default {
@@ -160,9 +160,9 @@ export default {
         // sort: '+id',
       },
       tableKey: 0,
-      pageIndex: 1,
-      pageLimit: 10,
-      totalCount: 0,
+      // pageIndex: 1,
+      // pageLimit: 10,
+      // totalCount: 0,
       dataList: [],
       dataListLoading: true,
       dataListSelections: [],
@@ -192,28 +192,28 @@ export default {
   methods: {
     getDataList() {
       this.dataListLoading = true
-      modelApi.search({
+      modelApi.list({
         ...this.dataForm,
-        page: this.pageIndex,
-        size: this.pageLimit,
+        // page: this.pageIndex,
+        // size: this.pageLimit,
       }, (res) => {
         this.dataListLoading = false
         this.dataList = treeDataTranslate(res.data)
-        this.totalCount = res.data.total
+        // this.totalCount = res.data.total
       }, (err) => {
 
       });
     },
     handleFilter() {
-      this.pageIndex = 1
+      // this.pageIndex = 1
       this.getDataList()
     },
     handleSizeChange(val) {
-      this.pageLimit = val
+      // this.pageLimit = val
       this.getDataList()
     },
     handleCurrentChange(val) {
-      this.pageIndex = val
+      // this.pageIndex = val
       this.getDataList()
     },
     // 多选
