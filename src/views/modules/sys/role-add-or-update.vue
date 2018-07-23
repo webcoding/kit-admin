@@ -88,7 +88,7 @@ export default {
       // this.dataForm.id = row.id;
 
       modelApi.list({
-        ...this.dataForm,
+        // ...this.dataForm,
         // page: this.pageIndex,
         // size: this.pageLimit,
       }, (res) => {

@@ -17,8 +17,9 @@
       <el-form-item :label="dataForm.typeList[dataForm.type] + '名称'" prop="name">
         <el-input v-model="dataForm.name" :placeholder="dataForm.typeList[dataForm.type] + '名称'"></el-input>
       </el-form-item>
-      <!-- <el-form-item label="上级菜单" prop="parentName">
+      <el-form-item label="上级菜单" prop="parentName">
         <el-popover
+          class="sadfasdf"
           ref="menuListPopover"
           placement="bottom-start"
           trigger="click">
@@ -27,14 +28,14 @@
             :props="menuListTreeProps"
             node-key="menuId"
             ref="menuListTree"
-            @current-change="menuListTreeCurrentChangeHandle"
-            :default-expand-all="true"
+            @current-change="handleMenuListTreeCurrentChange"
+            :default-expand-all="false"
             :highlight-current="true"
             :expand-on-click-node="false">
           </el-tree>
         </el-popover>
         <el-input v-model="dataForm.parentName" v-popover:menuListPopover :readonly="true" placeholder="点击选择上级菜单" class="menu-list__input"></el-input>
-      </el-form-item> -->
+      </el-form-item>
       <el-form-item v-if="dataForm.type === 1" label="菜单路由" prop="link">
         <el-input v-model="dataForm.link" placeholder="菜单路由"></el-input>
       </el-form-item>
@@ -82,12 +83,14 @@
 
 <script>
 // import { treeDataTranslate } from '@/utils'
+import { treeDataTranslate } from '@/utils'
 import api from '@/config/api'
 import Icon from '@/icons'
 
 const modelApi = {
-  add: api.saveRole,
-  edit: api.updateRole,
+  add: api.saveAuth,
+  edit: api.updateAuth,
+  list: api.getAuth,
 };
 
 const defaultInfo = {
@@ -150,12 +153,42 @@ export default {
       // this.resetDataForm();
       if (row && row.password) row.password = '';
       Object.assign(this.dataForm, row);
-      // this.dataForm.id = row.id;
 
-      this.visible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].resetFields()
-      })
+      // if (!this.dataForm.id) {
+      //   // 新增
+      //   this.menuListTreeSetCurrentNode()
+      //   return;
+      // }
+      // this.dataForm.id = row.id;
+      modelApi.list({
+        // ...this.dataForm,
+        type: 'menu',
+        // page: this.pageIndex,
+        // size: this.pageLimit,
+      }, (res) => {
+        this.menuList = [{
+          id: 'root',
+          name: '一级菜单',
+          children: treeDataTranslate(res.data),
+        }];
+        // this.totalCount = res.data.total
+        this.visible = true
+        this.$nextTick(() => {
+          this.$refs['dataForm'].resetFields()
+        })
+      }, (err) => {
+
+      });
+    },
+    // 菜单树选中
+    handleMenuListTreeCurrentChange(data, node) {
+      this.dataForm.parentId = data.id
+      this.dataForm.parentName = data.name
+    },
+    // 菜单树设置当前选中节点
+    menuListTreeSetCurrentNode() {
+      this.$refs.menuListTree.setCurrentKey(this.dataForm.parentId)
+      this.dataForm.parentName = (this.$refs.menuListTree.getCurrentNode() || {})['name']
     },
     handleIconActive(iconName) {
       this.dataForm.icon = iconName
@@ -168,6 +201,7 @@ export default {
         console.log(this.dataForm)
         if (valid) {
           const type = isAdd ? 'add' : 'edit'
+          this.dataForm.type = 'menu';
           modelApi[type]({
             ...this.dataForm,
           }, (res) => {
