@@ -42,19 +42,19 @@
         label="ID">
       </el-table-column> -->
       <el-table-column
+        prop="code"
+        header-align="center"
+        align="center"
+        width="200"
+        label="角色标识">
+      </el-table-column>
+      <el-table-column
         prop="name"
         header-align="center"
         align="center"
         width="200"
         label="角色名称">
       </el-table-column>
-      <!-- <el-table-column
-        prop="code"
-        header-align="center"
-        align="center"
-        width="200"
-        label="角色标识">
-      </el-table-column> -->
       <el-table-column
         prop="description"
         header-align="center"

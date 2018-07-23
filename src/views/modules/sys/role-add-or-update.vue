@@ -9,12 +9,12 @@
       :rules="dataRule"
       @keyup.enter.native="dataFormSubmit()"
       ref="dataForm">
+      <el-form-item label="角色标识" prop="code">
+        <el-input v-model="dataForm.code" placeholder="角色标识"></el-input>
+      </el-form-item>
       <el-form-item label="角色名称" prop="name">
         <el-input v-model="dataForm.name" placeholder="角色名称"></el-input>
       </el-form-item>
-      <!-- <el-form-item label="角色标识" prop="code">
-        <el-input v-model="dataForm.code" placeholder="备注"></el-input>
-      </el-form-item> -->
       <el-form-item label="备注" prop="description">
         <el-input v-model="dataForm.description" placeholder="备注"></el-input>
       </el-form-item>
@@ -67,10 +67,12 @@ export default {
         ...defaultInfo,
       },
       dataRule: {
-        name: [
+        code: [
           { required: true, message: '角色名称不能为空', trigger: 'blur' },
         ],
       },
+      // 临时key, 用于解决tree半选中状态项不能传给后台接口问题. # 待优化
+      tempKey: -666666,
     }
   },
   methods: {
@@ -105,9 +107,11 @@ export default {
     dataFormSubmit() {
       console.log(this.dataForm)
       const isAdd = !this.dataForm.id;
-      this.dataForm.permIds = this.$refs.menuListTree.getCheckedKeys();
-      // console.log(this.$refs.menuListTree.getCheckedKeys())
-      // debugger
+      this.dataForm.permIds = [
+        ...this.$refs.menuListTree.getCheckedKeys(),
+        this.tempKey,
+        ...this.$refs.menuListTree.getHalfCheckedKeys(),
+      ];
       this.$refs['dataForm'].validate((valid) => {
         console.log(this.dataForm)
         if (valid) {
