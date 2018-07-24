@@ -39,13 +39,14 @@
 <script>
 // import { isEmail, isMobile } from '@/utils/validate'
 import api from '@/config/api'
+import { copy } from 'kit-qs'
 import { treeDataTranslate } from '@/utils'
 
 const modelApi = {
   add: api.saveRole,
   edit: api.updateRole,
   list: api.getAuth,
-  roleDetail: api.getRoleDetail,
+  getRoleDetail: api.getRoleDetail,
 };
 
 const defaultInfo = {
@@ -99,10 +100,30 @@ export default {
         this.$nextTick(() => {
           this.$refs['dataForm'].resetFields()
           this.$refs.menuListTree.setCheckedKeys([])
+
+          if (this.dataForm.id) {
+            this.getRoleDetail();
+          }
         })
       }, (err) => {
 
       });
+    },
+    getRoleDetail() {
+      const { id } = this.dataForm;
+      modelApi.getRoleDetail({
+        id,
+      }, (res) => {
+        const data = copy(res.data);
+        const idx = data.permIds.indexOf(this.tempKey)
+        if (idx !== -1) {
+          data.permIds.splice(idx, data.menuIdList.length - idx)
+        }
+        Object.assign(this.dataForm, data);
+        this.$refs.menuListTree.setCheckedKeys(this.dataForm.permIds)
+      }, (err) => {
+
+      })
     },
     // 表单提交
     dataFormSubmit() {
