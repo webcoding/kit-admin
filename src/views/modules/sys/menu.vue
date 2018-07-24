@@ -29,12 +29,12 @@
       highlight-current-row
       @selection-change="handleSelectionChange"
       >
-      <el-table-column
+      <!-- <el-table-column
         type="selection"
         header-align="center"
         align="center"
         width="50">
-      </el-table-column>
+      </el-table-column> -->
       <!-- <el-table-column
         prop="id"
         header-align="center"
@@ -69,9 +69,9 @@
         align="center"
         label="类型">
         <template slot-scope="scope">
-          <el-tag v-if="!scope.row.link && scope.row.type === 'menu'" size="small">目录</el-tag>
-          <el-tag v-else-if="scope.row.type === 'menu'" size="small" type="success">菜单</el-tag>
-          <el-tag v-else-if="scope.row.type === 'btn'" size="small" type="info">按钮</el-tag>
+          <el-tag v-if="!scope.row.link && scope.row.type === '0'" size="small">目录</el-tag>
+          <el-tag v-else-if="scope.row.type === '1'" size="small" type="success">菜单</el-tag>
+          <el-tag v-else-if="scope.row.type === '2'" size="small" type="info">按钮</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -235,9 +235,10 @@ export default {
     },
     handleDelete(id) {
       // 删除是危险动作，至少要气泡提示
-      const ids = id ? [id] : this.dataListSelections.map((item) => {
-        return item.id
-      })
+      // const ids = id ? [id] : this.dataListSelections.map((item) => {
+      //   return item.id
+      // });
+      const ids = id ? [id] : [];
       modelApi.del({
         ids: ids.join(','),
       }, (res) => {

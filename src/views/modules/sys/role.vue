@@ -29,12 +29,12 @@
       highlight-current-row
       @selection-change="handleSelectionChange"
       >
-      <el-table-column
+      <!-- <el-table-column
         type="selection"
         header-align="center"
         align="center"
         width="50">
-      </el-table-column>
+      </el-table-column> -->
       <!-- <el-table-column
         prop="id"
         header-align="center"
@@ -119,19 +119,6 @@ const modelApi = {
   list: api.getRoleList,
 };
 
-// const roles = [
-//   { id: 1, value: 'admin' },
-//   { id: 2, value: 'manager' },
-//   // { id: 3, value: 'editor' },
-//   // { id: 4, value: 'guest' },
-// ]
-
-// arr to obj ,such as { CN : "China", US : "USA" }
-// const roleIds = roles.reduce((obj, item) => {
-//   obj[item.id] = item.value
-//   return obj
-// }, {})
-
 export default {
   name: 'sys_role',
   components: {
@@ -154,34 +141,6 @@ export default {
       dataListLoading: true,
       dataListSelections: [],
       addOrUpdateVisible: false,
-      // roles,
-      // temp: {
-      //   ...defaultInfo,
-      // },
-      // dialogFormVisible: false,
-      // dialogStatus: '',
-      // textMap: {
-      //   update: '编辑',
-      //   create: '新增',
-      // },
-      // rules: {
-      //   password: [{
-      //     required: true,
-      //     message: '密码必须填写',
-      //     trigger: 'blur',
-      //   }],
-      //   email: [{
-      //     required: true,
-      //     message: '邮箱必须填写',
-      //     trigger: 'blur',
-      //   }],
-      //   role: [{
-      //     required: true,
-      //     message: '角色必须选择',
-      //     trigger: 'blur',
-      //   }],
-      // },
-      // downloadLoading: false,
     }
   },
   filters: {
@@ -235,25 +194,6 @@ export default {
     handleSelectionChange(val) {
       this.dataListSelections = val
     },
-    // handleModifyStatus(row, status) {
-    //   switch (status) {
-    //     case 'delete':
-    //       this.handleDelete(row);
-    //       break;
-    //     default:
-    //       // do nothing...
-    //   }
-    //   this.$message({
-    //     message: '操作成功',
-    //     type: 'success',
-    //   })
-    //   row.status = status
-    // },
-    // resetTemp() {
-    //   this.temp = {
-    //     ...defaultInfo,
-    //   }
-    // },
     /* eslint dot-notation: 0 */
     handleAddOrUpdate(id) {
       // this.resetTemp()
@@ -267,35 +207,6 @@ export default {
         this.$refs.addOrUpdate.init(id)
       })
     },
-    // createData() {
-    //   this.$refs['dataForm'].validate((valid) => {
-    //     if (valid) {
-    //       modelApi.add({
-    //         ...this.temp,
-    //       }, (res) => {
-    //         this.dialogFormVisible = false
-    //         Object.assign(this.temp, res.data);
-    //         this.dataList.unshift(this.temp)
-    //         this.$notify({
-    //           title: '成功',
-    //           message: '创建成功',
-    //           type: 'success',
-    //           duration: 2000,
-    //         })
-    //       }, (err) => {
-
-    //       });
-    //     }
-    //   })
-    // },
-    // handleUpdate(row) {
-    //   this.temp = copy(row) // copy obj
-    //   this.dialogStatus = 'update'
-    //   this.dialogFormVisible = true
-    //   this.$nextTick(() => {
-    //     this.$refs['dataForm'].clearValidate()
-    //   })
-    // },
     updateItem(data, type) {
       if (type === 'add') {
         this.dataList.unshift(data);
@@ -309,39 +220,12 @@ export default {
         }
       }
     },
-    // updateData() {
-    //   this.$refs['dataForm'].validate((valid) => {
-    //     if (valid) {
-    //       const tempData = copy(this.temp)
-    //       modelApi.edit({
-    //         ...tempData,
-    //       }, (res) => {
-    //         for (const v of this.dataList) {
-    //           if (v.id === this.temp.id) {
-    //             const index = this.dataList.indexOf(v)
-    //             this.dataList.splice(index, 1, this.temp)
-    //             break
-    //           }
-    //         }
-    //         this.dialogFormVisible = false
-    //         this.$notify({
-    //           title: '成功',
-    //           message: '更新成功',
-    //           type: 'success',
-    //           duration: 2000,
-    //         })
-    //       }, (err) => {
-
-    //       });
-    //     }
-    //   })
-    // },
-    // 不能删除自己，不能删除最后一个用户，不能删除超管
     handleDelete(id) {
       // 删除是危险动作，至少要气泡提示
-      const ids = id ? [id] : this.dataListSelections.map((item) => {
-        return item.id
-      })
+      // const ids = id ? [id] : this.dataListSelections.map((item) => {
+      //   return item.id
+      // })
+      const ids = id ? [id] : [];
       modelApi.del({
         ids: ids.join(','),
       }, (res) => {

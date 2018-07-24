@@ -26,7 +26,7 @@ const isMock = false;
 
 function compact(obj) {
   for (const key in obj) {
-    if (!obj[key]) {
+    if (typeof obj[key] === 'undefined') {
       delete obj[key]
     }
   }

@@ -45,6 +45,7 @@ const modelApi = {
   add: api.saveRole,
   edit: api.updateRole,
   list: api.getAuth,
+  roleDetail: api.getRoleDetail,
 };
 
 const defaultInfo = {

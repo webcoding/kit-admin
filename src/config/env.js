@@ -48,8 +48,8 @@ export const ENV = {
     stage: 'local',
     routerMode: 'hash',
     baseUrl: location.origin, // localhost
-    apiBaseUrl: 'https://dapi.cloudai.net',
-    // apiBaseUrl: 'http://10.0.6.55:8080',
+    // apiBaseUrl: 'https://dapi.cloudai.net',
+    apiBaseUrl: 'http://10.0.6.55:8080',
     // apiBaseUrl: 'https://api-dev',
     // apiBaseUrl: 'http://m.devapi.haoshiqi.net',
     // apiBaseUrl: 'http://m.betaapi.haoshiqi.net',

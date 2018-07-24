@@ -81,6 +81,7 @@ const modelApis = {
   delRole: 'POST /sys/role/delete',
   updateRole: 'POST /sys/role/update',
   updateRolePower: '/sys/role/permission/update',
+  getRoleDetail: '/sys/role/view',
 
   // 人员管理
   getPersonalList: '/org/personal/list',

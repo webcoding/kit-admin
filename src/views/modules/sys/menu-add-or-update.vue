@@ -29,7 +29,7 @@
             node-key="menuId"
             ref="menuListTree"
             @current-change="handleMenuListTreeCurrentChange"
-            :default-expand-all="false"
+            :default-expand-all="true"
             :highlight-current="true"
             :expand-on-click-node="false">
           </el-tree>
@@ -42,8 +42,8 @@
       <el-form-item v-if="dataForm.type !== 0" label="授权标识" prop="perms">
         <el-input v-model="dataForm.perms" placeholder="多个用逗号分隔, 如: user:list,user:create"></el-input>
       </el-form-item>
-      <el-form-item v-if="dataForm.type !== 2" label="排序号" prop="orderNum">
-        <el-input-number v-model="dataForm.orderNum" controls-position="right" :min="0" label="排序号"></el-input-number>
+      <el-form-item v-if="dataForm.type !== 2" label="排序号" prop="position">
+        <el-input-number v-model="dataForm.position" controls-position="right" :min="0" label="排序号"></el-input-number>
       </el-form-item>
       <el-form-item v-if="dataForm.type !== 2" label="菜单图标" prop="icon">
         <el-row>
@@ -93,16 +93,18 @@ const modelApi = {
   list: api.getAuth,
 };
 
+
 const defaultInfo = {
   id: undefined,
-  type: 1,
+  type: 0,
   typeList: ['目录', '菜单', '按钮'],
   name: '',
   parentId: 0,
   parentName: '',
   url: '',
   perms: '',
-  orderNum: 0,
+  // orderNum: 0,
+  position: 0,
   icon: '',
   iconList: [],
 };
@@ -201,7 +203,7 @@ export default {
         console.log(this.dataForm)
         if (valid) {
           const type = isAdd ? 'add' : 'edit'
-          this.dataForm.type = 'menu';
+          // this.dataForm.type = 'menu';
           modelApi[type]({
             ...this.dataForm,
           }, (res) => {
