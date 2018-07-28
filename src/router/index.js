@@ -158,15 +158,6 @@ export const asyncRouterMap = [
       //     icon: 'setting',
       //   },
       // },
-      // {
-      //   path: 'user',
-      //   component: _import('user/user'),
-      //   name: 'user',
-      //   meta: {
-      //     title: 'user',
-      //     icon: 'user',
-      //   },
-      // },
       {
         path: 'account',
         component: _import('modules/sys/account'),
@@ -298,40 +289,49 @@ export const asyncRouterMap = [
   },
 
   {
-    path: '/peoples',
+    path: '/org',
     component: Layout,
     redirect: 'noredirect',
-    name: 'peoples',
+    name: 'org',
     meta: {
-      title: 'peoples',
-      icon: 'people1',
+      title: 'org',
+      icon: 'org1',
     },
     children: [
       {
-        path: 'people',
-        component: _import('table/people'),
-        name: 'people',
+        path: 'dept',
+        component: _import('modules/org/dept'),
+        name: 'dept',
         meta: {
-          title: 'people',
-          icon: 'user',
-        },
-      },
-      {
-        path: 'cert',
-        component: _import('table/cert'),
-        name: 'cert',
-        meta: {
-          title: 'cert',
-          icon: 'cert',
-        },
-      },
-      {
-        path: 'depart',
-        component: _import('table/depart'),
-        name: 'depart',
-        meta: {
-          title: 'depart',
+          title: 'dept',
           icon: 'depart',
+        },
+      },
+      {
+        path: 'personnel',
+        component: _import('modules/org/personnel'),
+        name: 'personnel',
+        meta: {
+          title: 'personnel',
+          icon: 'personnel',
+        },
+      },
+      {
+        path: 'post',
+        component: _import('modules/org/post'),
+        name: 'post',
+        meta: {
+          title: 'post',
+          icon: 'post',
+        },
+      },
+      {
+        path: 'res-cert',
+        component: _import('modules/org/res-cert'),
+        name: 'res-cert',
+        meta: {
+          title: 'res-cert',
+          icon: 'cert3',
         },
       },
     ],

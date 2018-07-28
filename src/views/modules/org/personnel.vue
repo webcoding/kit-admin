@@ -1,4 +1,4 @@
-<!-- 菜单管理 -->
+<!-- 人员管理 -->
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
@@ -7,7 +7,7 @@
       :inline="true">
         <el-form-item label="">
           <el-input
-            placeholder="搜索关键字"
+            placeholder="用户名"
             style="width: 200px;"
             class="filter-item"
             @keyup.enter.native="handleFilter"
@@ -17,7 +17,7 @@
         </el-form-item>
         <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
         <el-button class="filter-item" style="margin-left: 10px;" @click="handleAddOrUpdate()" type="success" icon="el-icon-edit">新增</el-button>
-        <!-- <el-button type="danger" @click="handleDelete()" :disabled="dataListSelections.length <= 0">批量删除</el-button> -->
+        <el-button type="danger" @click="handleDelete()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form>
     </div>
 
@@ -30,70 +30,69 @@
       highlight-current-row
       @selection-change="handleSelectionChange"
       >
-      <!-- <el-table-column
+      <el-table-column
         type="selection"
         header-align="center"
         align="center"
         width="50">
-      </el-table-column> -->
+      </el-table-column>
       <!-- <el-table-column
-        prop="id"
+        prop="userId"
         header-align="center"
         align="center"
         width="80"
         label="ID">
       </el-table-column> -->
-      <table-tree-column
-        prop="name"
-        header-align="center"
-        treeKey="id"
-        width="180"
-        label="名称">
-      </table-tree-column>
-      <!-- <el-table-column
-        prop="parentName"
+      <el-table-column
+        prop="username"
         header-align="center"
         align="center"
-        width="120"
-        label="上级菜单">
+        label="用户名">
+      </el-table-column>
+      <el-table-column
+        prop="email"
+        header-align="center"
+        align="center"
+        width="200"
+        label="邮箱">
+      </el-table-column>
+      <!-- <el-table-column
+        prop="mobile"
+        header-align="center"
+        align="center"
+        label="手机号">
       </el-table-column> -->
       <el-table-column
+        prop="status"
         header-align="center"
         align="center"
-        label="图标">
+        label="状态">
         <template slot-scope="scope">
-          <!-- <icon-svg :name="scope.row.icon || 'menu'"></icon-svg> -->
+          <el-tag v-if="scope.row.status === 0" size="small" type="danger">禁用</el-tag>
+          <el-tag v-else size="small">正常</el-tag>
         </template>
       </el-table-column>
+      <!-- <el-table-column
+        prop="createTime"
+        header-align="center"
+        align="center"
+        width="180"
+        label="创建时间">
+      </el-table-column> -->
+      <el-table-column
+        prop="loginCount"
+        header-align="center"
+        align="center"
+        label="登录次数">
+      </el-table-column>
       <el-table-column
         header-align="center"
         align="center"
-        label="类型">
+        width="180"
+        label="最近访问">
         <template slot-scope="scope">
-          <el-tag v-if="!scope.row.link && scope.row.type === '0'" size="small">目录</el-tag>
-          <el-tag v-else-if="scope.row.type === '1'" size="small" type="success">菜单</el-tag>
-          <el-tag v-else-if="scope.row.type === '2'" size="small" type="info">按钮</el-tag>
+          <span>{{scope.row.lastVisit | formatDate('Y-M-D H:F:S')}}</span>
         </template>
-      </el-table-column>
-      <el-table-column
-        prop="position"
-        header-align="center"
-        align="center"
-        label="排序号">
-      </el-table-column>
-      <el-table-column
-        prop="link"
-        header-align="center"
-        width="150"
-        :show-overflow-tooltip="true"
-        label="菜单URL">
-      </el-table-column>
-      <el-table-column
-        prop="permCode"
-        header-align="center"
-        width="150"
-        :show-overflow-tooltip="true"
-        label="授权标识">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -108,7 +107,7 @@
       </el-table-column>
     </el-table>
 
-    <!-- <div class="pagination-container" style="margin-top: 16px;">
+    <div class="pagination-container" style="margin-top: 16px;">
       <el-pagination
         background
         @size-change="handleSizeChange"
@@ -119,7 +118,7 @@
         :page-sizes="[10, 20, 50, 100]"
         layout="total, sizes, prev, pager, next, jumper">
       </el-pagination>
-    </div> -->
+    </div>
 
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update
@@ -134,21 +133,31 @@
 import api from '@/config/api';
 // import { copy } from 'kit-qs';
 import waves from '@/directive/waves'; // 水波纹指令
-import { treeDataTranslate } from '@/utils'
-import TableTreeColumn from '@/components/TableTreeColumn'
-import AddOrUpdate from './menu-add-or-update'
+import AddOrUpdate from './personnel-add-or-update'
 
 const modelApi = {
-  add: api.saveAuth,
-  del: api.delAuth,
-  edit: api.updateAuth,
-  list: api.getAuth,
+  add: api.saveUser,
+  del: api.delUser,
+  edit: api.updateUser,
+  list: api.getUserList,
 };
 
+// const roles = [
+//   { id: 1, value: 'admin' },
+//   { id: 2, value: 'manager' },
+//   // { id: 3, value: 'editor' },
+//   // { id: 4, value: 'guest' },
+// ]
+
+// arr to obj ,such as { CN : "China", US : "USA" }
+// const roleIds = roles.reduce((obj, item) => {
+//   obj[item.id] = item.value
+//   return obj
+// }, {})
+
 export default {
-  name: 'sys_menu',
+  name: 'sys_account',
   components: {
-    [TableTreeColumn.name]: TableTreeColumn,
     AddOrUpdate,
   },
   directives: {
@@ -161,9 +170,9 @@ export default {
         // sort: '+id',
       },
       tableKey: 0,
-      // pageIndex: 1,
-      // pageLimit: 10,
-      // totalCount: 0,
+      pageIndex: 1,
+      pageLimit: 10,
+      totalCount: 0,
       dataList: [],
       dataListLoading: true,
       dataListSelections: [],
@@ -195,32 +204,51 @@ export default {
       this.dataListLoading = true
       modelApi.list({
         ...this.dataForm,
-        // page: this.pageIndex,
-        // size: this.pageLimit,
+        page: this.pageIndex,
+        size: this.pageLimit,
       }, (res) => {
         this.dataListLoading = false
-        this.dataList = treeDataTranslate(res.data)
-        // this.totalCount = res.data.total
+        this.dataList = res.data.list
+        this.totalCount = res.data.total
       }, (err) => {
 
       });
     },
     handleFilter() {
-      // this.pageIndex = 1
+      this.pageIndex = 1
       this.getDataList()
     },
     handleSizeChange(val) {
-      // this.pageLimit = val
+      this.pageLimit = val
       this.getDataList()
     },
     handleCurrentChange(val) {
-      // this.pageIndex = val
+      this.pageIndex = val
       this.getDataList()
     },
     // 多选
     handleSelectionChange(val) {
       this.dataListSelections = val
     },
+    // handleModifyStatus(row, status) {
+    //   switch (status) {
+    //     case 'delete':
+    //       this.handleDelete(row);
+    //       break;
+    //     default:
+    //       // do nothing...
+    //   }
+    //   this.$message({
+    //     message: '操作成功',
+    //     type: 'success',
+    //   })
+    //   row.status = status
+    // },
+    // resetTemp() {
+    //   this.temp = {
+    //     ...defaultInfo,
+    //   }
+    // },
     /* eslint dot-notation: 0 */
     handleAddOrUpdate(id) {
       // this.resetTemp()
@@ -234,12 +262,81 @@ export default {
         this.$refs.addOrUpdate.init(id)
       })
     },
+    // createData() {
+    //   this.$refs['dataForm'].validate((valid) => {
+    //     if (valid) {
+    //       modelApi.add({
+    //         ...this.temp,
+    //       }, (res) => {
+    //         this.dialogFormVisible = false
+    //         Object.assign(this.temp, res.data);
+    //         this.dataList.unshift(this.temp)
+    //         this.$notify({
+    //           title: '成功',
+    //           message: '创建成功',
+    //           type: 'success',
+    //           duration: 2000,
+    //         })
+    //       }, (err) => {
+
+    //       });
+    //     }
+    //   })
+    // },
+    // handleUpdate(row) {
+    //   this.temp = copy(row) // copy obj
+    //   this.dialogStatus = 'update'
+    //   this.dialogFormVisible = true
+    //   this.$nextTick(() => {
+    //     this.$refs['dataForm'].clearValidate()
+    //   })
+    // },
+    updateItem(data, type) {
+      if (type === 'add') {
+        this.dataList.unshift(data);
+      } else {
+        for (const v of this.dataList) {
+          if (v.id === data.id) {
+            const index = this.dataList.indexOf(v)
+            this.dataList.splice(index, 1, data)
+            break
+          }
+        }
+      }
+    },
+    // updateData() {
+    //   this.$refs['dataForm'].validate((valid) => {
+    //     if (valid) {
+    //       const tempData = copy(this.temp)
+    //       modelApi.edit({
+    //         ...tempData,
+    //       }, (res) => {
+    //         for (const v of this.dataList) {
+    //           if (v.id === this.temp.id) {
+    //             const index = this.dataList.indexOf(v)
+    //             this.dataList.splice(index, 1, this.temp)
+    //             break
+    //           }
+    //         }
+    //         this.dialogFormVisible = false
+    //         this.$notify({
+    //           title: '成功',
+    //           message: '更新成功',
+    //           type: 'success',
+    //           duration: 2000,
+    //         })
+    //       }, (err) => {
+
+    //       });
+    //     }
+    //   })
+    // },
+    // 不能删除自己，不能删除最后一个用户，不能删除超管
     handleDelete(id) {
       // 删除是危险动作，至少要气泡提示
-      // const ids = id ? [id] : this.dataListSelections.map((item) => {
-      //   return item.id
-      // });
-      const ids = id ? [id] : [];
+      const ids = id ? [id] : this.dataListSelections.map((item) => {
+        return item.id
+      })
       modelApi.del({
         ids: ids.join(','),
       }, (res) => {

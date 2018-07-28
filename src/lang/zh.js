@@ -3,26 +3,34 @@
 export default {
   route: {
     doing: '正在开发',
+    setting: '设置',
 
     // sys
     system: '系统管理',
     account: '管理员列表',
     role: '角色管理',
-    org: '组织架构',
     menu: '菜单管理',
     sql: 'SQL监控',
     dict: '数据字典',
     upload: '文件上传',
+    // org
+    org: '组织机构',
+    dept: '部门管理',
+    post: '岗位管理',
+    // title: '职称',
+    personnel: '人员管理',
+    res: '资源管理',
+    'res-cert': '证书管理',
     // oss
     log: '系统日志',
     // job
     task: '定时任务',
+    job: '定时任务',
 
     user: '用户管理',
-    depart: '部门管理',
-    people: '人员管理',
+    // people: '人员管理',
     power: '权限管理',
-    peoples: '人员证书管理',
+    // peoples: '人员证书管理',
     cert: '证书管理',
     gc: '工程业绩管理',
     dashboard: '控制台',

@@ -1,4 +1,4 @@
-<!-- 菜单管理 -->
+<!-- 组织部门 -->
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
@@ -136,7 +136,7 @@ import api from '@/config/api';
 import waves from '@/directive/waves'; // 水波纹指令
 import { treeDataTranslate } from '@/utils'
 import TableTreeColumn from '@/components/TableTreeColumn'
-import AddOrUpdate from './menu-add-or-update'
+import AddOrUpdate from './dept-add-or-update'
 
 const modelApi = {
   add: api.saveAuth,
@@ -146,7 +146,7 @@ const modelApi = {
 };
 
 export default {
-  name: 'sys_menu',
+  name: 'org_org',
   components: {
     [TableTreeColumn.name]: TableTreeColumn,
     AddOrUpdate,

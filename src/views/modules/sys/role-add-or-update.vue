@@ -39,7 +39,7 @@
 <script>
 // import { isEmail, isMobile } from '@/utils/validate'
 import api from '@/config/api'
-import { copy } from 'kit-qs'
+// import { copy } from 'kit-qs'
 import { treeDataTranslate } from '@/utils'
 
 const modelApi = {
@@ -114,13 +114,16 @@ export default {
       modelApi.getRoleDetail({
         id,
       }, (res) => {
-        const data = copy(res.data);
+        const { data } = res;
+        this.dataForm.code = data.code
+        this.dataForm.name = data.name
+        this.dataForm.description = data.description
         const idx = data.permIds.indexOf(this.tempKey)
         if (idx !== -1) {
-          data.permIds.splice(idx, data.menuIdList.length - idx)
+          data.permIds.splice(idx, data.permIds.length - idx)
         }
-        Object.assign(this.dataForm, data);
-        this.$refs.menuListTree.setCheckedKeys(this.dataForm.permIds)
+        // this.dataForm = data;
+        this.$refs.menuListTree.setCheckedKeys(data.permIds)
       }, (err) => {
 
       })
