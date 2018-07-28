@@ -136,10 +136,10 @@ import waves from '@/directive/waves'; // 水波纹指令
 import AddOrUpdate from './account-add-or-update'
 
 const modelApi = {
-  add: api.addUser,
-  del: api.delUser,
-  edit: api.updateUser,
   list: api.getUser,
+  add: api.addUser,
+  edit: api.updateUser,
+  del: api.delUser,
 };
 
 // const roles = [
@@ -366,4 +366,3 @@ export default {
 <style lang="stylus" scoped>
 
 </style>
-

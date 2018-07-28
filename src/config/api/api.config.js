@@ -39,15 +39,15 @@ const headers = {
 const modelApis = {
   // 初始化配置
   test: 'https://easy-mock.com/mock/5aa79bf26701e17a67bde1d7/',
-  getConfig: '/common/initconfig',
-  getWxSign: '/common/getwxsign',
+  // getConfig: '/common/initconfig',
+  // getWxSign: '/common/getwxsign',
 
   // 获取七牛 token
-  getQiniuToken: '/common/qiniutoken',
+  // getQiniuToken: '/common/qiniutoken',
 
-  loginByUsername: 'POST /user/login',
-  logout: 'POST /user/logout',
-  getTableList: '/table/list',
+  // loginByUsername: 'POST /user/login',
+  // logout: 'POST /user/logout',
+  // getTableList: '/table/list',
 
   // 系统管理
   login: 'POST /admin/login',
@@ -82,6 +82,12 @@ const modelApis = {
   updateRole: 'POST /sys/role/update',
   updateRolePower: '/sys/role/permission/update',
   getRoleDetail: '/sys/role/view',
+
+  // 数据字典
+  getDict: '/sys/dict/list',
+  addDict: 'POST /sys/dict/save',
+  delDict: 'POST /sys/dict/delete',
+  updateDict: 'POST /sys/dict/update',
 
   // 人员管理
   getPersonal: '/org/personal/list',
