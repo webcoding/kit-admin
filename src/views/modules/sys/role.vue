@@ -114,10 +114,10 @@ import waves from '@/directive/waves'; // 水波纹指令
 import AddOrUpdate from './role-add-or-update'
 
 const modelApi = {
-  add: api.saveRole,
+  add: api.addRole,
   del: api.delRole,
   edit: api.updateRole,
-  list: api.getRoleList,
+  list: api.getRole,
 };
 
 export default {

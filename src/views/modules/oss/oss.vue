@@ -86,10 +86,10 @@ import waves from '@/directive/waves'; // 水波纹指令
 // import upload from './oss-upload'
 
 const model = {
-  add: api.saveUser,
+  add: api.addUser,
   del: api.delUser,
   edit: api.updateUser,
-  search: api.getUserList,
+  search: api.getUser,
 };
 
 const roles = [

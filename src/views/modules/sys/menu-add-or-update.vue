@@ -89,7 +89,7 @@ import api from '@/config/api'
 import Icon from '@/icons'
 
 const modelApi = {
-  add: api.saveAuth,
+  add: api.addAuth,
   edit: api.updateAuth,
   list: api.getAuth,
 };

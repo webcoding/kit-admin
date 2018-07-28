@@ -89,9 +89,9 @@ import api from '@/config/api'
 import Icon from '@/icons'
 
 const modelApi = {
-  add: api.saveAuth,
-  edit: api.updateAuth,
-  list: api.getAuth,
+  add: api.addDept,
+  edit: api.updateDept,
+  list: api.getDept,
 };
 
 
@@ -172,7 +172,7 @@ export default {
         this.menuList = [{
           id: 'root',
           name: '一级菜单',
-          children: treeDataTranslate(res.data),
+          children: treeDataTranslate(res.data.list),
         }];
         // this.totalCount = res.data.total
         this.visible = true

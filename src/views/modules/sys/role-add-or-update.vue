@@ -43,7 +43,7 @@ import api from '@/config/api'
 import { treeDataTranslate } from '@/utils'
 
 const modelApi = {
-  add: api.saveRole,
+  add: api.addRole,
   edit: api.updateRole,
   list: api.getAuth,
   getRoleDetail: api.getRoleDetail,

@@ -139,10 +139,10 @@ import TableTreeColumn from '@/components/TableTreeColumn'
 import AddOrUpdate from './dept-add-or-update'
 
 const modelApi = {
-  add: api.saveAuth,
-  del: api.delAuth,
-  edit: api.updateAuth,
-  list: api.getAuth,
+  add: api.addDept,
+  del: api.delDept,
+  edit: api.updateDept,
+  list: api.getDept,
 };
 
 export default {
@@ -199,7 +199,7 @@ export default {
         // size: this.pageLimit,
       }, (res) => {
         this.dataListLoading = false
-        this.dataList = treeDataTranslate(res.data)
+        this.dataList = treeDataTranslate(res.data.list)
         // this.totalCount = res.data.total
       }, (err) => {
 

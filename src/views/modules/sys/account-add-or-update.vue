@@ -57,7 +57,7 @@ import { isEmail, isMobile } from '@/utils/validate'
 import api from '@/config/api'
 
 const modelApi = {
-  add: api.saveUser,
+  add: api.addUser,
   edit: api.updateUser,
 };
 

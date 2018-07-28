@@ -139,7 +139,7 @@ import TableTreeColumn from '@/components/TableTreeColumn'
 import AddOrUpdate from './menu-add-or-update'
 
 const modelApi = {
-  add: api.saveAuth,
+  add: api.addAuth,
   del: api.delAuth,
   edit: api.updateAuth,
   list: api.getAuth,

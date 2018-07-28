@@ -136,10 +136,10 @@ import waves from '@/directive/waves'; // 水波纹指令
 import AddOrUpdate from './personnel-add-or-update'
 
 const modelApi = {
-  add: api.saveUser,
-  del: api.delUser,
-  edit: api.updateUser,
-  list: api.getUserList,
+  add: api.addPersonal,
+  del: api.delPersonal,
+  edit: api.updatePersonal,
+  list: api.getPersonal,
 };
 
 // const roles = [

@@ -97,7 +97,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      api.getUserList({}, (res) => {
+      api.getUser({}, (res) => {
         console.log(res);
       }, (err) => {
 

@@ -145,10 +145,10 @@ import { copy } from 'kit-qs';
 import waves from '@/directive/waves'; // 水波纹指令
 
 const model = {
-  add: api.savePersonal,
+  add: api.addPersonal,
   del: api.delPersonal,
   edit: api.updatePersonal,
-  search: api.getPersonalList,
+  search: api.getPersonal,
 };
 
 // const roles = [

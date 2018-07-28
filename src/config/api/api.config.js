@@ -58,51 +58,60 @@ const modelApis = {
   getMenu: '/admin/menu',
   // 权限管理
   getAuth: '/sys/permission/list',
-  saveAuth: 'POST /sys/permission/save',
+  addAuth: 'POST /sys/permission/save',
   delAuth: 'POST /sys/permission/delete',
   updateAuth: 'POST /sys/permission/update',
   // 角色权限列表
-  getRoleAuthList: '/sys/role/permission/list',
+  getRoleAuth: '/sys/role/permission/list',
 
-  // 用户管理
-  getUserList: '/sys/user/list',
+  // 账户管理
+  getUser: '/sys/user/list',
   getUserInfo: '/sys/user/info',
-  searchUser: '/sys/user/search',
+  // searchUser: '/sys/user/search',
   // getUserInfo: '/sys/user/findById',
-  userRoleList: '/sys/user/role/list',
-  saveUser: 'POST /sys/user/save',
+  getUserRole: '/sys/user/role/list',
+  addUser: 'POST /sys/user/save',
   updateUser: 'POST /sys/user/update',
   updateUserPwd: 'POST /sys/user/updatePwd',
   updateUserRole: 'POST /sys/user/role/update',
   delUser: 'POST /sys/user/delete',
   // 角色管理
-  getRoleList: '/sys/role/list',
-  saveRole: 'POST /sys/role/save',
+  getRole: '/sys/role/list',
+  addRole: 'POST /sys/role/save',
   delRole: 'POST /sys/role/delete',
   updateRole: 'POST /sys/role/update',
   updateRolePower: '/sys/role/permission/update',
   getRoleDetail: '/sys/role/view',
 
   // 人员管理
-  getPersonalList: '/org/personal/list',
-  savePersonal: 'POST /org/personal/save',
+  getPersonal: '/org/personal/list',
+  addPersonal: 'POST /org/personal/save',
   delPersonal: 'POST /org/personal/delete',
   updatePersonal: 'POST /org/personal/update',
-  searchPersonal: '/org/personal/save',
 
   // 人员证书管理
-  getResList: '/personal/resource/list',
-  saveRes: 'POST /personal/resource/save',
+  getRes: '/personal/resource/list',
+  addRes: 'POST /personal/resource/save',
   delRes: 'POST /personal/resource/delete',
   uploadRes: 'POST /personal/resource/upload',
-  searchRes: '/personal/resource/search',
 
   // 组织架构
-  getDeptList: '/org/dept/list',
-  saveDept: 'POST /org/dept/save',
+  getDept: '/org/dept/list',
+  addDept: 'POST /org/dept/save',
   delDept: 'POST /org/dept/delete',
-  uploadDept: 'POST /org/dept/upload',
-  searchDept: '/org/dept/search',
+  updateDept: 'POST /org/dept/update',
+  addDeptPersonal: 'POST /org/dept/personal/save',
+  updateDeptPersonal: 'POST /org/dept/personal/update',
+
+  // 定时任务
+  getJob: '/sys/scheduleJob/list',
+  addJob: 'POST /sys/scheduleJob/save',
+  delJob: 'POST /sys/scheduleJob/delete',
+  updateJob: 'POST /sys/scheduleJob/update',
+  jobStart: 'POST /sys/scheduleJob/start',
+  jobPause: 'POST /sys/scheduleJob/pause',
+  jobResume: 'POST /sys/scheduleJob/resume',
+  jobInfo: 'POST /sys/scheduleJob/resume',
 }
 
 export default {

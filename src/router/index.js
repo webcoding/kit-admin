@@ -195,11 +195,11 @@ export const asyncRouterMap = [
         },
       },
       {
-        path: 'task',
-        component: _import('modules/job/task'),
-        name: 'task',
+        path: 'job',
+        component: _import('modules/sys/job'),
+        name: 'job',
         meta: {
-          title: 'task',
+          title: 'job',
           icon: 'task',
         },
       },

@@ -239,7 +239,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      api.getUserList({
+      api.getUser({
         page: 1,
         size: 20,
       }, (res) => {

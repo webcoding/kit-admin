@@ -81,10 +81,10 @@ import { copy } from 'kit-qs'
 import waves from '@/directive/waves' // 水波纹指令
 
 const model = {
-  add: api.saveAuth,
+  add: api.addAuth,
   del: api.delAuth,
   edit: api.updateAuth,
-  list: api.getRoleAuthList,
+  list: api.getRoleAuth,
 };
 
 const roles = [
