@@ -7,7 +7,7 @@
       :inline="true">
         <el-form-item label="">
           <el-input
-            placeholder=""
+            placeholder="名称"
             style="width: 200px;"
             class="filter-item"
             @keyup.enter.native="handleFilter"

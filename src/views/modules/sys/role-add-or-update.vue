@@ -40,7 +40,7 @@
 // import { isEmail, isMobile } from '@/utils/validate'
 import api from '@/config/api'
 // import { copy } from 'kit-qs'
-import { treeDataTranslate } from '@/utils'
+import { menuLevel } from '@/utils'
 
 const modelApi = {
   add: api.addRole,
@@ -94,7 +94,7 @@ export default {
         // page: this.pageIndex,
         // size: this.pageLimit,
       }, (res) => {
-        this.menuList = treeDataTranslate(res.data)
+        this.menuList = menuLevel(res.data)
         // this.totalCount = res.data.total
         this.visible = true
         this.$nextTick(() => {

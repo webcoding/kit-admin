@@ -11,18 +11,8 @@ export function isAuth(key) {
   return JSON.parse(sessionStorage.getItem('permissions') || '[]').indexOf(key) !== -1 || false
 }
 
-// 树形数据转换
-export function treeDataTranslate(data, id = 'id', pid = 'parentId') {
-  // const res = []
-  const temp = {}
-  // 遍历目录
-  // for (let i = 0; i < data.length; i++) {
-  //   // const item = data[i];
-  //   // const menuId = item[id];
-  //   // temp[menuId] = item;
-  //   temp[data[i][id]] = data[i];
-  // }
-
+export function menuLevel(data, id = 'id', pid = 'parentId') {
+  const temp = {};
   /* eslint no-underscore-dangle: 0 */
   function mapMenu(list = [], level = 1) {
     list.forEach((item) => {
@@ -35,30 +25,41 @@ export function treeDataTranslate(data, id = 'id', pid = 'parentId') {
   }
 
   mapMenu(data);
-
-  // for (let k = 0; k < data.length; k++) {
-  //   const item = data[k];
-  //   // if (item[pid] === '0000000064b82c660164b82d524b0000') {
-  //   //   delete item[pid];
-  //   // }
-  //   const parentId = item[pid]; // data[k][pid]
-  //   const parentItem = temp[parentId]; // temp[data[k][pid]]
-  //   if (parentItem && item[id] !== parentId) {
-  //     if (!parentItem.children) {
-  //       parentItem.children = []
-  //     }
-  //     /* eslint no-underscore-dangle: 0 */
-  //     if (!parentItem._level) {
-  //       parentItem._level = 1
-  //     }
-  //     item._level = parentItem._level + 1
-  //     parentItem.children.push(item)
-  //   } else {
-  //     res.push(item)
-  //   }
-  // }
-  // debugger
   return data;
+}
+
+// 树形数据转换
+export function treeDataTranslate(data, id = 'id', pid = 'parentId') {
+  const res = []
+  const temp = {}
+  // 遍历目录
+  for (let i = 0; i < data.length; i++) {
+    // const item = data[i];
+    // const menuId = item[id];
+    // temp[menuId] = item;
+    temp[data[i][id]] = data[i];
+  }
+
+  for (let k = 0; k < data.length; k++) {
+    const item = data[k];
+    const parentId = item[pid]; // data[k][pid]
+    const parentItem = temp[parentId]; // temp[data[k][pid]]
+    if (parentItem && item[id] !== parentId) {
+      if (!parentItem.children) {
+        parentItem.children = []
+      }
+      /* eslint no-underscore-dangle: 0 */
+      if (!parentItem._level) {
+        parentItem._level = 1
+      }
+      item._level = parentItem._level + 1
+      parentItem.children.push(item)
+    } else {
+      res.push(item)
+    }
+  }
+  // debugger
+  return res;
 }
 
 export function parseTime(time, cFormat) {

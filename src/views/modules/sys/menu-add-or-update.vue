@@ -19,14 +19,13 @@
       </el-form-item>
       <el-form-item label="上级菜单" prop="parentName">
         <el-popover
-          class="sadfasdf"
           ref="menuListPopover"
           placement="bottom-start"
           trigger="click">
           <el-tree
             :data="menuList"
             :props="menuListTreeProps"
-            node-key="menuId"
+            node-key="id"
             ref="menuListTree"
             accordion
             @current-change="handleMenuListTreeCurrentChange"
@@ -83,8 +82,7 @@
 </template>
 
 <script>
-// import { treeDataTranslate } from '@/utils'
-import { treeDataTranslate } from '@/utils'
+import { menuLevel } from '@/utils'
 import api from '@/config/api'
 import Icon from '@/icons'
 
@@ -154,7 +152,6 @@ export default {
     // },
     init(row) {
       // this.resetDataForm();
-      if (row && row.password) row.password = '';
       Object.assign(this.dataForm, row);
 
       // if (!this.dataForm.id) {
@@ -172,7 +169,7 @@ export default {
         this.menuList = [{
           id: 'root',
           name: '一级菜单',
-          children: treeDataTranslate(res.data),
+          children: menuLevel(res.data),
         }];
         // this.totalCount = res.data.total
         this.visible = true

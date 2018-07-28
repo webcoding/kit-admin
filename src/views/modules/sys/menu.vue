@@ -134,7 +134,7 @@
 import api from '@/config/api';
 // import { copy } from 'kit-qs';
 import waves from '@/directive/waves'; // 水波纹指令
-import { treeDataTranslate } from '@/utils'
+import { menuLevel } from '@/utils'
 import TableTreeColumn from '@/components/TableTreeColumn'
 import AddOrUpdate from './menu-add-or-update'
 
@@ -199,7 +199,7 @@ export default {
         // size: this.pageLimit,
       }, (res) => {
         this.dataListLoading = false
-        this.dataList = treeDataTranslate(res.data)
+        this.dataList = menuLevel(res.data)
         // this.totalCount = res.data.total
       }, (err) => {
 

@@ -36,19 +36,31 @@
         align="center"
         width="50">
       </el-table-column> -->
-      <!-- <el-table-column
+      <el-table-column
         prop="id"
         header-align="center"
         align="center"
         width="80"
         label="ID">
-      </el-table-column> -->
+      </el-table-column>
       <table-tree-column
         prop="name"
         header-align="center"
         treeKey="id"
         width="180"
-        label="名称">
+        label="部门名称">
+      </table-tree-column>
+      <table-tree-column
+        prop="address"
+        header-align="center"
+        width="200"
+        label="部门地址">
+      </table-tree-column>
+      <table-tree-column
+        prop="url"
+        header-align="center"
+        width="200"
+        label="部门网址">
       </table-tree-column>
       <!-- <el-table-column
         prop="parentName"
@@ -59,41 +71,25 @@
       </el-table-column> -->
       <el-table-column
         header-align="center"
-        align="center"
-        label="图标">
+        width="200"
+        label="部门职责">
         <template slot-scope="scope">
-          <!-- <icon-svg :name="scope.row.icon || 'menu'"></icon-svg> -->
+          {{scope.row.scope}}
         </template>
       </el-table-column>
       <el-table-column
         header-align="center"
-        align="center"
-        label="类型">
+        label="部门负责人">
         <template slot-scope="scope">
-          <el-tag v-if="!scope.row.link && scope.row.type === '0'" size="small">目录</el-tag>
-          <el-tag v-else-if="scope.row.type === '1'" size="small" type="success">菜单</el-tag>
-          <el-tag v-else-if="scope.row.type === '2'" size="small" type="info">按钮</el-tag>
+          {{scope.row.leader}}
         </template>
       </el-table-column>
       <el-table-column
         prop="position"
         header-align="center"
         align="center"
-        label="排序号">
-      </el-table-column>
-      <el-table-column
-        prop="link"
-        header-align="center"
-        width="150"
-        :show-overflow-tooltip="true"
-        label="菜单URL">
-      </el-table-column>
-      <el-table-column
-        prop="permCode"
-        header-align="center"
-        width="150"
-        :show-overflow-tooltip="true"
-        label="授权标识">
+        width="80"
+        label="排序">
       </el-table-column>
       <el-table-column
         fixed="right"

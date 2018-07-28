@@ -52,7 +52,7 @@ const defaultInfo = {
   label: '',
   value: '',
   type: '',
-  position: '',
+  position: 0,
   remark: '',
 };
 
@@ -77,7 +77,6 @@ export default {
     },
     init(row) {
       this.resetDataForm();
-      if (row && row.password) row.password = '';
       Object.assign(this.dataForm, row);
       // this.dataForm.id = row.id;
 

@@ -4,22 +4,13 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form
-      label-width="80px"
+      label-width="100px"
       :model="dataForm"
       :rules="dataRule"
       @keyup.enter.native="dataFormSubmit()"
       ref="dataForm">
-      <el-form-item label="类型" prop="type">
-        <el-radio-group v-model="dataForm.type">
-          <el-radio v-for="(type, index) in dataForm.typeList" :label="index" :key="index">{{ type }}</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item :label="dataForm.typeList[dataForm.type] + '名称'" prop="name">
-        <el-input v-model="dataForm.name" :placeholder="dataForm.typeList[dataForm.type] + '名称'"></el-input>
-      </el-form-item>
-      <el-form-item label="上级菜单" prop="parentName">
+      <el-form-item label="上级部门" prop="parentName">
         <el-popover
-          class="sadfasdf"
           ref="menuListPopover"
           placement="bottom-start"
           trigger="click">
@@ -37,42 +28,23 @@
         </el-popover>
         <el-input v-model="dataForm.parentName" v-popover:menuListPopover :readonly="true" placeholder="点击选择上级菜单" class="menu-list__input"></el-input>
       </el-form-item>
-      <el-form-item v-if="dataForm.type === 1" label="菜单路由" prop="link">
-        <el-input v-model="dataForm.link" placeholder="菜单路由"></el-input>
+      <el-form-item label="部门名称" prop="name">
+        <el-input v-model="dataForm.name" placeholder="部门名称"></el-input>
       </el-form-item>
-      <el-form-item v-if="dataForm.type !== 0" label="授权标识" prop="perms">
-        <el-input v-model="dataForm.perms" placeholder="多个用逗号分隔, 如: user:list,user:create"></el-input>
+      <el-form-item label="部门地址" prop="address">
+        <el-input v-model="dataForm.address" placeholder="部门地址"></el-input>
       </el-form-item>
-      <el-form-item v-if="dataForm.type !== 2" label="排序号" prop="position">
-        <el-input-number v-model="dataForm.position" controls-position="right" :min="0" label="排序号"></el-input-number>
+      <el-form-item label="部门网址" prop="url">
+        <el-input v-model="dataForm.url" placeholder="部门网址"></el-input>
       </el-form-item>
-      <el-form-item v-if="dataForm.type !== 2" label="菜单图标" prop="icon">
-        <el-row>
-          <el-col :span="22">
-            <el-popover
-              ref="iconListPopover"
-              placement="bottom-start"
-              trigger="click"
-              popper-class="menu__icon-popover">
-              <div class="menu__icon-list">
-                <el-button
-                  v-for="(item, index) in iconList"
-                  :key="index"
-                  @click="handleIconActive(item)"
-                  :class="{ 'is-active': item === dataForm.icon }">
-                  <icon-svg :icon-class="item"></icon-svg>
-                </el-button>
-              </div>
-            </el-popover>
-            <el-input v-model="dataForm.icon" v-popover:iconListPopover :readonly="true" placeholder="菜单图标名称" class="icon-list__input"></el-input>
-          </el-col>
-          <el-col :span="2" class="icon-list__tips">
-            <el-tooltip placement="top" effect="light">
-              <div slot="content">全站推荐使用SVG Sprite, 详细请参考:<a href="//github.com/daxiongYang/renren-fast-vue/blob/master/src/icons/index.js" target="_blank">icons/index.js</a>描述</div>
-              <i class="el-icon-warning"></i>
-            </el-tooltip>
-          </el-col>
-        </el-row>
+      <el-form-item label="部门职责" prop="scope">
+        <el-input v-model="dataForm.scope" placeholder="部门职责"></el-input>
+      </el-form-item>
+      <el-form-item label="部门负责人" prop="leader">
+        <el-input v-model="dataForm.leader" placeholder="部门负责人"></el-input>
+      </el-form-item>
+      <el-form-item label="排序" prop="position">
+        <el-input-number v-model="dataForm.position" controls-position="right" :min="0" label="排序"></el-input-number>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -83,10 +55,9 @@
 </template>
 
 <script>
-// import { treeDataTranslate } from '@/utils'
 import { treeDataTranslate } from '@/utils'
 import api from '@/config/api'
-import Icon from '@/icons'
+// import Icon from '@/icons'
 
 const modelApi = {
   add: api.addDept,
@@ -97,28 +68,25 @@ const modelApi = {
 
 const defaultInfo = {
   id: undefined,
-  type: 0,
-  typeList: ['目录', '菜单', '按钮'],
   name: '',
   parentId: 0,
   parentName: '',
+  address: '',
   url: '',
-  perms: '',
-  // orderNum: 0,
+  leader: '',
+  scope: '',
   position: 0,
-  icon: '',
-  iconList: [],
 };
 
 export default {
   data() {
-    const validateUrl = (rule, value, callback) => {
-      if (this.dataForm.type === 1 && !/\S/.test(value)) {
-        callback(new Error('菜单URL不能为空'))
-      } else {
-        callback()
-      }
-    }
+    // const validateUrl = (rule, value, callback) => {
+    //   if (value && !/\S/.test(value)) {
+    //     callback(new Error('网站URL不能为空'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       visible: false,
       roleList: [],
@@ -127,14 +95,14 @@ export default {
       },
       dataRule: {
         name: [
-          { required: true, message: '菜单名称不能为空', trigger: 'blur' },
+          { required: true, message: '部门名称不能为空', trigger: 'blur' },
         ],
         parentName: [
-          { required: true, message: '上级菜单不能为空', trigger: 'change' },
+          { required: true, message: '上级部门不能为空', trigger: 'change' },
         ],
-        url: [
-          { validator: validateUrl, trigger: 'blur' },
-        ],
+        // url: [
+        //   { validator: validateUrl, trigger: 'blur' },
+        // ],
       },
       menuList: [],
       menuListTreeProps: {
@@ -144,17 +112,16 @@ export default {
     }
   },
   created() {
-    this.iconList = Icon.getNameList()
+
   },
   methods: {
-    // resetDataForm() {
-    //   this.dataForm = {
-    //     ...defaultInfo,
-    //   }
-    // },
+    resetDataForm() {
+      this.dataForm = {
+        ...defaultInfo,
+      }
+    },
     init(row) {
-      // this.resetDataForm();
-      if (row && row.password) row.password = '';
+      this.resetDataForm();
       Object.assign(this.dataForm, row);
 
       // if (!this.dataForm.id) {
@@ -165,15 +132,16 @@ export default {
       // this.dataForm.id = row.id;
       modelApi.list({
         // ...this.dataForm,
-        type: 'menu',
+        // type: 'menu',
         // page: this.pageIndex,
         // size: this.pageLimit,
       }, (res) => {
-        this.menuList = [{
-          id: 'root',
-          name: '一级菜单',
-          children: treeDataTranslate(res.data.list),
-        }];
+        // this.menuList = [{
+        //   id: 'root',
+        //   name: '一级菜单',
+        //   children: treeDataTranslate(res.data.list),
+        // }];
+        this.menuList = treeDataTranslate(res.data.list);
         // this.totalCount = res.data.total
         this.visible = true
         this.$nextTick(() => {
