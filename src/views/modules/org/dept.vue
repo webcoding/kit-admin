@@ -195,7 +195,7 @@ export default {
         // size: this.pageLimit,
       }, (res) => {
         this.dataListLoading = false
-        this.dataList = treeDataTranslate(res.data.list)
+        this.dataList = treeDataTranslate(res.data)
         // this.totalCount = res.data.total
       }, (err) => {
 

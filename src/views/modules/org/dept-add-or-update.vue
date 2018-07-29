@@ -132,6 +132,7 @@ export default {
       // }
       // this.dataForm.id = row.id;
       modelApi.list({
+        type: 1,
         // ...this.dataForm,
         // type: 'menu',
         // page: this.pageIndex,
@@ -142,7 +143,7 @@ export default {
         //   name: '一级菜单',
         //   children: treeDataTranslate(res.data.list),
         // }];
-        this.menuList = treeDataTranslate(res.data.list);
+        this.menuList = treeDataTranslate(res.data);
         // this.totalCount = res.data.total
         this.visible = true
         this.$nextTick(() => {
