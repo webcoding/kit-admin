@@ -17,7 +17,7 @@
           <el-tree
             :data="menuList"
             :props="menuListTreeProps"
-            node-key="menuId"
+            node-key="id"
             ref="menuListTree"
             accordion
             @current-change="handleMenuListTreeCurrentChange"
@@ -73,7 +73,7 @@ const defaultInfo = {
   parentName: '',
   address: '',
   url: '',
-  leader: '',
+  leader: '0',
   scope: '',
   position: 0,
 };
@@ -122,7 +122,8 @@ export default {
     },
     init(row) {
       this.resetDataForm();
-      Object.assign(this.dataForm, row);
+      this.dataForm.id = row.id || 0
+      // Object.assign(this.dataForm, row);
 
       // if (!this.dataForm.id) {
       //   // 新增
@@ -146,6 +147,15 @@ export default {
         this.visible = true
         this.$nextTick(() => {
           this.$refs['dataForm'].resetFields()
+          if (!this.dataForm.id) {
+            // 新增
+            this.menuListTreeSetCurrentNode()
+          } else {
+            // 修改
+            Object.assign(this.dataForm, row);
+            // this.dataForm.type = Number(row.type)
+            this.menuListTreeSetCurrentNode()
+          }
         })
       }, (err) => {
 
@@ -160,9 +170,6 @@ export default {
     menuListTreeSetCurrentNode() {
       this.$refs.menuListTree.setCurrentKey(this.dataForm.parentId)
       this.dataForm.parentName = (this.$refs.menuListTree.getCurrentNode() || {})['name']
-    },
-    handleIconActive(iconName) {
-      this.dataForm.icon = iconName
     },
     // 表单提交
     dataFormSubmit() {

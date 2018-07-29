@@ -145,14 +145,15 @@ export default {
     this.iconList = Icon.getNameList()
   },
   methods: {
-    // resetDataForm() {
-    //   this.dataForm = {
-    //     ...defaultInfo,
-    //   }
-    // },
-    init(row) {
-      // this.resetDataForm();
-      Object.assign(this.dataForm, row);
+    resetDataForm() {
+      this.dataForm = {
+        ...defaultInfo,
+      }
+    },
+    init(row = {}) {
+      this.resetDataForm();
+      this.dataForm.id = row.id || 0
+      // Object.assign(this.dataForm, row);
 
       // if (!this.dataForm.id) {
       //   // 新增
@@ -175,6 +176,16 @@ export default {
         this.visible = true
         this.$nextTick(() => {
           this.$refs['dataForm'].resetFields()
+          // this.showData();
+          if (!this.dataForm.id) {
+            // 新增
+            // this.menuListTreeSetCurrentNode()
+          } else {
+            // 修改
+            Object.assign(this.dataForm, row);
+            this.dataForm.type = Number(row.type)
+            this.menuListTreeSetCurrentNode()
+          }
         })
       }, (err) => {
 
@@ -188,6 +199,9 @@ export default {
     // 菜单树设置当前选中节点
     menuListTreeSetCurrentNode() {
       this.$refs.menuListTree.setCurrentKey(this.dataForm.parentId)
+      // const aa = this.$refs.menuListTree.getCurrentNode();
+      // console.log(aa);
+      // debugger
       this.dataForm.parentName = (this.$refs.menuListTree.getCurrentNode() || {})['name']
     },
     handleIconActive(iconName) {
