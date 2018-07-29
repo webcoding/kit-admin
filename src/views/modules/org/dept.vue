@@ -50,18 +50,18 @@
         width="180"
         label="部门名称">
       </table-tree-column>
-      <table-tree-column
+      <el-table-column
         prop="address"
         header-align="center"
         width="200"
         label="部门地址">
-      </table-tree-column>
-      <table-tree-column
+      </el-table-column>
+      <el-table-column
         prop="url"
         header-align="center"
         width="200"
         label="部门网址">
-      </table-tree-column>
+      </el-table-column>
       <!-- <el-table-column
         prop="parentName"
         header-align="center"
