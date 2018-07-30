@@ -83,11 +83,9 @@ export default {
         ...defaultInfo,
       }
     },
-    init(row) {
+    init(row = {}) {
       this.resetDataForm();
-      if (row && row.password) row.password = '';
-      Object.assign(this.dataForm, row);
-      // this.dataForm.id = row.id;
+      this.dataForm.id = row.id || 0;
 
       modelApi.list({
         // ...this.dataForm,
@@ -102,6 +100,7 @@ export default {
           this.$refs.menuListTree.setCheckedKeys([])
 
           if (this.dataForm.id) {
+            Object.assign(this.dataForm, row);
             this.getRoleDetail();
           }
         })
@@ -113,8 +112,7 @@ export default {
       const { id } = this.dataForm;
       modelApi.getRoleDetail({
         id,
-      }, (res) => {
-        const { data } = res;
+      }, ({ data }) => {
         this.dataForm.code = data.code
         this.dataForm.name = data.name
         this.dataForm.description = data.description
