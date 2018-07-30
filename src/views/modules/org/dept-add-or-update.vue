@@ -120,10 +120,10 @@ export default {
         ...defaultInfo,
       }
     },
-    init(row) {
+    init(row = {}) {
       this.resetDataForm();
+      Object.assign(this.dataForm, row);
       this.dataForm.id = row.id || 0
-      // Object.assign(this.dataForm, row);
 
       // if (!this.dataForm.id) {
       //   // 新增
@@ -153,7 +153,7 @@ export default {
             this.menuListTreeSetCurrentNode()
           } else {
             // 修改
-            Object.assign(this.dataForm, row);
+            // Object.assign(this.dataForm, row);
             // this.dataForm.type = Number(row.type)
             this.menuListTreeSetCurrentNode()
           }

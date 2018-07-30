@@ -82,7 +82,10 @@
 </template>
 
 <script>
-import { menuLevel } from '@/utils'
+import {
+  // menuLevel,
+  treeDataTranslate,
+} from '@/utils'
 import api from '@/config/api'
 import Icon from '@/icons'
 
@@ -163,15 +166,11 @@ export default {
       // this.dataForm.id = row.id;
       modelApi.list({
         // ...this.dataForm,
-        type: 'menu',
+        type: 1,
         // page: this.pageIndex,
         // size: this.pageLimit,
       }, (res) => {
-        this.menuList = [{
-          id: 'root',
-          name: '一级菜单',
-          children: menuLevel(res.data),
-        }];
+        this.menuList = treeDataTranslate(res.data)
         // this.totalCount = res.data.total
         this.visible = true
         this.$nextTick(() => {
