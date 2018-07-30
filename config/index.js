@@ -7,11 +7,14 @@ const path = require('path')
 const devip = require('dev-ip')
 const qnConfig = require('./qn.config')
 // 接收运行参数
-const argv = require('yargs')
-    .describe('debug', 'debug 环境') // use 'webpack --debug'
-    .argv;
+// const program = require('commander');
+// program
+//   .version('0.1.0')
+//   .option('-p, --port', '端口')
+//   .option('-d, --debug', '开启调试')
+//   .parse(process.argv);
 
-console.log('argv:', argv)
+// console.log('argv:', program.port)
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
@@ -20,6 +23,9 @@ function resolve(dir) {
 const env = process.env.NODE_ENV || 'development'
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
+
+console.log('PORT', process.env.PORT);
+
 const constMaps = {
   __DEV__: ['dev', 'development'],
   __PROD__: ['prod', 'production'],
