@@ -1,4 +1,4 @@
-<!-- 管理员列表 -->
+<!-- 定时任务 -->
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
@@ -142,19 +142,6 @@ const modelApi = {
   del: api.delJob,
 };
 
-// const roles = [
-//   { id: 1, value: 'admin' },
-//   { id: 2, value: 'manager' },
-//   // { id: 3, value: 'editor' },
-//   // { id: 4, value: 'guest' },
-// ]
-
-// arr to obj ,such as { CN : "China", US : "USA" }
-// const roleIds = roles.reduce((obj, item) => {
-//   obj[item.id] = item.value
-//   return obj
-// }, {})
-
 export default {
   name: 'sys_account',
   components: {
@@ -180,10 +167,6 @@ export default {
     }
   },
   filters: {
-    // sexFilter(value) {
-    //   const sexMap = ['未知', '男', '女'];
-    //   return sexMap[value];
-    // },
     statusFilter(status) {
       const statusMap = {
         published: 'success',
@@ -230,67 +213,12 @@ export default {
     handleSelectionChange(val) {
       this.dataListSelections = val
     },
-    // handleModifyStatus(row, status) {
-    //   switch (status) {
-    //     case 'delete':
-    //       this.handleDelete(row);
-    //       break;
-    //     default:
-    //       // do nothing...
-    //   }
-    //   this.$message({
-    //     message: '操作成功',
-    //     type: 'success',
-    //   })
-    //   row.status = status
-    // },
-    // resetTemp() {
-    //   this.temp = {
-    //     ...defaultInfo,
-    //   }
-    // },
-    /* eslint dot-notation: 0 */
     handleAddOrUpdate(id) {
-      // this.resetTemp()
-      // this.dialogStatus = 'create'
-      // this.dialogFormVisible = true
-      // this.$nextTick(() => {
-      //   this.$refs['dataForm'].clearValidate()
-      // })
       this.addOrUpdateVisible = true
       this.$nextTick(() => {
         this.$refs.addOrUpdate.init(id)
       })
     },
-    // createData() {
-    //   this.$refs['dataForm'].validate((valid) => {
-    //     if (valid) {
-    //       modelApi.add({
-    //         ...this.temp,
-    //       }, (res) => {
-    //         this.dialogFormVisible = false
-    //         Object.assign(this.temp, res.data);
-    //         this.dataList.unshift(this.temp)
-    //         this.$notify({
-    //           title: '成功',
-    //           message: '创建成功',
-    //           type: 'success',
-    //           duration: 2000,
-    //         })
-    //       }, (err) => {
-
-    //       });
-    //     }
-    //   })
-    // },
-    // handleUpdate(row) {
-    //   this.temp = copy(row) // copy obj
-    //   this.dialogStatus = 'update'
-    //   this.dialogFormVisible = true
-    //   this.$nextTick(() => {
-    //     this.$refs['dataForm'].clearValidate()
-    //   })
-    // },
     updateItem(data, type) {
       if (type === 'add') {
         this.dataList.unshift(data);
@@ -304,33 +232,6 @@ export default {
         }
       }
     },
-    // updateData() {
-    //   this.$refs['dataForm'].validate((valid) => {
-    //     if (valid) {
-    //       const tempData = copy(this.temp)
-    //       modelApi.edit({
-    //         ...tempData,
-    //       }, (res) => {
-    //         for (const v of this.dataList) {
-    //           if (v.id === this.temp.id) {
-    //             const index = this.dataList.indexOf(v)
-    //             this.dataList.splice(index, 1, this.temp)
-    //             break
-    //           }
-    //         }
-    //         this.dialogFormVisible = false
-    //         this.$notify({
-    //           title: '成功',
-    //           message: '更新成功',
-    //           type: 'success',
-    //           duration: 2000,
-    //         })
-    //       }, (err) => {
-
-    //       });
-    //     }
-    //   })
-    // },
     // 不能删除自己，不能删除最后一个用户，不能删除超管
     handleDelete(id) {
       // 删除是危险动作，至少要气泡提示
