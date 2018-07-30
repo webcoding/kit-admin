@@ -140,7 +140,7 @@ export default {
         ...defaultInfo,
       }
     },
-    init(row) {
+    init(row = {}) {
       this.resetDataForm();
       // if (row && row.password) row.password = '';
       Object.assign(this.dataForm, row);
