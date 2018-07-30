@@ -228,7 +228,7 @@ export default {
       // })
       const ids = id ? [id] : [];
       modelApi.del({
-        ids: ids.join(','),
+        ids: ids,
       }, (res) => {
         this.$notify({
           title: '成功',
