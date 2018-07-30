@@ -74,7 +74,7 @@ export default {
         ],
       },
       // 临时key, 用于解决tree半选中状态项不能传给后台接口问题. # 待优化
-      tempKey: -666666,
+      // tempKey: -666666,
     }
   },
   methods: {
@@ -85,7 +85,8 @@ export default {
     },
     init(row = {}) {
       this.resetDataForm();
-      this.dataForm.id = row.id || 0;
+      Object.assign(this.dataForm, row);
+      // this.dataForm.id = row.id || 0;
 
       modelApi.list({
         // ...this.dataForm,
@@ -116,10 +117,10 @@ export default {
         this.dataForm.code = data.code
         this.dataForm.name = data.name
         this.dataForm.description = data.description
-        const idx = data.permIds.indexOf(this.tempKey)
-        if (idx !== -1) {
-          data.permIds.splice(idx, data.permIds.length - idx)
-        }
+        // const idx = data.permIds.indexOf(this.tempKey)
+        // if (idx !== -1) {
+        //   data.permIds.splice(idx, data.permIds.length - idx)
+        // }
         // this.dataForm = data;
         this.$refs.menuListTree.setCheckedKeys(data.permIds)
       }, (err) => {
@@ -132,8 +133,8 @@ export default {
       const isAdd = !this.dataForm.id;
       this.dataForm.permIds = [
         ...this.$refs.menuListTree.getCheckedKeys(),
-        this.tempKey,
-        ...this.$refs.menuListTree.getHalfCheckedKeys(),
+        // this.tempKey,
+        // ...this.$refs.menuListTree.getHalfCheckedKeys(),
       ];
       this.$refs['dataForm'].validate((valid) => {
         console.log(this.dataForm)
