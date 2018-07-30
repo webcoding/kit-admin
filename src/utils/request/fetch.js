@@ -6,6 +6,7 @@
 import fetch from 'kit-request/fetch'
 // import { stringify } from 'qs'
 import mini from '@/utils/mini'
+import router from '@/router'
 // Toast
 
 // const mini = {
@@ -128,8 +129,13 @@ export default function request(url, options = {}, success = noop, fail = noop) 
       errmsg = '网络异常，请稍后重试',
       errno = 'err',
     } = err
-    if (errno === 400) {
-      mini.goPage('login', { replace: true })
+    if (errno === 401) {
+      router.replace(({
+        path: '/401',
+        replace: true,
+        query: { noGoBack: true },
+      }))
+      // mini.goPage('login', { replace: true })
     } else {
       const message = `${errno}: ${errmsg}`
       console.log('errmsg:', message)
@@ -152,7 +158,7 @@ export default function request(url, options = {}, success = noop, fail = noop) 
       // const { data = {} } = res
       // if (status >= 200 && status < 300) {
       //   res.ok = true
-      if (res.statusCode === 200) {
+      if (res.statusCode === 0) {
         resolve(res)
       } else {
         // console.log('err:', res)

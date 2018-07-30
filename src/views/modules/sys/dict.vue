@@ -318,7 +318,7 @@ export default {
         return item.id
       })
       modelApi.del({
-        ids: ids,
+        ids,
       }, (res) => {
         this.$notify({
           title: '成功',

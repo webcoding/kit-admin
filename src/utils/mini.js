@@ -6,7 +6,7 @@ import {
 import tongji from '@/utils/tongji'
 
 // import qs from 'qs'
-import router from '../router'
+import router from '@/router'
 // import urlMap, { getUrlType, getParams } from './urlMap'
 // import env from '@/config/env'
 // import { urlfix } from '@/utils/stringUtil'
