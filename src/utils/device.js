@@ -6,6 +6,25 @@ import debug from '@/config/debug'
 const ua = navigator.userAgent
 const platform = navigator.platform || ''
 
+// Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.75 Safari/537.36
+// {
+//   "browser": {
+//     "name": "Chrome",
+//     "version": "68.0.3440.75",
+//     "major": "68"
+//   },
+//   "engine": {
+//     "name": "WebKit",
+//     "version": "537.36"
+//   },
+//   "os": {
+//     "name": "Mac OS",
+//     "version": "10.13.6"
+//   },
+//   "device": {},
+//   "cpu": {}
+// }
+
 const device = {
   system: '',
   os: {},
